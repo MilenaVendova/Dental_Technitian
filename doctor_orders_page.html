@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Sarah Johnson - Orders</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #BCDDE4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #EDEDED;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            padding: 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .doctor-info {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+        }
+
+        .doctor-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .doctor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .doctor-details h2 {
+            color: #003049;
+            margin-bottom: 5px;
+        }
+
+        .doctor-details p {
+            color: #197CAE;
+            font-size: 14px;
+        }
+
+        .stats-summary {
+            display: flex;
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #197CAE;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #003049;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filters-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+        }
+
+        .filters-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #003049;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .filter-input,
+        .filter-select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #EDEDED;
+        }
+
+        .filter-input:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: #197CAE;
+            background: white;
+        }
+
+        .clear-btn {
+            background: #7C8B99;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .clear-btn:hover {
+            background: #003049;
+        }
+
+        .orders-table {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            overflow: hidden;
+        }
+
+        .table-header {
+            background: #EDEDED;
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #197CAE;
+        }
+
+        .table-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #003049;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 124, 174, 0.3);
+        }
+
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #EDEDED;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #003049;
+            font-size: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #EDEDED;
+            font-size: 14px;
+            color: #003049;
+        }
+
+        tr:hover {
+            background: #BCDDE4;
+        }
+
+        .order-id {
+            font-weight: 600;
+            color: #197CAE;
+        }
+
+        .patient-name {
+            font-weight: 500;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-in-progress {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-urgent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-review {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .priority-high {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .priority-medium {
+            color: #ffc107;
+            font-weight: 600;
+        }
+
+        .priority-low {
+            color: #28a745;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: #197CAE;
+            color: white;
+        }
+
+        .btn-edit {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-cancel {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #003049;
+        }
+
+        .pagination {
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .page-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #EDEDED;
+            color: #003049;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+            background: #197CAE;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .filters-row {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-summary {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📋 Doctor's Orders</h1>
+                <p>Order history and management for Dr. Sarah Johnson</p>
+            </div>
+            <button class="back-btn" onclick="goBack()">← Back to Profile</button>
+        </div>
+
+        <div class="content">
+            <div class="doctor-info">
+                <div class="doctor-section">
+                    <div class="doctor-avatar">SJ</div>
+                    <div class="doctor-details">
+                        <h2>Dr. Sarah Johnson</h2>
+                        <p>General Dentistry • Downtown Dental Clinic</p>
+                    </div>
+                </div>
+                <div class="stats-summary">
+                    <div class="stat-item">
+                        <div class="stat-number">45</div>
+                        <div class="stat-label">This Month</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">342</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">$850</div>
+                        <div class="stat-label">Avg Value</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="filters-section">
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="searchInput">Search Orders</label>
+                        <input type="text" id="searchInput" class="filter-input" placeholder="Order ID, patient name, or case type..." onkeyup="filterOrders()">
+                    </div>
+                    <div class="filter-group">
+                        <label for="statusFilter">Status</label>
+                        <select id="statusFilter" class="filter-select" onchange="filterOrders()">
+                            <option value="">All Statuses</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Review">Review</option>
+                            <option value="Urgent">Urgent</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="priorityFilter">Priority</label>
+                        <select id="priorityFilter" class="filter-select" onchange="filterOrders()">
+                            <option value="">All Priorities</option>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="dateFilter">Date Range</label>
+                        <select id="dateFilter" class="filter-select" onchange="filterOrders()">
+                            <option value="">All Time</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                            <option value="quarter">This Quarter</option>
+                        </select>
+                    </div>
+                    <button class="clear-btn" onclick="clearFilters()">Clear</button>
+                </div>
+            </div>
+
+            <div class="orders-table">
+                <div class="table-header">
+                    <div class="table-title">Order History</div>
+                    <button class="export-btn" onclick="exportOrders()">
+                        📊 Export Data
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Patient</th>
+                                <th>Case Type</th>
+                                <th>Tooth/Area</th>
+                                <th>Material</th>
+                                <th>Status</th>
+                                <th>Priority</th>
+                                <th>Order Date</th>
+                                <th>Due Date</th>
+                                <th>Value</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <!-- Orders will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample orders data for Dr. Sarah Johnson
+        const orders = [
+            {
+                id: "ORD-2025-1247",
+                patient: "Maria Rodriguez",
+                caseType: "Crown Restoration",
+                tooth: "#14",
+                material: "Zirconia",
+                status: "In Progress",
+                priority: "High",
+                orderDate: "2025-07-25",
+                dueDate: "2025-08-05",
+                value: 850
+            },
+            {
+                id: "ORD-2025-1246",
+                patient: "Emily Johnson",
+                caseType: "Bridge (4-unit)",
+                tooth: "#13-16",
+                material: "Zirconia",
+                status: "In Progress",
+                priority: "High",
+                orderDate: "2025-07-20",
+                dueDate: "2025-08-18",
+                value: 2400
+            },
+            {
+                id: "ORD-2025-1245",
+                patient: "Patricia Williams",
+                caseType: "Porcelain Veneers",
+                tooth: "#7-10",
+                material: "Feldspathic Porcelain",
+                status: "Completed",
+                priority: "Medium",
+                orderDate: "2025-07-10",
+                dueDate: "2025-07-20",
+                value: 1600
+            },
+            {
+                id: "ORD-2025-1244",
+                patient: "Michael Thompson",
+                caseType: "Implant Crown",
+                tooth: "#19",
+                material: "Ceramic",
+                status: "Completed",
+                priority: "Medium",
+                orderDate: "2025-07-15",
+                dueDate: "2025-07-25",
+                value: 1200
+            },
+            {
+                id: "ORD-2025-1243",
+                patient: "Jennifer Davis",
+                caseType: "Bridge (4-unit)",
+                tooth: "#25-28",
+                material: "PFM",
+                status: "In Progress",
+                priority: "Medium",
+                orderDate: "2025-07-18",
+                dueDate: "2025-08-15",
+                value: 2200
+            },
+            {
+                id: "ORD-2025-1242",
+                patient: "Robert Wilson",
+                caseType: "Partial Denture",
+                tooth: "Lower Left",
+                material: "Chrome Cobalt",
+                status: "Review",
+                priority: "Low",
+                orderDate: "2025-07-12",
+                dueDate: "2025-08-20",
+                value: 1800
+            },
+            {
+                id: "ORD-2025-1241",
+                patient: "Linda Martinez",
+                caseType: "Orthodontic Retainer",
+                tooth: "Upper/Lower",
+                material: "Clear Plastic",
+                status: "Completed",
+                priority: "Low",
+                orderDate: "2025-07-05",
+                dueDate: "2025-07-15",
+                value: 400
+            },
+            {
+                id: "ORD-2025-1240",
+                patient: "David Anderson",
+                caseType: "Crown Restoration",
+                tooth: "#8",
+                material: "E-max",
+                status: "Urgent",
+                priority: "High",
+                orderDate: "2025-07-28",
+                dueDate: "2025-08-02",
+                value: 950
+            },
+            {
+                id: "ORD-2025-1239",
+                patient: "Susan Brown",
+                caseType: "Whitening Trays",
+                tooth: "Full Arch",
+                material: "Soft Plastic",
+                status: "Completed",
+                priority: "Low",
+                orderDate: "2025-06-30",
+                dueDate: "2025-07-10",
+                value: 300
+            },
+            {
+                id: "ORD-2025-1238",
+                patient: "James Garcia",
+                caseType: "Bridge (3-unit)",
+                tooth: "#14-16",
+                material: "Zirconia",
+                status: "In Progress",
+                priority: "Medium",
+                orderDate: "2025-07-22",
+                dueDate: "2025-08-12",
+                value: 1800
+            },
+            {
+                id: "ORD-2025-1237",
+                patient: "Patricia Williams",
+                caseType: "Crown Restoration",
+                tooth: "#6",
+                material: "Gold",
+                status: "In Progress",
+                priority: "Medium",
+                orderDate: "2025-07-26",
+                dueDate: "2025-08-10",
+                value: 1100
+            },
+            {
+                id: "ORD-2025-1236",
+                patient: "Emily Johnson",
+                caseType: "Temporary Crown",
+                tooth: "#13",
+                material: "PMMA",
+                status: "Completed",
+                priority: "High",
+                orderDate: "2025-07-28",
+                dueDate: "2025-07-30",
+                value: 200
+            },
+            {
+                id: "ORD-2025-1235",
+                patient: "Jennifer Davis",
+                caseType: "Crown Restoration",
+                tooth: "#30",
+                material: "Ceramic",
+                status: "Completed",
+                priority: "Low",
+                orderDate: "2025-06-25",
+                dueDate: "2025-07-10",
+                value: 800
+            },
+            {
+                id: "ORD-2025-1234",
+                patient: "David Anderson",
+                caseType: "Veneer",
+                tooth: "#9",
+                material: "E-max",
+                status: "In Progress",
+                priority: "Medium",
+                orderDate: "2025-07-24",
+                dueDate: "2025-08-08",
+                value: 650
+            },
+            {
+                id: "ORD-2025-1233",
+                patient: "James Garcia",
+                caseType: "Crown Restoration",
+                tooth: "#3",
+                material: "Zirconia",
+                status: "Urgent",
+                priority: "High",
+                orderDate: "2025-07-29",
+                dueDate: "2025-08-01",
+                value: 900
+            }
+        ];
+
+        let filteredOrders = [...orders];
+        let currentPage = 1;
+        const ordersPerPage = 10;
+
+        function renderOrders() {
+            const tbody = document.getElementById('ordersTableBody');
+            const startIndex = (currentPage - 1) * ordersPerPage;
+            const endIndex = startIndex + ordersPerPage;
+            const pageOrders = filteredOrders.slice(startIndex, endIndex);
+
+            if (pageOrders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="no-results">
+                            <div>No orders found</div>
+                            <p>Try adjusting your search criteria</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = pageOrders.map(order => `
+                <tr>
+                    <td class="order-id">${order.id}</td>
+                    <td class="patient-name">${order.patient}</td>
+                    <td>${order.caseType}</td>
+                    <td>${order.tooth}</td>
+                    <td>${order.material}</td>
+                    <td>
+                        <span class="status-badge status-${order.status.toLowerCase().replace(' ', '-')}">
+                            ${order.status}
+                        </span>
+                    </td>
+                    <td class="priority-${order.priority.toLowerCase()}">${order.priority}</td>
+                    <td>${formatDate(order.orderDate)}</td>
+                    <td>${formatDate(order.dueDate)}</td>
+                    <td>$${order.value}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="action-btn btn-view" onclick="viewOrder('${order.id}')">View</button>
+                            <button class="action-btn btn-edit" onclick="editOrder('${order.id}')">Edit</button>
+                            ${order.status !== 'Completed' && order.status !== 'Cancelled' ? 
+                                `<button class="action-btn btn-cancel" onclick="cancelOrder('${order.id}')">Cancel</button>` : 
+                                ''
+                            }
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            renderPagination();
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
+
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+
+            let paginationHTML = '';
+
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage - 1})">Previous</button>`;
+            }
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="page-btn active">${i}</button>`;
+                } else if (i <= 3 || i > totalPages - 3 || Math.abs(i - currentPage) <= 1) {
+                    paginationHTML += `<button class="page-btn" onclick="changePage(${i})">${i}</button>`;
+                } else if (i === 4 && currentPage > 6) {
+                    paginationHTML += `<span class="page-btn">...</span>`;
+                } else if (i === totalPages - 3 && currentPage < totalPages - 5) {
+                    paginationHTML += `<span class="page-btn">...</span>`;
+                }
+            }
+
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<button class="page-btn" onclick="changePage(${currentPage + 1})">Next</button>`;
+            }
+
+            pagination.innerHTML = paginationHTML;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderOrders();
+        }
+
+        function filterOrders() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            filteredOrders = orders.filter(order => {
+                // Search filter
+                const matchesSearch = !searchTerm || 
+                    order.id.toLowerCase().includes(searchTerm) ||
+                    order.patient.toLowerCase().includes(searchTerm) ||
+                    order.caseType.toLowerCase().includes(searchTerm);
+
+                // Status filter
+                const matchesStatus = !statusFilter || order.status === statusFilter;
+
+                // Priority filter
+                const matchesPriority = !priorityFilter || order.priority === priorityFilter;
+
+                // Date filter
+                let matchesDate = true;
+                if (dateFilter) {
+                    const orderDate = new Date(order.orderDate);
+                    const now = new Date();
+                    
+                    switch (dateFilter) {
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesDate = orderDate >= weekAgo;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(now.getFullYear(), now.getMonth(), 1);
+                            matchesDate = orderDate >= monthAgo;
+                            break;
+                        case 'quarter':
+                            const quarter = Math.floor(now.getMonth() / 3);
+                            const quarterStart = new Date(now.getFullYear(), quarter * 3, 1);
+                            matchesDate = orderDate >= quarterStart;
+                            break;
+                    }
+                }
+
+                return matchesSearch && matchesStatus && matchesPriority && matchesDate;
+            });
+
+            currentPage = 1;
+            renderOrders();
+        }
+
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('priorityFilter').value = '';
+            document.getElementById('dateFilter').value = '';
+            filteredOrders = [...orders];
+            currentPage = 1;
+            renderOrders();
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function viewOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            alert(`👁️ Viewing Order: ${orderId}\n\nPatient: ${order.patient}\nCase: ${order.caseType} (${order.tooth})\nMaterial: ${order.material}\nStatus: ${order.status}\nPriority: ${order.priority}\nOrder Date: ${formatDate(order.orderDate)}\nDue Date: ${formatDate(order.dueDate)}\nValue: $${order.value}\n\nThis would open the detailed order view with photos, specifications, and progress updates.`);
+        }
+
+        function editOrder(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            alert(`✏️ Editing Order: ${orderId}\n\nThis would open the order editor where you can:\n• Update status\n• Modify timeline\n• Add progress notes\n• Upload photos\n• Communicate with doctor\n• Update specifications`);
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm(`Are you sure you want to cancel order ${orderId}?`)) {
+                const order = orders.find(o => o.id === orderId);
+                order.status = 'Cancelled';
+                renderOrders();
+                alert(`❌ Order ${orderId} has been cancelled. The doctor will be notified automatically.`);
+            }
+        }
+
+        function exportOrders() {
+            alert(`📊 Exporting order data...\n\nExport options:\n• Excel spreadsheet\n• PDF report\n• CSV file\n• Email summary\n\nTotal orders: ${filteredOrders.length}\nDate range: All time\nFilters applied: ${getActiveFilters()}`);
+        }
+
+        function getActiveFilters() {
+            const filters = [];
+            if (document.getElementById('searchInput').value) filters.push('Search');
+            if (document.getElementById('statusFilter').value) filters.push('Status');
+            if (document.getElementById('priorityFilter').value) filters.push('Priority');
+            if (document.getElementById('dateFilter').value) filters.push('Date');
+            return filters.length > 0 ? filters.join(', ') : 'None';
+        }
+
+        function goBack() {
+            alert('🔙 Returning to doctor profile...');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+        });
+    </script>
+</body>
+</html>

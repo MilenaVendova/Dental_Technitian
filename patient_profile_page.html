@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Profile - Maria Rodriguez</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #BCDDE4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #EDEDED;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            padding: 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .patient-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+        }
+
+        .patient-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin-right: 30px;
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        .patient-info h2 {
+            font-size: 32px;
+            font-weight: 600;
+            color: #003049;
+            margin-bottom: 8px;
+        }
+
+        .patient-age {
+            font-size: 18px;
+            color: #197CAE;
+            margin-bottom: 12px;
+        }
+
+
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: #197CAE;
+            transform: translateY(-2px);
+        }
+
+        .info-card h3 {
+            color: #003049;
+            font-size: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .info-icon {
+            width: 25px;
+            margin-right: 12px;
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: #003049;
+            min-width: 120px;
+        }
+
+        .info-value {
+            color: #003049;
+            flex: 1;
+        }
+
+        .contact-link {
+            color: #197CAE;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #003049;
+            text-decoration: underline;
+        }
+
+        .shade-sample {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 8px;
+            border: 2px solid #ccc;
+        }
+
+        .cases-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .cases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .cases-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #003049;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-case-btn {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .add-case-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 124, 174, 0.3);
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+        }
+
+        .case-card {
+            background: #EDEDED;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #197CAE;
+            transition: all 0.3s ease;
+        }
+
+        .case-card:hover {
+            background: #BCDDE4;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.1);
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .case-type {
+            font-weight: 600;
+            color: #003049;
+            font-size: 16px;
+        }
+
+        .case-status {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-in-progress {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-urgent {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-review {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .case-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .case-detail {
+            font-size: 13px;
+            color: #003049;
+        }
+
+        .case-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .case-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: #197CAE;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #7C8B99;
+            color: white;
+        }
+
+        .case-btn:hover {
+            transform: translateY(-1px);
+            opacity: 0.9;
+        }
+
+        .timeline-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .timeline-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #003049;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 3px solid #197CAE;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #197CAE;
+            border-radius: 50%;
+            position: absolute;
+            left: -7.5px;
+            top: 5px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .timeline-date {
+            font-size: 12px;
+            color: #197CAE;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .timeline-event {
+            font-weight: 500;
+            color: #003049;
+            margin-bottom: 3px;
+        }
+
+        .timeline-description {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .stats-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+        }
+
+        .stat-card:hover {
+            border-color: #197CAE;
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #197CAE;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            color: #003049;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary-action {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+        }
+
+        .btn-secondary-action {
+            background: #EDEDED;
+            color: #003049;
+            border: 2px solid #197CAE;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 124, 174, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .patient-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .patient-avatar {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cases-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>👤 Patient Profile</h1>
+                <p>Complete patient information and case history</p>
+            </div>
+            <button class="back-btn" onclick="goBack()">← Back to Patients</button>
+        </div>
+
+        <div class="content">
+            <div class="patient-header">
+                <div class="patient-avatar">MR</div>
+                <div class="patient-info">
+                    <h2>Maria Rodriguez</h2>
+                    <div class="patient-age">Age: 38 years old</div>
+                </div>
+            </div>
+
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Active Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">Total Cases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$4,200</div>
+                    <div class="stat-label">Total Value</div>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>📞 Contact Information</h3>
+                    <div class="info-item">
+                        <span class="info-icon">📱</span>
+                        <span class="info-label">Phone:</span>
+                        <span class="info-value">
+                            <a href="tel:(555) 123-4567" class="contact-link">(555) 123-4567</a>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📧</span>
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">
+                            <a href="mailto:maria.rodriguez@email.com" class="contact-link">maria.rodriguez@email.com</a>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📍</span>
+                        <span class="info-label">Address:</span>
+                        <span class="info-value">456 Oak Street, Downtown, NY 10002</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🆘</span>
+                        <span class="info-label">Emergency:</span>
+                        <span class="info-value">(555) 123-4568 (Spouse: Carlos Rodriguez)</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>🏥 Dental Information</h3>
+                    <div class="info-item">
+                        <span class="info-icon">👨‍⚕️</span>
+                        <span class="info-label">Primary Doctor:</span>
+                        <span class="info-value">Dr. Sarah Johnson</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🎨</span>
+                        <span class="info-label">Natural Shade:</span>
+                        <span class="info-value">
+                            A1 
+                            <span class="shade-sample" style="background-color: #F5F5DC;"></span>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">📅</span>
+                        <span class="info-label">First Visit:</span>
+                        <span class="info-value">January 12, 2023</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🕒</span>
+                        <span class="info-label">Last Visit:</span>
+                        <span class="info-value">July 30, 2025</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-icon">🎂</span>
+                        <span class="info-label">Birth Date:</span>
+                        <span class="info-value">March 15, 1985</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cases-section">
+                <div class="cases-header">
+                    <h3 class="cases-title">🦷 Laboratory Cases</h3>
+                    <button class="add-case-btn" onclick="addNewCase()">
+                        ➕ Add New Case
+                    </button>
+                </div>
+
+                <div class="cases-grid">
+                    <div class="case-card">
+                        <div class="case-header">
+                            <div class="case-type">Crown Restoration</div>
+                            <div class="case-status status-in-progress">In Progress</div>
+                        </div>
+                        <div class="case-details">
+                            <div class="case-detail"><strong>Case ID:</strong> C001</div>
+                            <div class="case-detail"><strong>Tooth:</strong> #14</div>
+                            <div class="case-detail"><strong>Material:</strong> Zirconia</div>
+                            <div class="case-detail"><strong>Shade:</strong> A1</div>
+                            <div class="case-detail"><strong>Priority:</strong> High</div>
+                            <div class="case-detail"><strong>Due:</strong> Aug 5, 2025</div>
+                        </div>
+                        <div class="case-actions">
+                            <button class="case-btn btn-primary" onclick="viewCase('C001')">View Details</button>
+                            <button class="case-btn btn-secondary" onclick="updateCase('C001')">Update</button>
+                        </div>
+                    </div>
+
+                    <div class="case-card">
+                        <div class="case-header">
+                            <div class="case-type">Bridge (3-unit)</div>
+                            <div class="case-status status-review">Review</div>
+                        </div>
+                        <div class="case-details">
+                            <div class="case-detail"><strong>Case ID:</strong> C002</div>
+                            <div class="case-detail"><strong>Tooth:</strong> #12-14</div>
+                            <div class="case-detail"><strong>Material:</strong> PFM</div>
+                            <div class="case-detail"><strong>Shade:</strong> A2</div>
+                            <div class="case-detail"><strong>Priority:</strong> Medium</div>
+                            <div class="case-detail"><strong>Due:</strong> Aug 12, 2025</div>
+                        </div>
+                        <div class="case-actions">
+                            <button class="case-btn btn-primary" onclick="viewCase('C002')">View Details</button>
+                            <button class="case-btn btn-secondary" onclick="updateCase('C002')">Update</button>
+                        </div>
+                    </div>
+
+                    <div class="case-card">
+                        <div class="case-header">
+                            <div class="case-type">Crown Restoration</div>
+                            <div class="case-status status-completed">Completed</div>
+                        </div>
+                        <div class="case-details">
+                            <div class="case-detail"><strong>Case ID:</strong> C003</div>
+                            <div class="case-detail"><strong>Tooth:</strong> #6</div>
+                            <div class="case-detail"><strong>Material:</strong> E-max</div>
+                            <div class="case-detail"><strong>Shade:</strong> A1</div>
+                            <div class="case-detail"><strong>Priority:</strong> Low</div>
+                            <div class="case-detail"><strong>Completed:</strong> Jul 15, 2025</div>
+                        </div>
+                        <div class="case-actions">
+                            <button class="case-btn btn-primary" onclick="viewCase('C003')">View Details</button>
+                            <button class="case-btn btn-secondary" onclick="reorderCase('C003')">Reorder</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-section">
+                <h3 class="timeline-title">🕒 Treatment Timeline</h3>
+                
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">July 30, 2025</div>
+                        <div class="timeline-event">Crown restoration case started</div>
+                        <div class="timeline-description">Crown restoration for tooth #14 - Zirconia material, A1 shade</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">July 15, 2025</div>
+                        <div class="timeline-event">Crown restoration completed</div>
+                        <div class="timeline-description">Crown for tooth #6 delivered and fitted successfully</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">June 20, 2025</div>
+                        <div class="timeline-event">Bridge work consultation</div>
+                        <div class="timeline-description">Initial consultation for 3-unit bridge replacement</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">May 10, 2025</div>
+                        <div class="timeline-event">Impression taken</div>
+                        <div class="timeline-description">Digital impressions for crown restoration on tooth #6</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-date">January 12, 2023</div>
+                        <div class="timeline-event">First patient visit</div>
+                        <div class="timeline-description">Initial consultation and treatment planning</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn btn-primary-action" onclick="contactDoctor()">
+                    💬 Contact Doctor
+                </button>
+                <button class="action-btn btn-secondary-action" onclick="scheduleAppointment()">
+                    📅 Schedule Appointment
+                </button>
+                <button class="action-btn btn-secondary-action" onclick="viewPhotos()">
+                    📸 View Photos
+                </button>
+                <button class="action-btn btn-secondary-action" onclick="editProfile()">
+                    ✏️ Edit Profile
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            alert('🔙 Returning to patients list...');
+        }
+
+        function addNewCase() {
+            alert('➕ Adding new case for Maria Rodriguez\n\nThis would open the case creation form with:\n• Case type selection\n• Tooth/area specification\n• Material and shade selection\n• Timeline and priority\n• Special instructions\n• Photo upload');
+        }
+
+        function viewCase(caseId) {
+            alert(`👁️ Viewing case details for: ${caseId}\n\nThis would show:\n• Complete case information\n• Progress photos and notes\n• Doctor instructions\n• Material specifications\n• Timeline and milestones\n• Quality control notes`);
+        }
+
+        function updateCase(caseId) {
+            alert(`📝 Updating case: ${caseId}\n\nThis would allow:\n• Status updates\n• Progress notes\n• Photo uploads\n• Timeline adjustments\n• Communication with doctor\n• Quality checks`);
+        }
+
+        function reorderCase(caseId) {
+            alert(`🔄 Reordering case: ${caseId}\n\nThis would:\n• Copy case specifications\n• Create new order\n• Update timeline\n• Notify doctor\n• Generate new case ID`);
+        }
+
+        function contactDoctor() {
+            alert('💬 Contacting Dr. Sarah Johnson about Maria Rodriguez\n\nThis would open:\n• Direct messaging\n• Case-specific communication\n• Appointment scheduling\n• Treatment plan discussion');
+        }
+
+        function scheduleAppointment() {
+            alert('📅 Scheduling appointment for Maria Rodriguez\n\nOptions:\n• Follow-up visit\n• Delivery appointment\n• Consultation\n• Progress check\n• Coordinate with Dr. Johnson');
+        }
+
+        function viewPhotos() {
+            alert('📸 Opening photo gallery for Maria Rodriguez\n\nThis would show:\n• Before/after photos\n• Progress images\n• Case documentation\n• Shade matching photos\n• X-rays and scans');
+        }
+
+        function editProfile() {
+            alert('✏️ Editing patient profile for Maria Rodriguez\n\nYou can modify:\n• Contact information\n• Medical history\n• Insurance details\n• Preferences\n• Emergency contacts\n• Dental notes');
+        }
+
+        // Add some dynamic interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stat numbers on load
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const originalText = stat.textContent;
+                const isNumber = !isNaN(parseFloat(originalText.replace('$', '').replace(',', '')));
+                
+                if (isNumber) {
+                    const finalValue = parseFloat(originalText.replace('$', '').replace(',', ''));
+                    const hasSymbol = originalText.includes('$');
+                    stat.textContent = hasSymbol ? '$0' : '0';
+                    
+                    let current = 0;
+                    const increment = finalValue / 30;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= finalValue) {
+                            stat.textContent = originalText;
+                            clearInterval(timer);
+                        } else {
+                            const displayValue = Math.floor(current);
+                            stat.textContent = hasSymbol ? `$${displayValue.toLocaleString()}` : displayValue;
+                        }
+                    }, 50);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
