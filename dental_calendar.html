@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calendar - Dental Practice Management</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #BCDDE4 0%, #a8d0d8 50%, #BCDDE4 100%);
+      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 20% 80%, rgba(255, 203, 5, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 80% 20%, rgba(25, 124, 174, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-container {
+      background: rgba(237, 237, 237, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      max-width: 1400px;
+      margin: 0 auto;
+      animation: slideUp 0.8s ease-out;
+      position: relative;
+      z-index: 1;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 70%, #001a2e 100%);
+      padding: 40px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, rgba(255, 203, 5, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .header-info {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-info h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #FFCB05 0%, #fff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-info p {
+      opacity: 0.9;
+      font-size: 16px;
+      font-weight: 300;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FFCB05 0%, #f0c000 100%);
+      color: #003049;
+      box-shadow: 0 10px 25px rgba(255, 203, 5, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(255, 203, 5, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: translateY(-3px);
+    }
+
+    .content {
+      padding: 50px 40px;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+      backdrop-filter: blur(20px);
+      padding: 30px 40px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .month-display {
+      text-align: center;
+    }
+
+    .month-year {
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .month-info {
+      color: #666;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .nav-controls {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-btn {
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(25, 124, 174, 0.3);
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-5px) scale(1.1);
+      box-shadow: 0 15px 30px rgba(25, 124, 174, 0.4);
+    }
+
+    .nav-btn:active {
+      transform: translateY(-2px) scale(1.05);
+    }
+
+    .stats-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+      backdrop-filter: blur(20px);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(25, 124, 174, 0.1), transparent);
+      transition: left 0.6s;
+    }
+
+    .stat-card:hover::before {
+      left: 100%;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      border-color: rgba(25, 124, 174, 0.3);
+    }
+
+    .stat-icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #197CAE;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      color: #003049;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .calendar-container {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.8) 100%);
+      backdrop-filter: blur(20px);
+      border-radius: 25px;
+      padding: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .weekday {
+      text-align: center;
+      font-weight: 700;
+      color: #003049;
+      padding: 20px 10px;
+      background: linear-gradient(135deg, #BCDDE4 0%, #a8d0d8 100%);
+      border-radius: 15px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 15px;
+    }
+
+    .day {
+      min-height: 120px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(25, 124, 174, 0.1);
+      border-radius: 18px;
+      padding: 15px;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .day::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(25, 124, 174, 0.05) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .day:hover::before {
+      opacity: 1;
+    }
+
+    .day:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(25, 124, 174, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .day.other-month {
+      opacity: 0.4;
+      background: linear-gradient(135deg, rgba(200, 200, 200, 0.3) 0%, rgba(200, 200, 200, 0.1) 100%);
+    }
+
+    .day.today {
+      background: linear-gradient(135deg, #FFCB05 0%, #f0c000 100%);
+      border-color: #e6b405;
+      color: #003049;
+      font-weight: bold;
+      box-shadow: 0 15px 30px rgba(255, 203, 5, 0.4);
+    }
+
+    .day.today .day-number {
+      color: #003049;
+      font-weight: 800;
+    }
+
+    .day.has-urgent {
+      background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+      border-color: #d32f2f;
+      box-shadow: 0 10px 25px rgba(211, 47, 47, 0.2);
+    }
+
+    .day.has-normal {
+      background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+      border-color: #197CAE;
+      box-shadow: 0 10px 25px rgba(25, 124, 174, 0.2);
+    }
+
+    .day.has-completed {
+      background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+      border-color: #388e3c;
+      box-shadow: 0 10px 25px rgba(56, 142, 60, 0.2);
+    }
+
+    .day-number {
+      font-weight: 700;
+      font-size: 18px;
+      color: #003049;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .case-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin: 2px;
+      display: inline-block;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .urgent-indicator { background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%); }
+    .normal-indicator { background: linear-gradient(135deg, #197CAE 0%, #2196f3 100%); }
+    .completed-indicator { background: linear-gradient(135deg, #388e3c 0%, #4caf50 100%); }
+    .delayed-indicator { background: linear-gradient(135deg, #f57c00 0%, #ff9800 100%); }
+
+    .case-count {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: linear-gradient(135deg, #003049 0%, #197CAE 100%);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .urgent-count {
+      background: linear-gradient(135deg, #d32f2f 0%, #f44336 100%);
+      animation: urgentPulse 1.5s infinite;
+    }
+
+    @keyframes urgentPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 5px 10px rgba(211, 47, 47, 0.3); }
+      50% { transform: scale(1.1); box-shadow: 0 8px 15px rgba(211, 47, 47, 0.5); }
+    }
+
+    .legend-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .legend-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+      backdrop-filter: blur(20px);
+      padding: 30px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .legend-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .legend-title {
+      font-weight: 700;
+      color: #003049;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .legend-item:hover {
+      background: rgba(25, 124, 174, 0.1);
+      transform: translateX(5px);
+    }
+
+    .legend-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin-right: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .modal-content {
+      background: linear-gradient(135deg, #EDEDED 0%, #f5f5f5 100%);
+      margin: 3% auto;
+      padding: 0;
+      border-radius: 25px;
+      width: 90%;
+      max-width: 700px;
+      animation: modalSlide 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      overflow: hidden;
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    @keyframes modalSlide {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+      padding: 30px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .modal-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(255, 203, 5, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .modal-body {
+      padding: 40px;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+
+    .close {
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 5px;
+      border-radius: 50%;
+    }
+
+    .close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: scale(1.1) rotate(90deg);
+    }
+
+    .case-item {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 18px;
+      margin-bottom: 20px;
+      border-left: 5px solid #197CAE;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .case-item:hover {
+      transform: translateX(10px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .case-item.urgent { border-left-color: #d32f2f; }
+    .case-item.completed { border-left-color: #388e3c; }
+    .case-item.delayed { border-left-color: #f57c00; }
+
+    @media (max-width: 768px) {
+      .content { padding: 30px 20px; }
+      .calendar-header { flex-direction: column; gap: 20px; text-align: center; }
+      .stats-overview { grid-template-columns: repeat(2, 1fr); }
+      .days-grid { gap: 8px; }
+      .day { min-height: 100px; padding: 10px; }
+      .weekday { padding: 15px 5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header">
+      <div class="header-info">
+        <h1>🗓️ Lab Calendar</h1>
+        <p>Advanced scheduling and case management</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="addNewCase()">
+          ✨ New Case
+        </button>
+        <button class="btn btn-secondary" onclick="goHome()">
+          ← Dashboard
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Stats Overview -->
+      <div class="stats-overview">
+        <div class="stat-card">
+          <div class="stat-icon">📋</div>
+          <div class="stat-number" data-target="18">0</div>
+          <div class="stat-label">Active Cases</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-number" data-target="5">0</div>
+          <div class="stat-label">Urgent Priority</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏰</div>
+          <div class="stat-number" data-target="12">0</div>
+          <div class="stat-label">Due This Week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-number" data-target="34">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+      </div>
+
+      <!-- Calendar Header -->
+      <div class="calendar-header">
+        <div class="nav-controls">
+          <button class="nav-btn" onclick="previousMonth()">‹</button>
+        </div>
+        <div class="month-display">
+          <div class="month-year" id="monthYear">August 2025</div>
+          <div class="month-info">Click any date to view case details</div>
+        </div>
+        <div class="nav-controls">
+          <button class="nav-btn" onclick="nextMonth()">›</button>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="calendar-container">
+        <div class="weekdays">
+          <div class="weekday">Sunday</div>
+          <div class="weekday">Monday</div>
+          <div class="weekday">Tuesday</div>
+          <div class="weekday">Wednesday</div>
+          <div class="weekday">Thursday</div>
+          <div class="weekday">Friday</div>
+          <div class="weekday">Saturday</div>
+        </div>
+        <div class="days-grid" id="daysGrid">
+          <!-- Generated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend-section">
+        <div class="legend-card">
+          <div class="legend-title">📌 Case Priorities</div>
+          <div class="legend-item">
+            <div class="legend-dot urgent-indicator"></div>
+            <span><strong>Urgent Cases</strong> - Rush orders & emergencies</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot normal-indicator"></div>
+            <span><strong>Normal Priority</strong> - Standard workflow</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot completed-indicator"></div>
+            <span><strong>Completed</strong> - Ready for delivery</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot delayed-indicator"></div>
+            <span><strong>Delayed</strong> - Behind schedule</span>
+          </div>
+        </div>
+
+        <div class="legend-card">
+          <div class="legend-title">🚀 Quick Actions</div>
+          <button class="btn btn-primary" style="width: 100%; margin-bottom: 15px;" onclick="viewUrgentCases()">
+            ⚡ View All Urgent Cases
+          </button>
+          <button class="btn btn-secondary" style="width: 100%; color: #003049;" onclick="exportCalendar()">
+            📊 Export Calendar Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="dayModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modalTitle">Cases Overview</h3>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"];
+    
+    let currentDate = new Date(2025, 7, 1); // August 2025
+
+    // Enhanced sample data
+    const casesData = {
+      "2025-08-01": [
+        { id: 1, title: "Zirconia Crown #14", patient: "Maria Rodriguez", doctor: "Dr. Johnson", priority: "urgent", status: "in-progress", type: "Crown" },
+        { id: 2, title: "3-Unit Bridge", patient: "John Smith", doctor: "Dr. Martinez", priority: "normal", status: "new", type: "Bridge" }
+      ],
+      "2025-08-03": [
+        { id: 3, title: "Crown Delivery", patient: "Maria Rodriguez", doctor: "Dr. Johnson", priority: "urgent", status: "completed", type: "Crown" },
+        { id: 4, title: "Veneer Prep", patient: "Sarah Wilson", doctor: "Dr. Williams", priority: "normal", status: "in-progress", type: "Veneer" }
+      ],
+      "2025-08-05": [
+        { id: 5, title: "Full Denture Upper", patient: "Robert Davis", doctor: "Dr. Chen", priority: "delayed", status: "behind-schedule", type: "Denture" },
+        { id: 6, title: "Night Guard", patient: "Lisa Thompson", doctor: "Dr. Johnson", priority: "normal", status: "new", type: "Appliance" }
+      ],
+      "2025-08-08": [
+        { id: 7, title: "Implant Crown #19", patient: "Michael Brown", doctor: "Dr. Martinez", priority: "urgent", status: "in-progress", type: "Implant" }
+      ],
+      "2025-08-10": [
+        { id: 8, title: "Orthodontic Retainer", patient: "Emma Garcia", doctor: "Dr. Williams", priority: "normal", status: "completed", type: "Orthodontic" },
+        { id: 9, title: "Partial Denture", patient: "David Lee", doctor: "Dr. Chen", priority: "normal", status: "completed", type: "Denture" }
+      ],
+      "2025-08-12": [
+        { id: 10, title: "Porcelain Veneers (6)", patient: "Jennifer Martinez", doctor: "Dr. Johnson", priority: "urgent", status: "quality-check", type: "Veneer" }
+      ],
+      "2025-08-15": [
+        { id: 11, title: "Maryland Bridge", patient: "Ashley Kim", doctor: "Dr. Martinez", priority: "normal", status: "new", type: "Bridge" },
+        { id: 12, title: "Sports Guard", patient: "Tyler Johnson", doctor: "Dr. Williams", priority: "normal", status: "in-progress", type: "Appliance" }
+      ],
+      "2025-08-18": [
+        { id: 13, title: "Crown Adjustment", patient: "Patricia Davis", doctor: "Dr. Chen", priority: "delayed", status: "revision", type: "Crown" }
+      ],
+      "2025-08-20": [
+        { id: 14, title: "Bridge Delivery", patient: "Christopher Wilson", doctor: "Dr. Johnson", priority: "urgent", status: "completed", type: "Bridge" }
+      ],
+      "2025-08-22": [
+        { id: 15, title: "Inlay/Onlay Set", patient: "Amanda Rodriguez", doctor: "Dr. Martinez", priority: "normal", status: "in-progress", type: "Restoration" }
+      ],
+      "2025-08-25": [
+        { id: 16, title: "Clear Aligners", patient: "Daniel Thompson", doctor: "Dr. Williams", priority: "normal", status: "completed", type: "Orthodontic" },
+        { id: 17, title: "Denture Reline", patient: "Mary Brown", doctor: "Dr. Chen", priority: "normal", status: "completed", type: "Denture" }
+      ],
+      "2025-08-28": [
+        { id: 18, title: "Emergency Crown", patient: "James Garcia", doctor: "Dr. Johnson", priority: "urgent", status: "rush-order", type: "Crown" }
+      ]
+    };
+
+    function generateCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      
+      document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
+      
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      const startDate = new Date(firstDay);
+      startDate.setDate(startDate.getDate() - firstDay.getDay());
+      
+      const daysGrid = document.getElementById('daysGrid');
+      daysGrid.innerHTML = '';
+      
+      const today = new Date();
+      
+      for (let i = 0; i < 42; i++) {
+        const date = new Date(startDate);
+        date.setDate(startDate.getDate() + i);
+        
+        const dayElement = document.createElement('div');
+        dayElement.className = 'day';
+        
+        if (date.getMonth() !== month) {
+          dayElement.classList.add('other-month');
+        }
+        
+        if (date.toDateString() === today.toDateString()) {
+          dayElement.classList.add('today');
+        }
+        
+        const dateString = date.toISOString().split('T')[0];
+        const dayNumber = document.createElement('div');
+        dayNumber.className = 'day-number';
+        dayNumber.textContent = date.getDate();
+        dayElement.appendChild(dayNumber);
+        
+        if (casesData[dateString]) {
+          const cases = casesData[dateString];
+          const urgentCount = cases.filter(c => c.priority === 'urgent').length;
+          const normalCount = cases.filter(c => c.priority === 'normal').length;
+          const delayedCount = cases.filter(c => c.priority === 'delayed').length;
+          const completedCount = cases.filter(c => c.status === 'completed' || c.status === 'ready' || c.status === 'delivered').length;
+          
+          // Add styling based on case priorities - GREEN only if ALL cases are completed
+          if (urgentCount > 0) {
+            dayElement.classList.add('has-urgent');
+          } else if (completedCount === cases.length) {
+            // Only green if ALL cases on this day are completed
+            dayElement.classList.add('has-completed');
+          } else if (delayedCount > 0) {
+            dayElement.classList.add('has-normal'); // Use normal styling for mixed states
+          } else if (normalCount > 0) {
+            dayElement.classList.add('has-normal');
+          }
+          
+          // Add indicators - completed cases show only green, others show priority colors
+          const indicatorContainer = document.createElement('div');
+          indicatorContainer.style.marginTop = 'auto';
+          
+          cases.forEach(case_ => {
+            const indicator = document.createElement('div');
+            indicator.className = 'case-indicator';
+            
+            // If case is completed, always show green regardless of original priority
+            if (case_.status === 'completed' || case_.status === 'ready' || case_.status === 'delivered') {
+              indicator.classList.add('completed-indicator');
+            } else {
+              // Show priority-based colors for non-completed cases
+              if (case_.priority === 'urgent') {
+                indicator.classList.add('urgent-indicator');
+              } else if (case_.priority === 'delayed') {
+                indicator.classList.add('delayed-indicator');
+              } else {
+                indicator.classList.add('normal-indicator');
+              }
+            }
+            
+            indicatorContainer.appendChild(indicator);
+          });
+          
+          dayElement.appendChild(indicatorContainer);
+          
+          // Add case count
+          if (cases.length > 0) {
+            const countElement = document.createElement('div');
+            countElement.className = urgentCount > 0 ? 'case-count urgent-count' : 'case-count';
+            countElement.textContent = cases.length;
+            dayElement.appendChild(countElement);
+          }
+        }
+        
+        dayElement.onclick = () => openDayModal(dateString, date);
+        daysGrid.appendChild(dayElement);
+      }
+    }
+
+    function openDayModal(dateString, date) {
+      const modal = document.getElementById('dayModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalBody = document.getElementById('modalBody');
+      
+      const dateFormatted = date.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      });
+      
+      modalTitle.textContent = `📅 ${dateFormatted}`;
+      
+      if (casesData[dateString]) {
+        modalBody.innerHTML = casesData[dateString].map(case_ => `
+          <div class="case-item ${case_.priority}">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 10px;">
+              <div>
+                <div style="font-weight: 700; font-size: 16px; color: #003049; margin-bottom: 5px;">
+                  ${case_.title}
+                </div>
+                <div style="color: #666; font-size: 14px;">
+                  👤 ${case_.patient} | 👨‍⚕️ ${case_.doctor}
+                </div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 12px; color: #888; text-transform: uppercase; font-weight: 600;">
+                  ${case_.type}
+                </div>
+                <div style="font-size: 12px; margin-top: 5px; padding: 4px 8px; border-radius: 8px; 
+                           background: ${case_.priority === 'urgent' ? '#ffebee' : 
+                                      case_.priority === 'delayed' ? '#fff3e0' : '#e3f2fd'};
+                           color: ${case_.priority === 'urgent' ? '#d32f2f' : 
+                                   case_.priority === 'delayed' ? '#f57c00' : '#197CAE'};">
+                  ${case_.priority.toUpperCase()}
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 13px; color: #666; font-style: italic; display: flex; align-items: center; gap: 10px;">
+              <span>Status: ${case_.status.replace('-', ' ').toUpperCase()}</span>
+              ${case_.status === 'completed' || case_.status === 'ready' || case_.status === 'delivered' ? 
+                '<span style="color: #388e3c; font-weight: bold;">✅ COMPLETED</span>' : ''}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        modalBody.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: #666;">
+            <div style="font-size: 48px; margin-bottom: 20px;">📭</div>
+            <h3 style="color: #003049; margin-bottom: 10px;">No Cases Scheduled</h3>
+            <p>This day is free for new case assignments or catch-up work.</p>
+          </div>
+        `;
+      }
+      
+      modal.style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('dayModal').style.display = 'none';
+    }
+
+    function previousMonth() {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      generateCalendar();
+    }
+
+    function nextMonth() {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      generateCalendar();
+    }
+
+    function addNewCase() {
+      alert('✨ Create New Case\n\nOpening advanced case creation wizard...\n\n• Select case type and materials\n• Assign priority and timeline\n• Upload reference photos\n• Set delivery requirements\n• Generate work orders');
+    }
+
+    function goHome() {
+      alert('← Returning to dashboard...');
+    }
+
+    function viewUrgentCases() {
+      const urgentCases = [];
+      Object.keys(casesData).forEach(date => {
+        casesData[date].forEach(case_ => {
+          if (case_.priority === 'urgent') {
+            urgentCases.push({ ...case_, date });
+          }
+        });
+      });
+      
+      alert(`⚡ URGENT CASES ALERT\n\n${urgentCases.map((case_, i) => 
+        `${i + 1}. ${case_.title}\n   Patient: ${case_.patient}\n   Due: ${new Date(case_.date).toLocaleDateString()}\n   Doctor: ${case_.doctor}\n   Status: ${case_.status.replace('-', ' ').toUpperCase()}\n   Priority: ${case_.priority.toUpperCase()}`
+      ).join('\n\n')}`);
+    }
+
+    function exportCalendar() {
+      alert('📊 Export Calendar Data\n\nChoose your export format:\n\n📄 PDF Calendar View\n📊 Excel Detailed Report\n📋 CSV Data Export\n📅 iCal for External Apps\n\nPreparing comprehensive lab schedule...');
+    }
+
+    // Close modal on outside click
+    window.onclick = function(event) {
+      const modal = document.getElementById('dayModal');
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Animated counter for stats
+    function animateCounters() {
+      const counters = document.querySelectorAll('.stat-number');
+      counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const increment = target / 50;
+        let current = 0;
+        
+        const timer = setInterval(() => {
+          current += increment;
+          if (current >= target) {
+            counter.textContent = target;
+            clearInterval(timer);
+          } else {
+            counter.textContent = Math.floor(current);
+          }
+        }, 30);
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      generateCalendar();
+      setTimeout(animateCounters, 500);
+    });
+  </script>
+</body>
+</html>
