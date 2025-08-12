@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Case Details - Dental Practice</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 1000px;
+      margin: 0 auto;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-info h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .header-info p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .case-status {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 15px;
+      display: inline-block;
+    }
+
+    .status-new { background: #e3f2fd; color: #1976d2; }
+    .status-in-progress { background: #fff3e0; color: #f57c00; }
+    .status-completed { background: #e8f5e8; color: #388e3c; }
+    .status-urgent { background: #ffebee; color: #d32f2f; }
+
+    .header-actions {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: #FFCB05;
+      color: #003049;
+    }
+
+    .btn-primary:hover {
+      background: #e6b405;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .content {
+      padding: 40px 30px;
+    }
+
+    .case-overview {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .main-info {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .main-info:hover {
+      border-color: #197CAE;
+      box-shadow: 0 10px 25px rgba(0, 48, 73, 0.1);
+    }
+
+    .case-title {
+      font-size: 24px;
+      color: #003049;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #BCDDE4;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .info-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .info-value {
+      font-size: 16px;
+      color: #003049;
+      font-weight: 600;
+    }
+
+    .priority-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .priority-low { background: #e8f5e8; color: #388e3c; }
+    .priority-normal { background: #e3f2fd; color: #1976d2; }
+    .priority-high { background: #fff3e0; color: #f57c00; }
+    .priority-urgent { background: #ffebee; color: #d32f2f; }
+
+    .side-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .panel-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .panel-card:hover {
+      border-color: #197CAE;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 48, 73, 0.1);
+    }
+
+    .panel-card h3 {
+      color: #003049;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .notes-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .notes-section:hover {
+      border-color: #197CAE;
+      box-shadow: 0 10px 25px rgba(0, 48, 73, 0.1);
+    }
+
+    .notes-content {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #197CAE;
+      font-style: italic;
+      color: #003049;
+      line-height: 1.6;
+    }
+
+    .technical-specs {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 30px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .technical-specs:hover {
+      border-color: #197CAE;
+      box-shadow: 0 10px 25px rgba(0, 48, 73, 0.1);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .spec-item {
+      text-align: center;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .spec-item:hover {
+      background: #BCDDE4;
+      transform: translateY(-2px);
+    }
+
+    .spec-icon {
+      font-size: 30px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .spec-value {
+      font-size: 16px;
+      color: #003049;
+      font-weight: 600;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .action-btn {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+      border: none;
+      padding: 15px 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(25, 124, 174, 0.3);
+    }
+
+    .payment-status {
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .payment-pending { background: #fff3e0; color: #f57c00; }
+    .payment-paid { background: #e8f5e8; color: #388e3c; }
+    .payment-overdue { background: #ffebee; color: #d32f2f; }
+    .payment-partial { background: #e3f2fd; color: #1976d2; }
+    .payment-insurance { background: #f3e5f5; color: #7b1fa2; }
+    .payment-cancelled { background: #eeeeee; color: #616161; }
+
+    @media (max-width: 768px) {
+      .case-overview {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .specs-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+
+      .action-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .delivery-info {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #197CAE;
+      margin-top: 20px;
+    }
+
+    .delivery-info h4 {
+      color: #003049;
+      margin-bottom: 10px;
+    }
+
+    .delivery-address {
+      color: #003049;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="header">
+      <div class="header-info">
+        <h1>Case #0001</h1>
+        <p>Crown Restoration - Maria Rodriguez</p>
+        <span class="case-status status-in-progress">IN PROGRESS</span>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-primary" onclick="editCase()">Edit Case</button>
+        <a href="#" class="btn btn-secondary" onclick="goBack()">← Back to Cases</a>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Case Overview -->
+      <div class="case-overview">
+        <div class="main-info">
+          <div class="case-title">Case Information</div>
+          <div class="info-grid">
+            <div class="info-item">
+              <div class="info-label">Patient Name</div>
+              <div class="info-value">Maria Rodriguez</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Doctor</div>
+              <div class="info-value">Dr. Sarah Johnson</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Practice</div>
+              <div class="info-value">Downtown Dental Clinic</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Technician</div>
+              <div class="info-value">John Tech</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Case Date</div>
+              <div class="info-value">August 1, 2025</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Deadline</div>
+              <div class="info-value">August 3, 2025</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Priority</div>
+              <div class="info-value">
+                <span class="priority-badge priority-urgent">URGENT</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Price</div>
+              <div class="info-value" style="font-size: 20px; color: #197CAE; font-weight: bold;">$450.00</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Payment Status</div>
+              <div class="info-value">
+                <span class="payment-status payment-pending">PENDING</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Tooth Number</div>
+              <div class="info-value">#14</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="side-panel">
+          <div class="panel-card">
+            <h3>📋 Case Summary</h3>
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Case Type</span>
+                <span style="font-weight: bold; color: #197CAE;">Crown Restoration</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Priority</span>
+                <span class="priority-badge priority-urgent">URGENT</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span>Status</span>
+                <span style="font-weight: bold; color: #f57c00;">In Progress</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px;">
+                <span style="font-weight: bold;">Total Price</span>
+                <span style="font-weight: bold; color: #197CAE; font-size: 18px;">$450.00</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Specifications -->
+      <div class="technical-specs">
+        <div class="case-title">Technical Specifications</div>
+        <div class="specs-grid">
+          <div class="spec-item">
+            <span class="spec-icon">🦷</span>
+            <div class="spec-label">Item Type</div>
+            <div class="spec-value">Crown</div>
+          </div>
+          <div class="spec-item">
+            <span class="spec-icon">💎</span>
+            <div class="spec-label">Material</div>
+            <div class="spec-value">Zirconia</div>
+          </div>
+          <div class="spec-item">
+            <span class="spec-icon">🎨</span>
+            <div class="spec-label">Shade</div>
+            <div class="spec-value">A2</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notes Section -->
+      <div class="notes-section">
+        <div class="case-title">Special Instructions & Notes</div>
+        <div class="notes-content">
+          "Rush order - patient has important event this weekend. Please ensure perfect color match with adjacent teeth. Patient prefers slightly more translucent finish. Contact Dr. Johnson if any questions about occlusion."
+        </div>
+      </div>
+
+      <!-- Delivery Information -->
+      <div class="notes-section">
+        <div class="case-title">Delivery Information</div>
+        <div class="delivery-info">
+          <h4>📍 Delivery Address</h4>
+          <div class="delivery-address">
+            Downtown Dental Clinic<br>
+            123 Main Street, Suite 200<br>
+            Downtown, State 12345<br>
+            Phone: (555) 123-4567
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="action-btn" onclick="updateStatus()">
+          <span>📝</span> Update Status
+        </button>
+        <button class="action-btn" onclick="addNote()">
+          <span>💬</span> Add Note
+        </button>
+        <button class="action-btn" onclick="uploadPhotos()">
+          <span>📷</span> Upload Photos
+        </button>
+        <button class="action-btn" onclick="markComplete()">
+          <span>✅</span> Mark Complete
+        </button>
+        <button class="action-btn" onclick="sendMessage()">
+          <span>✉️</span> Message Doctor
+        </button>
+        <button class="action-btn" onclick="printCase()">
+          <span>🖨️</span> Print Details
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function editCase() {
+      alert('📝 Opening case editor...\n\nThis would navigate to the case editing form with pre-populated data.');
+    }
+
+    function goBack() {
+      alert('← Returning to cases list...');
+    }
+
+    function updateStatus() {
+      const statuses = ['New', 'In Progress', 'Quality Check', 'Completed', 'Delivered'];
+      const currentStatus = 'In Progress';
+      
+      alert(`📝 Update Case Status\n\nCurrent Status: ${currentStatus}\n\nAvailable statuses:\n${statuses.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nThis would open a status update dialog.`);
+    }
+
+    function addNote() {
+      const note = prompt('💬 Add a note to this case:');
+      if (note) {
+        alert(`✅ Note added successfully!\n\n"${note}"\n\nThis would be saved to the database and appear in the case timeline.`);
+      }
+    }
+
+    function uploadPhotos() {
+      alert('📷 Upload Photos\n\nThis would open a file upload dialog allowing you to:\n\n• Upload progress photos\n• Add before/after images\n• Document work stages\n• Attach reference images\n\nPhotos would be stored and linked to this case.');
+    }
+
+    function markComplete() {
+      if (confirm('✅ Mark this case as complete?\n\nThis will:\n• Update the status to "Completed"\n• Set completion date\n• Notify the doctor\n• Generate completion report\n\nContinue?')) {
+        alert('🎉 Case marked as complete!\n\nThe doctor has been notified and the case is ready for pickup.');
+      }
+    }
+
+    function sendMessage() {
+      alert('✉️ Send Message to Dr. Johnson\n\nThis would open the messaging interface to:\n\n• Ask questions about the case\n• Request clarifications\n• Send progress updates\n• Share photos or documents\n• Schedule appointments');
+    }
+
+    function printCase() {
+      alert('🖨️ Print Case Details\n\nThis would generate a printable report including:\n\n• Complete case information\n• Technical specifications\n• Timeline and progress\n• Notes and instructions\n• Photos and documentation');
+    }
+
+    // Animate progress bar on load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add subtle animations to cards
+      const cards = document.querySelectorAll('.main-info, .panel-card, .technical-specs, .notes-section');
+      cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animation = 'slideUp 0.6s ease-out forwards';
+      });
+    });
+  </script>
+</body>
+</html>
