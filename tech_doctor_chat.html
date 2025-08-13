@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <title>Chat with Dr. Johnson - Dental Practice</title>
   <style>
     * {
@@ -16,6 +16,11 @@
       background: #BCDDE4;
       min-height: 100vh;
       padding: 20px;
+      /* Support for devices with notches */
+      padding-top: max(20px, env(safe-area-inset-top));
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
     }
 
     .app-container {
@@ -459,32 +464,318 @@
     }
 
     @media (max-width: 768px) {
+      body {
+        padding: 0;
+        /* Respect safe areas on mobile */
+        padding-top: env(safe-area-inset-top, 0);
+        padding-bottom: env(safe-area-inset-bottom, 0);
+        padding-left: env(safe-area-inset-left, 0);
+        padding-right: env(safe-area-inset-right, 0);
+      }
+
       .app-container {
         height: 100vh;
         border-radius: 0;
-        margin: -20px;
+        margin: 0;
+        max-width: none;
       }
 
       .chat-header {
-        padding: 15px 20px;
+        padding: 12px 15px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chat-info {
+        gap: 12px;
+      }
+
+      .doctor-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+      }
+
+      .chat-details h2 {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+
+      .chat-details p {
+        font-size: 12px;
+      }
+
+      .header-actions {
+        gap: 8px;
+        order: 3;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .status-indicator {
+        font-size: 11px;
+        gap: 6px;
+      }
+
+      .chat-messages {
+        padding: 20px 15px; /* Closer to desktop */
+        gap: 15px; /* Same as desktop */
+      }
+
+      .message-bubble {
+        max-width: 85%;
+        padding: 12px 16px;
+        font-size: 14px;
+      }
+
+      .message-info {
+        font-size: 10px;
+        margin-top: 6px;
+      }
+
+      .message-attachment {
+        margin-top: 8px;
+        padding: 8px;
+      }
+
+      .photo-preview {
+        width: 150px;
+        height: 110px;
+      }
+
+      .attachment-preview {
+        gap: 8px;
+      }
+
+      .attachment-icon {
+        font-size: 20px;
+      }
+
+      .attachment-name {
+        font-size: 12px;
+      }
+
+      .attachment-size {
+        font-size: 10px;
+      }
+
+      .case-reference {
+        padding: 8px;
+        margin-top: 8px;
+        font-size: 11px;
+      }
+
+      .chat-input-area {
+        padding: 20px 15px; /* Same as desktop */
+        border-top: 2px solid #BCDDE4; /* Same as desktop */
+      }
+
+      .upload-previews {
+        margin-bottom: 15px; /* Same as desktop */
+        gap: 10px; /* Same as desktop */
+      }
+
+      .upload-preview {
+        padding: 8px;
+        font-size: 11px;
+        max-width: 160px;
+      }
+
+      .remove-upload {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+      }
+
+      .input-container {
+        gap: 10px; /* Same as desktop */
+        align-items: stretch;
+      }
+
+      .message-input {
+        padding: 12px 16px;
+        font-size: 16px; /* Prevents zoom on iOS */
+        border-radius: 15px;
+        min-height: 48px; /* Better touch target */
+        flex: 1;
+        max-width: calc(100% - 160px); /* Limit width to leave space for buttons */
+      }
+
+      .input-actions {
+        flex-direction: row;
+        gap: 10px; /* Same as desktop */
+        align-items: center;
+        justify-content: center;
+      }
+
+      .action-btn {
+        width: 48px; /* Better touch target */
+        height: 48px;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+
+      .typing-indicator {
+        padding: 8px 15px;
+        font-size: 12px;
+      }
+
+      .typing-dot {
+        width: 5px;
+        height: 5px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chat-header {
+        padding: 10px 12px;
+      }
+
+      .chat-info {
+        gap: 10px;
       }
 
       .doctor-avatar {
         width: 40px;
         height: 40px;
-        font-size: 20px;
+        font-size: 16px;
       }
 
       .chat-details h2 {
-        font-size: 18px;
+        font-size: 15px;
+      }
+
+      .chat-details p {
+        font-size: 11px;
+      }
+
+      .chat-messages {
+        padding: 20px 12px; /* Closer to desktop */
+        gap: 15px; /* Same as desktop */
       }
 
       .message-bubble {
-        max-width: 85%;
+        max-width: 90%;
+        padding: 10px 14px;
+        font-size: 13px;
+      }
+
+      .photo-preview {
+        width: 120px;
+        height: 90px;
+      }
+
+      .chat-input-area {
+        padding: 20px 12px; /* Same as desktop with slight side adjustment */
+        border-top: 2px solid #BCDDE4; /* Same as desktop */
+      }
+
+      .upload-preview {
+        padding: 6px;
+        font-size: 10px;
+        max-width: 140px;
+      }
+
+      .message-input {
+        padding: 10px 14px;
+        min-height: 44px;
+        max-width: calc(100% - 140px); /* Even more restrictive for small phones */
+      }
+
+      .action-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 16px;
       }
 
       .input-actions {
-        flex-direction: column;
+        gap: 8px; /* Slightly smaller for very small screens */
+      }
+    }
+
+    /* Landscape mobile optimization */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .chat-header {
+        padding: 8px 15px;
+      }
+
+      .chat-details h2 {
+        font-size: 14px;
+        margin-bottom: 1px;
+      }
+
+      .chat-details p {
+        font-size: 11px;
+      }
+
+      .chat-messages {
+        padding: 10px;
+      }
+
+      .message-bubble {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .chat-input-area {
+        padding: 15px; /* Slightly reduced for landscape but similar to desktop */
+        border-top: 2px solid #BCDDE4; /* Same as desktop */
+      }
+
+      .message-input {
+        min-height: 40px;
+        padding: 8px 12px;
+      }
+
+      .action-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+      }
+    }
+
+    /* Touch improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .message-bubble:hover {
+        transform: none;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .attachment-preview:hover {
+        transform: none;
+      }
+
+      .photo-preview:hover {
+        transform: none;
+      }
+
+      .action-btn:hover {
+        transform: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+
+      /* Add active states for better touch feedback */
+      .action-btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+      }
+
+      .message-bubble:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
       }
     }
   </style>
@@ -826,10 +1117,99 @@
       alert('← Returning to messages list...');
     }
 
+    // Mobile-specific improvements
+    function isMobile() {
+      return window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    }
+
+    // Handle mobile keyboard
+    if (isMobile()) {
+      const viewport = document.querySelector('meta[name="viewport"]');
+      if (viewport) {
+        viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no');
+      }
+
+      // Adjust container height when keyboard appears
+      let initialViewportHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+      
+      function handleViewportChange() {
+        if (window.visualViewport) {
+          const currentHeight = window.visualViewport.height;
+          const heightDifference = initialViewportHeight - currentHeight;
+          
+          if (heightDifference > 150) { // Keyboard is likely open
+            document.querySelector('.app-container').style.height = `${currentHeight}px`;
+            setTimeout(scrollToBottom, 100);
+          } else {
+            document.querySelector('.app-container').style.height = '100vh';
+          }
+        }
+      }
+
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', handleViewportChange);
+      } else {
+        window.addEventListener('resize', handleViewportChange);
+      }
+
+      // Prevent zoom on input focus for iOS
+      messageInput.addEventListener('touchstart', function() {
+        if (messageInput.style.fontSize !== '16px') {
+          messageInput.style.fontSize = '16px';
+        }
+      });
+    }
+
+    // Improved touch handling for file uploads
+    function setupMobileFileHandling() {
+      if (isMobile()) {
+        // Add visual feedback for file upload buttons
+        const fileBtn = document.querySelector('.file-btn');
+        const photoBtn = document.querySelector('.photo-btn');
+        
+        [fileBtn, photoBtn].forEach(btn => {
+          btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+          });
+          
+          btn.addEventListener('touchend', function() {
+            setTimeout(() => {
+              this.style.transform = '';
+            }, 150);
+          });
+        });
+      }
+    }
+
+    // Better scroll handling on mobile
+    function optimizeScrolling() {
+      const messagesContainer = document.getElementById('messagesContainer');
+      
+      if (isMobile()) {
+        // Smooth scrolling for mobile
+        messagesContainer.style.scrollBehavior = 'smooth';
+        messagesContainer.style.webkitOverflowScrolling = 'touch';
+        
+        // Prevent overscroll bounce on iOS
+        messagesContainer.addEventListener('touchmove', function(e) {
+          const scrollTop = this.scrollTop;
+          const scrollHeight = this.scrollHeight;
+          const height = this.clientHeight;
+          
+          if ((scrollTop === 0 && e.touches[0].clientY > e.touches[0].previousClientY) ||
+              (scrollTop === scrollHeight - height && e.touches[0].clientY < e.touches[0].previousClientY)) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+      }
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', function() {
       scrollToBottom();
       updateSendButton();
+      setupMobileFileHandling();
+      optimizeScrolling();
       
       // Simulate occasional typing indicators
       setInterval(() => {
@@ -841,6 +1221,27 @@
           }, 3000);
         }
       }, 10000);
+
+      // Mobile-specific adjustments
+      if (isMobile()) {
+        // Adjust header on scroll for mobile
+        let lastScrollTop = 0;
+        const header = document.querySelector('.chat-header');
+        
+        document.getElementById('messagesContainer').addEventListener('scroll', function() {
+          const scrollTop = this.scrollTop;
+          
+          if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down - slightly hide header
+            header.style.transform = 'translateY(-10px)';
+          } else {
+            // Scrolling up - show header
+            header.style.transform = 'translateY(0)';
+          }
+          
+          lastScrollTop = scrollTop;
+        });
+      }
     });
   </script>
 </body>

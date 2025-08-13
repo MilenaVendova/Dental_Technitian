@@ -46,6 +46,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .header-info h1 {
@@ -62,7 +64,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-left: 20px;
+      margin-top: 15px;
     }
 
     .progress-step {
@@ -95,6 +97,7 @@
     .header-actions {
       display: flex;
       gap: 15px;
+      flex-wrap: wrap;
     }
 
     .btn {
@@ -107,6 +110,7 @@
       transition: all 0.3s ease;
       text-decoration: none;
       display: inline-block;
+      white-space: nowrap;
     }
 
     .btn-primary {
@@ -165,7 +169,7 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       margin-bottom: 20px;
     }
@@ -344,6 +348,8 @@
       padding: 20px 0;
       border-top: 2px solid #BCDDE4;
       margin-top: 20px;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     .validation-error {
@@ -368,164 +374,6 @@
       border-radius: 10px;
       margin-bottom: 20px;
       border-left: 4px solid #1976d2;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
-
-      .header {
-        padding: 20px 15px;
-      }
-
-      .header-info h1 {
-        font-size: 24px;
-      }
-
-      .progress-step {
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-      }
-
-      .progress-line {
-        width: 30px;
-      }
-
-      .btn {
-        padding: 12px 20px;
-        font-size: 14px;
-        min-height: 44px;
-      }
-
-      .content {
-        padding: 20px 15px;
-      }
-
-      .form-section {
-        padding: 20px 15px;
-        margin-bottom: 20px;
-      }
-
-      .section-title {
-        font-size: 18px;
-      }
-
-      .form-group label {
-        font-size: 14px;
-        margin-bottom: 8px;
-      }
-
-      .form-group input,
-      .form-group select,
-      .form-group textarea {
-        font-size: 16px;
-        padding: 12px 15px;
-        min-height: 44px;
-      }
-
-      .priority-option {
-        padding: 12px;
-        font-size: 14px;
-        min-height: 50px;
-      }
-
-      .tooth-number {
-        width: 32px;
-        height: 32px;
-        font-size: 11px;
-        min-height: 32px;
-        touch-action: manipulation;
-      }
-
-      .teeth-group {
-        gap: 4px;
-      }
-
-      .midline {
-        font-size: 20px;
-        margin: 0 10px;
-      }
-
-      .file-upload-main {
-        padding: 25px 15px;
-      }
-
-      .file-upload-main h3 {
-        font-size: 18px;
-      }
-
-      .file-type {
-        font-size: 11px;
-        padding: 4px 8px;
-      }
-
-      .info-box {
-        padding: 12px;
-        font-size: 13px;
-      }
-
-      .selected-teeth {
-        padding: 10px;
-        font-size: 13px;
-      }
-
-      .form-navigation {
-        padding: 15px 0;
-      }
-
-      .auto-save {
-        top: 10px;
-        right: 10px;
-        font-size: 12px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .app-container {
-        border-radius: 15px;
-        margin: 5px;
-      }
-
-      .header {
-        padding: 15px 10px;
-      }
-
-      .content {
-        padding: 15px 10px;
-      }
-
-      .form-section {
-        padding: 15px 10px;
-      }
-
-      .tooth-chart {
-        padding: 10px;
-      }
-
-      .tooth-number {
-        width: 28px;
-        height: 28px;
-        font-size: 10px;
-      }
-
-      .teeth-group {
-        gap: 3px;
-      }
-
-      .file-upload-main {
-        padding: 20px 10px;
-      }
-
-      .priority-option {
-        padding: 10px;
-        min-height: 45px;
-      }
-
-      .section-title {
-        font-size: 16px;
-      }
     }
 
     .file-upload-area {
@@ -699,10 +547,192 @@
       font-size: 12px;
       opacity: 0;
       transition: opacity 0.3s ease;
+      z-index: 1000;
     }
 
     .auto-save.show {
       opacity: 1;
+    }
+
+    /* Mobile adjustments that maintain desktop design */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      .app-container {
+        border-radius: 15px;
+      }
+
+      .header {
+        padding: 25px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .progress-indicator {
+        margin-top: 10px;
+      }
+
+      .content {
+        padding: 30px 20px;
+      }
+
+      .form-section {
+        padding: 25px 20px;
+        margin-bottom: 25px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .form-navigation {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+      }
+
+      .form-navigation > div:last-child {
+        display: flex;
+        gap: 15px;
+        justify-content: space-between;
+      }
+
+      .tooth-chart {
+        padding: 8px;
+      }
+
+      .tooth-row {
+        gap: 4px;
+      }
+
+      .teeth-group {
+        gap: 2px;
+      }
+
+      .tooth-number {
+        width: 24px;
+        height: 24px;
+        font-size: 9px;
+      }
+
+      .midline {
+        font-size: 16px;
+        margin: 0 6px;
+      }
+
+      .file-upload-main {
+        padding: 30px 15px;
+      }
+
+      .file-upload-icon {
+        font-size: 50px;
+      }
+
+      .file-upload-main h3 {
+        font-size: 18px;
+      }
+
+      .file-categories {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .header {
+        padding: 20px 15px;
+      }
+
+      .header-info h1 {
+        font-size: 24px;
+      }
+
+      .content {
+        padding: 20px 15px;
+      }
+
+      .form-section {
+        padding: 20px 15px;
+      }
+
+      .tooth-number {
+        width: 22px;
+        height: 22px;
+        font-size: 8px;
+      }
+
+      .teeth-group {
+        gap: 2px;
+      }
+
+      .tooth-row {
+        gap: 3px;
+      }
+
+      .midline {
+        font-size: 14px;
+        margin: 0 5px;
+      }
+
+      .file-upload-main {
+        padding: 25px 10px;
+      }
+
+      .file-upload-icon {
+        font-size: 40px;
+      }
+
+      .file-upload-main h3 {
+        font-size: 16px;
+      }
+
+      .auto-save {
+        top: 10px;
+        right: 10px;
+        font-size: 11px;
+        padding: 8px 12px;
+      }
+    }
+
+    /* Ensure touch targets are adequate on mobile */
+    @media (max-width: 768px) {
+      .btn {
+        min-height: 44px;
+        padding: 12px 20px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        min-height: 44px;
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+
+      .priority-option {
+        min-height: 50px;
+        padding: 15px;
+      }
+
+      .tooth-number {
+        touch-action: manipulation; /* Improves touch response */
+      }
+    }
+
+    /* Function updatePatientList and updateDoctorSelect need to be implemented */
+    .form-group select option {
+      padding: 10px;
     }
   </style>
 </head>
@@ -875,6 +905,7 @@
             
             <div id="uploadedFiles" class="uploaded-files-list"></div>
           </div>
+        </div>
 
         <!-- Tooth Selection -->
         <div class="form-section">
@@ -1008,6 +1039,39 @@
   <script>
     let selectedTeeth = [];
     let selectedPriority = 2;
+
+    function updatePatientList() {
+      const doctorName = document.getElementById('doctorName').value;
+      const patientSelect = document.getElementById('patientSelect');
+      const practiceSelect = document.getElementById('practiceSelect');
+      
+      if (doctorName.length > 2) {
+        // Simulate populating patient and practice lists
+        patientSelect.disabled = false;
+        practiceSelect.disabled = false;
+        
+        // Clear and populate with sample data
+        patientSelect.innerHTML = `
+          <option value="">Select Patient</option>
+          <option value="1">John Smith - DOB: 1985-03-15</option>
+          <option value="2">Mary Johnson - DOB: 1978-08-22</option>
+          <option value="3">Robert Brown - DOB: 1965-11-30</option>
+          <option value="4">Sarah Davis - DOB: 1992-06-18</option>
+        `;
+        
+        practiceSelect.innerHTML = `
+          <option value="">Select Practice</option>
+          <option value="1">Downtown Dental Center</option>
+          <option value="2">Family Dentistry Associates</option>
+          <option value="3">Smile Solutions Clinic</option>
+        `;
+      } else {
+        patientSelect.disabled = true;
+        practiceSelect.disabled = true;
+        patientSelect.innerHTML = '<option value="">First enter doctor name to see patients</option>';
+        practiceSelect.innerHTML = '<option value="">First enter doctor name to see practices</option>';
+      }
+    }
 
     function selectPriority(priority, element) {
       // Remove selected class from all options
@@ -1203,7 +1267,7 @@
       e.preventDefault();
       
       const patient = document.getElementById('patientSelect').value;
-      const doctor = document.getElementById('doctorSelect').value;
+      const doctor = document.getElementById('doctorName').value;
       const practice = document.getElementById('practiceSelect').value;
       const itemType = document.getElementById('itemType').value;
       const teeth = document.getElementById('toothNumbers').value;
@@ -1228,11 +1292,12 @@
       // Simulate form submission
       alert(`✅ Case created successfully!\n\n` +
             `Patient: ${document.getElementById('patientSelect').selectedOptions[0].text}\n` +
-            `Doctor: ${document.getElementById('doctorSelect').selectedOptions[0].text}\n` +
+            `Doctor: ${doctor}\n` +
+            `Practice: ${document.getElementById('practiceSelect').selectedOptions[0].text}\n` +
             `Item Type: ${document.getElementById('itemType').selectedOptions[0].text}\n` +
             `Teeth: ${selectedTeeth.join(', ')}\n` +
             `Priority: ${document.querySelector('.priority-option.selected').textContent.trim()}\n` +
-            `Price: ${parseFloat(price).toFixed(2)}\n` +
+            `Price: $${parseFloat(price).toFixed(2)}\n` +
             `Payment Status: ${document.getElementById('paymentStatus').selectedOptions[0].text}\n\n` +
             `The case has been assigned a number and the doctor has been notified.`);
     });

@@ -609,12 +609,348 @@
     .case-item.delayed { border-left-color: #f57c00; }
 
     @media (max-width: 768px) {
-      .content { padding: 30px 20px; }
-      .calendar-header { flex-direction: column; gap: 20px; text-align: center; }
-      .stats-overview { grid-template-columns: repeat(2, 1fr); }
-      .days-grid { gap: 8px; }
-      .day { min-height: 100px; padding: 10px; }
-      .weekday { padding: 15px 5px; }
+      body {
+        padding: 10px;
+      }
+      
+      .app-container {
+        border-radius: 15px;
+      }
+      
+      .header {
+        padding: 25px 20px;
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+      
+      .header-info h1 {
+        font-size: 24px;
+      }
+      
+      .header-info p {
+        font-size: 14px;
+      }
+      
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+      }
+      
+      .btn {
+        width: 100%;
+        padding: 12px 20px;
+        font-size: 16px;
+      }
+      
+      .content {
+        padding: 25px 15px;
+      }
+      
+      .stats-overview {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      
+      .stat-card {
+        padding: 20px 15px;
+      }
+      
+      .stat-icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+      
+      .stat-number {
+        font-size: 24px;
+      }
+      
+      .stat-label {
+        font-size: 12px;
+      }
+      
+      .calendar-header {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+        text-align: center;
+      }
+      
+      .month-year {
+        font-size: 28px;
+      }
+      
+      .month-info {
+        font-size: 13px;
+      }
+      
+      .nav-controls {
+        justify-content: center;
+      }
+      
+      .nav-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+      }
+      
+      .calendar-container {
+        padding: 20px 15px;
+        border-radius: 20px;
+      }
+      
+      .weekdays {
+        gap: 8px;
+        margin-bottom: 15px;
+      }
+      
+      .weekday {
+        padding: 12px 5px;
+        font-size: 11px;
+        border-radius: 10px;
+      }
+      
+      .days-grid {
+        gap: 8px;
+      }
+      
+      .day {
+        min-height: 90px;
+        padding: 8px;
+        border-radius: 12px;
+      }
+      
+      .day-number {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+      
+      .case-indicator {
+        width: 10px;
+        height: 10px;
+        margin: 1px;
+      }
+      
+      .case-count {
+        top: 6px;
+        right: 6px;
+        font-size: 9px;
+        padding: 3px 6px;
+        min-width: 16px;
+      }
+      
+      .legend-section {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      .legend-card {
+        padding: 20px;
+      }
+      
+      .legend-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+      
+      .legend-item {
+        margin-bottom: 12px;
+        padding: 8px;
+      }
+      
+      .legend-dot {
+        width: 14px;
+        height: 14px;
+        margin-right: 12px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      body {
+        padding: 5px;
+      }
+      
+      .app-container {
+        border-radius: 12px;
+      }
+      
+      .header {
+        padding: 20px 15px;
+      }
+      
+      .header-info h1 {
+        font-size: 20px;
+      }
+      
+      .content {
+        padding: 20px 12px;
+      }
+      
+      .stats-overview {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      
+      .stat-card {
+        padding: 15px 10px;
+      }
+      
+      .stat-icon {
+        font-size: 24px;
+      }
+      
+      .stat-number {
+        font-size: 20px;
+      }
+      
+      .stat-label {
+        font-size: 11px;
+      }
+      
+      .calendar-header {
+        padding: 15px;
+      }
+      
+      .month-year {
+        font-size: 24px;
+      }
+      
+      .nav-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+      }
+      
+      .calendar-container {
+        padding: 15px 10px;
+      }
+      
+      .weekdays {
+        gap: 5px;
+      }
+      
+      .weekday {
+        padding: 10px 3px;
+        font-size: 10px;
+      }
+      
+      .days-grid {
+        gap: 5px;
+      }
+      
+      .day {
+        min-height: 80px;
+        padding: 6px;
+        border-radius: 10px;
+      }
+      
+      .day-number {
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+      
+      .case-indicator {
+        width: 8px;
+        height: 8px;
+        margin: 0.5px;
+      }
+      
+      .case-count {
+        top: 4px;
+        right: 4px;
+        font-size: 8px;
+        padding: 2px 4px;
+        min-width: 14px;
+      }
+      
+      .legend-card {
+        padding: 15px;
+      }
+      
+      .legend-title {
+        font-size: 14px;
+      }
+      
+      .legend-item {
+        margin-bottom: 10px;
+        padding: 6px;
+        font-size: 14px;
+      }
+      
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        margin-right: 10px;
+      }
+    }
+    
+    /* Mobile Modal Improvements */
+    @media (max-width: 768px) {
+      .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        border-radius: 20px;
+      }
+      
+      .modal-header {
+        padding: 20px;
+      }
+      
+      .modal-header h3 {
+        font-size: 18px;
+      }
+      
+      .modal-body {
+        padding: 20px;
+        max-height: 60vh;
+      }
+      
+      .case-item {
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+      }
+      
+      .case-item > div:first-child {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .case-item > div:first-child > div:last-child {
+        text-align: left !important;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .modal-content {
+        margin: 5% auto;
+        width: 98%;
+        border-radius: 15px;
+      }
+      
+      .modal-header {
+        padding: 15px;
+      }
+      
+      .modal-header h3 {
+        font-size: 16px;
+      }
+      
+      .modal-body {
+        padding: 15px;
+        max-height: 70vh;
+      }
+      
+      .case-item {
+        padding: 12px;
+        margin-bottom: 12px;
+      }
+      
+      .close {
+        font-size: 24px;
+      }
     }
   </style>
 </head>
@@ -829,13 +1165,14 @@
         
         if (casesData[dateString]) {
           const cases = casesData[dateString];
-          const urgentCount = cases.filter(c => c.priority === 'urgent').length;
+          const urgentIncompleteCount = cases.filter(c => c.priority === 'urgent' && 
+            !(c.status === 'completed' || c.status === 'ready' || c.status === 'delivered')).length;
           const normalCount = cases.filter(c => c.priority === 'normal').length;
           const delayedCount = cases.filter(c => c.priority === 'delayed').length;
           const completedCount = cases.filter(c => c.status === 'completed' || c.status === 'ready' || c.status === 'delivered').length;
           
-          // Add styling based on case priorities - GREEN only if ALL cases are completed
-          if (urgentCount > 0) {
+          // Add styling based on case priorities - RED only if urgent cases are incomplete
+          if (urgentIncompleteCount > 0) {
             dayElement.classList.add('has-urgent');
           } else if (completedCount === cases.length) {
             // Only green if ALL cases on this day are completed
@@ -876,7 +1213,7 @@
           // Add case count
           if (cases.length > 0) {
             const countElement = document.createElement('div');
-            countElement.className = urgentCount > 0 ? 'case-count urgent-count' : 'case-count';
+            countElement.className = urgentIncompleteCount > 0 ? 'case-count urgent-count' : 'case-count';
             countElement.textContent = cases.length;
             dayElement.appendChild(countElement);
           }

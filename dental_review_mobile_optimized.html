@@ -237,6 +237,7 @@
       border-radius: 15px;
       padding: 20px;
       margin: 20px 0;
+      overflow-x: auto;
     }
 
     .tooth-row {
@@ -484,22 +485,32 @@
       }
 
       .tooth-chart-review {
-        padding: 15px;
+        padding: 12px 8px;
+        margin: 15px 0;
       }
 
       .tooth-number {
-        width: 30px;
-        height: 30px;
-        font-size: 11px;
+        width: 28px;
+        height: 28px;
+        font-size: 10px;
       }
 
       .teeth-group {
-        gap: 4px;
+        gap: 2px;
       }
 
       .midline {
-        font-size: 18px;
-        margin: 0 10px;
+        font-size: 16px;
+        margin: 0 6px;
+      }
+
+      .tooth-row {
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .tooth-row.upper {
+        margin-bottom: 20px;
       }
 
       .file-item {
@@ -563,17 +574,34 @@
       }
 
       .tooth-chart-review {
-        padding: 10px;
+        padding: 8px 4px;
+        margin: 10px 0;
+        border-radius: 10px;
       }
 
       .tooth-number {
-        width: 26px;
-        height: 26px;
-        font-size: 10px;
+        width: 24px;
+        height: 24px;
+        font-size: 9px;
+        border-radius: 6px;
       }
 
       .teeth-group {
-        gap: 3px;
+        gap: 1px;
+      }
+
+      .midline {
+        font-size: 14px;
+        margin: 0 4px;
+      }
+
+      .tooth-row {
+        gap: 4px;
+        margin-bottom: 10px;
+      }
+
+      .tooth-row.upper {
+        margin-bottom: 15px;
       }
 
       .file-category-preview {
@@ -582,6 +610,62 @@
 
       .confirmation-box {
         padding: 12px;
+      }
+    }
+
+    /* Extra small screens - very aggressive mobile optimization */
+    @media (max-width: 360px) {
+      .tooth-chart-review {
+        padding: 6px 2px;
+        margin: 8px 0;
+      }
+
+      .tooth-number {
+        width: 22px;
+        height: 22px;
+        font-size: 8px;
+        border-width: 1px;
+        border-radius: 4px;
+      }
+
+      .teeth-group {
+        gap: 1px;
+      }
+
+      .midline {
+        font-size: 12px;
+        margin: 0 2px;
+      }
+
+      .tooth-row {
+        gap: 2px;
+        margin-bottom: 8px;
+      }
+
+      .tooth-row.upper {
+        margin-bottom: 12px;
+      }
+    }
+
+    /* Landscape orientation on mobile */
+    @media (max-width: 767px) and (orientation: landscape) {
+      .tooth-chart-review {
+        padding: 8px 4px;
+      }
+
+      .tooth-number {
+        width: 26px;
+        height: 26px;
+        font-size: 9px;
+      }
+
+      .teeth-group {
+        gap: 2px;
+      }
+
+      .midline {
+        font-size: 14px;
+        margin: 0 4px;
       }
     }
   </style>
