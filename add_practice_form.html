@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dental Practice Management - Practice Registration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 900px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-info h2 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .header-info p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-5px);
+    }
+
+    .form-content {
+      padding: 40px 30px;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+      border-color: #197CAE;
+      box-shadow: 0 5px 15px rgba(25, 124, 174, 0.1);
+    }
+
+    .section-title {
+      color: #003049;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      display: block;
+      color: #003049;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .required {
+      color: #e74c3c;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-input:hover {
+      border-color: #197CAE;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+    }
+
+    .form-select:hover {
+      border-color: #197CAE;
+    }
+
+    .form-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-textarea:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-textarea:hover {
+      border-color: #197CAE;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      min-width: 120px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(25, 124, 174, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #197CAE;
+      border: 2px solid #197CAE;
+    }
+
+    .btn-secondary:hover {
+      background: #197CAE;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .practice-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+    }
+
+    .error-message {
+      background: #ffeaa7;
+      border: 1px solid #fdcb6e;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #e17055;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message {
+      background: #55efc4;
+      border: 1px solid #00b894;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #00b894;
+      font-size: 14px;
+      display: none;
+    }
+
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .time-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .time-input input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .time-input label {
+      font-size: 12px;
+      color: #666;
+      min-width: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .form-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        justify-content: center;
+      }
+
+      .btn {
+        min-width: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        margin: 10px;
+      }
+
+      .form-content {
+        padding: 30px 20px;
+      }
+
+      .form-section {
+        padding: 20px;
+      }
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .loading .btn-primary {
+      background: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="form-header">
+      <div class="header-info">
+        <h2>Practice Registration</h2>
+        <p>Add new dental practice to the management system</p>
+      </div>
+      <button class="back-btn" onclick="goBack()">
+        <span>←</span>
+        Back to Dashboard
+      </button>
+    </div>
+
+    <div class="form-content">
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <form id="practiceForm">
+        <div class="form-section">
+          <h3 class="section-title">
+            <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            Practice Information
+          </h3>
+          
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">
+                Practice Name <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="name" 
+                name="name" 
+                required 
+                maxlength="1024"
+                placeholder="Enter practice name"
+              >
+              <div class="input-hint">Required field - Maximum 1024 characters</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Company Name <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="companyName" 
+                name="companyName" 
+                required 
+                maxlength="1024"
+                placeholder="Enter company name"
+              >
+              <div class="input-hint">Legal company name</div>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">
+                Address <span class="required">*</span>
+              </label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="address" 
+                name="address" 
+                required 
+                maxlength="200"
+                placeholder="Enter complete practice address"
+              >
+              <div class="input-hint">Complete address including street, city, state, zip</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">
+                Phone Number <span class="required">*</span>
+              </label>
+              <input 
+                type="tel" 
+                class="form-input" 
+                id="phone" 
+                name="phone" 
+                required
+                maxlength="100"
+                placeholder="(555) 123-4567"
+              >
+              <div class="input-hint">Primary practice contact number</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input 
+                type="email" 
+                class="form-input" 
+                id="email" 
+                name="email"
+                maxlength="1024"
+                placeholder="practice@example.com"
+              >
+              <div class="input-hint">Practice email for communication</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tax ID</label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="taxId" 
+                name="taxId"
+                maxlength="1024"
+                placeholder="Enter tax identification number"
+              >
+              <div class="input-hint">Federal Tax ID or EIN</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="section-title">
+            <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            Operations & Services
+          </h3>
+          
+          <div class="form-grid">
+            <div class="form-group full-width">
+              <label class="form-label">Opening Hours</label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="openingHours" 
+                name="openingHours"
+                maxlength="100"
+                placeholder="e.g., Mon-Fri: 8:00 AM - 6:00 PM, Sat: 9:00 AM - 2:00 PM"
+              >
+              <div class="input-hint">Practice operating hours and days</div>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">Delivery Method</label>
+              <input 
+                type="text" 
+                class="form-input" 
+                id="deliveryMethod" 
+                name="deliveryMethod"
+                maxlength="200"
+                placeholder="e.g., Pickup only, Courier service, Mail delivery, etc."
+              >
+              <div class="input-hint">How lab work will be delivered to/from practice (Maximum 200 characters)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            Clear Form
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Register Practice
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('practiceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const practiceData = {
+        name: formData.get('name'),
+        companyName: formData.get('companyName'),
+        address: formData.get('address'),
+        phone: formData.get('phone'),
+        email: formData.get('email') || null,
+        taxId: formData.get('taxId') || null,
+        openingHours: formData.get('openingHours') || null,
+        deliveryMethod: formData.get('deliveryMethod') || null
+      };
+
+      // Validate required fields
+      if (!practiceData.name.trim()) {
+        showError('Practice name is required.');
+        return;
+      }
+
+      if (!practiceData.companyName.trim()) {
+        showError('Company name is required.');
+        return;
+      }
+
+      if (!practiceData.address.trim()) {
+        showError('Practice address is required.');
+        return;
+      }
+
+      if (!practiceData.phone.trim()) {
+        showError('Phone number is required.');
+        return;
+      }
+
+      // Validate email format if provided
+      if (practiceData.email && !isValidEmail(practiceData.email)) {
+        showError('Please enter a valid email address.');
+        return;
+      }
+
+      // Validate phone format
+      if (!isValidPhone(practiceData.phone)) {
+        showError('Please enter a valid phone number.');
+        return;
+      }
+
+      // Show loading state
+      showLoading(true);
+
+      // Simulate API call
+      setTimeout(() => {
+        showLoading(false);
+        showSuccess(`Practice "${practiceData.name}" has been successfully registered!`);
+        
+        // Log the data that would be sent to the database
+        console.log('Practice data to be inserted:', practiceData);
+        console.log('SQL would be similar to:');
+        console.log(`INSERT INTO tbPractice (Name, CompanyName, Adress, Phone, Email, TaxID, OpeningHours, DelivaryMethod) 
+VALUES ('${practiceData.name}', '${practiceData.companyName}', '${practiceData.address}', '${practiceData.phone}', '${practiceData.email}', '${practiceData.taxId}', '${practiceData.openingHours}', '${practiceData.deliveryMethod}')`);
+        
+        // Reset form after successful submission
+        setTimeout(() => {
+          resetForm();
+          hideMessages();
+        }, 3000);
+      }, 1500);
+    });
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function isValidPhone(phone) {
+      return /^[\+]?[(]?[\d\s\-\(\)]{10,}$/.test(phone.replace(/\s/g, ''));
+    }
+
+    function showError(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+      document.getElementById('successMessage').style.display = 'none';
+      
+      // Scroll to top to show message
+      document.querySelector('.app-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showSuccess(message) {
+      const successEl = document.getElementById('successMessage');
+      successEl.textContent = message;
+      successEl.style.display = 'block';
+      document.getElementById('errorMessage').style.display = 'none';
+      
+      // Scroll to top to show message
+      document.querySelector('.app-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    function showLoading(isLoading) {
+      const container = document.querySelector('.app-container');
+      if (isLoading) {
+        container.classList.add('loading');
+      } else {
+        container.classList.remove('loading');
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('practiceForm').reset();
+      hideMessages();
+      
+      // Add visual feedback for form reset
+      const inputs = document.querySelectorAll('.form-input, .form-select');
+      inputs.forEach(input => {
+        input.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          input.style.transform = 'scale(1)';
+        }, 200);
+      });
+    }
+
+    function goBack() {
+      if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
+        // In a real application, this would navigate back to the dashboard
+        alert('Returning to dashboard...');
+      }
+    }
+
+    // Add real-time validation feedback
+    document.addEventListener('DOMContentLoaded', function() {
+      const inputs = document.querySelectorAll('.form-input, .form-select');
+      
+      inputs.forEach(input => {
+        input.addEventListener('blur', function() {
+          validateField(this);
+        });
+
+        input.addEventListener('input', function() {
+          // Clear any previous error styling
+          this.style.borderColor = '';
+          hideMessages();
+        });
+      });
+
+      // Format phone number as user types
+      document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        let formattedValue = '';
+        
+        if (value.length > 0) {
+          if (value.length <= 3) {
+            formattedValue = `(${value}`;
+          } else if (value.length <= 6) {
+            formattedValue = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+          } else {
+            formattedValue = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+          }
+        }
+        
+        e.target.value = formattedValue;
+      });
+
+      // Add hover effects to form sections
+      const sections = document.querySelectorAll('.form-section');
+      sections.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-2px)';
+        });
+        section.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+
+      // Auto-format tax ID as user types (if it's an EIN)
+      document.getElementById('taxId').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length <= 9) {
+          if (value.length > 2) {
+            e.target.value = `${value.slice(0, 2)}-${value.slice(2)}`;
+          } else {
+            e.target.value = value;
+          }
+        }
+      });
+    });
+
+    function validateField(field) {
+      const value = field.value.trim();
+      
+      switch(field.id) {
+        case 'name':
+        case 'companyName':
+        case 'address':
+        case 'phone':
+          if (!value) {
+            field.style.borderColor = '#e74c3c';
+            return false;
+          }
+          break;
+        case 'email':
+          if (value && !isValidEmail(value)) {
+            field.style.borderColor = '#e74c3c';
+            return false;
+          }
+          break;
+        case 'phone':
+          if (value && !isValidPhone(value)) {
+            field.style.borderColor = '#e74c3c';
+            return false;
+          }
+          break;
+      }
+      
+      field.style.borderColor = '#197CAE';
+      return true;
+    }
+  </script>
+</body>
+</html>

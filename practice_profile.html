@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dental Practice Management - Practice Profile</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 1000px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .profile-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-info h2 {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+
+    .header-info .practice-name {
+      font-size: 18px;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .header-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .profile-content {
+      padding: 40px 30px;
+    }
+
+    .profile-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .profile-section:hover {
+      border-color: #197CAE;
+      box-shadow: 0 5px 15px rgba(25, 124, 174, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      color: #003049;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .info-item {
+      margin-bottom: 20px;
+    }
+
+    .info-item.full-width {
+      grid-column: 1 / -1;
+    }
+
+    .info-label {
+      display: block;
+      color: #666;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .info-value {
+      color: #003049;
+      font-size: 16px;
+      font-weight: 500;
+      background: #f8f9fa;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border-left: 4px solid #197CAE;
+      transition: all 0.3s ease;
+    }
+
+    .info-value:hover {
+      background: #e9ecef;
+      transform: translateX(5px);
+    }
+
+    .info-value.large {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .info-value.empty {
+      color: #999;
+      font-style: italic;
+      border-left-color: #ddd;
+    }
+
+    .practice-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 8px;
+    }
+
+    .status-active {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-inactive {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .contact-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .contact-info a {
+      color: #197CAE;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: #003049;
+      text-decoration: underline;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      min-width: 120px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(25, 124, 174, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #197CAE;
+      border: 2px solid #197CAE;
+    }
+
+    .btn-secondary:hover {
+      background: #197CAE;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: transparent;
+      color: #e74c3c;
+      border: 2px solid #e74c3c;
+    }
+
+    .btn-danger:hover {
+      background: #e74c3c;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .quick-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      border-left: 4px solid #197CAE;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      color: #197CAE;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .recent-activity {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      background: #197CAE;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-text {
+      color: #003049;
+      margin-bottom: 4px;
+    }
+
+    .activity-time {
+      color: #666;
+      font-size: 12px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .header-actions {
+        justify-content: center;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-buttons {
+        justify-content: center;
+      }
+
+      .btn {
+        min-width: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        margin: 10px;
+      }
+
+      .profile-content {
+        padding: 30px 20px;
+      }
+
+      .profile-section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="profile-header">
+      <div class="header-info">
+        <h2>Practice Profile</h2>
+        <div class="practice-name">Sunshine Dental Care</div>
+      </div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="goBack()">
+          <span>←</span>
+          Back to Dashboard
+        </button>
+        <button class="header-btn" onclick="editPractice()">
+          <span>✏️</span>
+          Edit Profile
+        </button>
+      </div>
+    </div>
+
+    <div class="profile-content">
+
+      <!-- Practice Information -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          Practice Information
+        </h3>
+        
+        <div class="info-grid">
+          <div class="info-item">
+            <label class="info-label">Practice Name</label>
+            <div class="info-value large">Sunshine Dental Care</div>
+            <div class="status-badge status-active">Active</div>
+          </div>
+
+          <div class="info-item">
+            <label class="info-label">Company Name</label>
+            <div class="info-value">Sunshine Medical Group LLC</div>
+          </div>
+
+          <div class="info-item full-width">
+            <label class="info-label">Address</label>
+            <div class="info-value">
+              123 Healthcare Plaza, Suite 200<br>
+              Medical District, CA 90210
+              <div class="contact-info">
+                <span>📍</span>
+                <a href="#" onclick="viewOnMap()">View on Map</a>
+                <span>|</span>
+                <a href="#" onclick="getDirections()">Get Directions</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <label class="info-label">Phone Number</label>
+            <div class="info-value">
+              (555) 123-4567
+              <div class="contact-info">
+                <span>📞</span>
+                <a href="tel:5551234567">Call Now</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <label class="info-label">Email Address</label>
+            <div class="info-value">
+              contact@sunshinedental.com
+              <div class="contact-info">
+                <span>✉️</span>
+                <a href="mailto:contact@sunshinedental.com">Send Email</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <label class="info-label">Tax ID</label>
+            <div class="info-value">12-3456789</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Operations & Services -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+          Operations & Services
+        </h3>
+        
+        <div class="info-grid">
+          <div class="info-item full-width">
+            <label class="info-label">Opening Hours</label>
+            <div class="info-value">
+              Monday - Friday: 8:00 AM - 6:00 PM<br>
+              Saturday: 9:00 AM - 2:00 PM<br>
+              Sunday: Closed
+            </div>
+          </div>
+
+          <div class="info-item full-width">
+            <label class="info-label">Delivery Method</label>
+            <div class="info-value">
+              Courier service (daily pickup/delivery)<br>
+              Emergency pickup available 24/7
+            </div>
+          </div>
+
+          <div class="info-item">
+            <label class="info-label">Lab Partnership Since</label>
+            <div class="info-value">March 2019</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="recent-activity">
+        <h3 class="section-title">
+          <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+            <path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/>
+          </svg>
+          Recent Activity
+        </h3>
+
+        <div class="activity-item">
+          <div class="activity-icon">📦</div>
+          <div class="activity-content">
+            <div class="activity-text">Order #LAB-2024-0347 completed and shipped</div>
+            <div class="activity-time">2 hours ago</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">👤</div>
+          <div class="activity-content">
+            <div class="activity-text">New patient Johnson, M. added to system</div>
+            <div class="activity-time">5 hours ago</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">💰</div>
+          <div class="activity-content">
+            <div class="activity-text">Invoice #INV-2024-0891 paid ($847.50)</div>
+            <div class="activity-time">1 day ago</div>
+          </div>
+        </div>
+
+        <div class="activity-item">
+          <div class="activity-icon">🔧</div>
+          <div class="activity-content">
+            <div class="activity-text">Practice information updated by Dr. Smith</div>
+            <div class="activity-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn btn-danger" onclick="deactivatePractice()">
+          <span>⚠️</span>
+          Deactivate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goBack() {
+      if (confirm('Return to dashboard?')) {
+        alert('Returning to dashboard...');
+      }
+    }
+
+    function editPractice() {
+      alert('Redirecting to edit practice form...');
+    }
+
+    function viewOnMap() {
+      alert('Opening location in maps...');
+    }
+
+    function getDirections() {
+      alert('Getting directions to practice...');
+    }
+
+    function deactivatePractice() {
+      if (confirm('Are you sure you want to deactivate this practice? This action can be reversed later.')) {
+        alert('Practice would be deactivated...');
+      }
+    }
+
+    // Add interactive effects
+    document.addEventListener('DOMContentLoaded', function() {
+      // Add hover effects to info items
+      const infoItems = document.querySelectorAll('.info-item');
+      infoItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+          const value = this.querySelector('.info-value');
+          if (value && !value.classList.contains('empty')) {
+            value.style.transform = 'translateX(5px)';
+          }
+        });
+        item.addEventListener('mouseleave', function() {
+          const value = this.querySelector('.info-value');
+          if (value) {
+            value.style.transform = 'translateX(0)';
+          }
+        });
+      });
+
+      // Animate activity items on scroll
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateX(0)';
+          }
+        });
+      });
+
+      const activityItems = document.querySelectorAll('.activity-item');
+      activityItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateX(-20px)';
+        item.style.transition = `all 0.5s ease ${index * 0.1}s`;
+        observer.observe(item);
+      });
+    });
+  </script>
+</body>
+</html>
