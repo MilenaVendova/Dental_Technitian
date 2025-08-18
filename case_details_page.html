@@ -322,182 +322,6 @@
     .payment-insurance { background: #f3e5f5; color: #7b1fa2; }
     .payment-cancelled { background: #eeeeee; color: #616161; }
 
-    .delivery-info {
-      background: #f0f8ff;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #197CAE;
-      margin-top: 20px;
-    }
-
-    .delivery-info h4 {
-      color: #003049;
-      margin-bottom: 10px;
-    }
-
-    .delivery-address {
-      color: #003049;
-      line-height: 1.5;
-    }
-
-    /* Activity Log Styles */
-    .activity-log-container {
-      background: #f0f8ff;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #197CAE;
-      margin-top: 20px;
-    }
-
-    .activity-log {
-      max-height: 300px;
-      overflow-y: auto;
-      margin-bottom: 15px;
-    }
-
-    .activity-entry {
-      display: flex;
-      gap: 12px;
-      padding: 12px;
-      background: white;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      border-left: 3px solid #197CAE;
-      transition: all 0.3s ease;
-    }
-
-    .activity-entry:hover {
-      transform: translateX(3px);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .activity-entry:last-child {
-      margin-bottom: 0;
-    }
-
-    .activity-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-
-    .activity-icon.status-change {
-      background: #e3f2fd;
-      color: #1976d2;
-    }
-
-    .activity-icon.note-added {
-      background: #f3e5f5;
-      color: #7b1fa2;
-    }
-
-    .activity-icon.file-upload {
-      background: #e8f5e8;
-      color: #388e3c;
-    }
-
-    .activity-icon.assignment {
-      background: #fff3e0;
-      color: #f57c00;
-    }
-
-    .activity-icon.message-sent {
-      background: #e0f7fa;
-      color: #00796b;
-    }
-
-    .activity-icon.case-created {
-      background: #fce4ec;
-      color: #c2185b;
-    }
-
-    .activity-content {
-      flex: 1;
-    }
-
-    .activity-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 4px;
-    }
-
-    .activity-user {
-      font-weight: 600;
-      color: #003049;
-      font-size: 13px;
-    }
-
-    .activity-time {
-      color: #666;
-      font-size: 11px;
-    }
-
-    .activity-action {
-      font-weight: 500;
-      color: #197CAE;
-      margin-bottom: 2px;
-      font-size: 13px;
-    }
-
-    .activity-details {
-      color: #666;
-      font-size: 12px;
-      line-height: 1.3;
-    }
-
-    .activity-log-actions {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    .activity-action-btn {
-      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 15px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .activity-action-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(25, 124, 174, 0.3);
-    }
-
-    .activity-log::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .activity-log::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 3px;
-    }
-
-    .activity-log::-webkit-scrollbar-thumb {
-      background: #197CAE;
-      border-radius: 3px;
-    }
-
-    .activity-log::-webkit-scrollbar-thumb:hover {
-      background: #003049;
-    }
-
     @media (max-width: 768px) {
       .case-overview {
         grid-template-columns: 1fr;
@@ -514,41 +338,24 @@
       .action-buttons {
         grid-template-columns: 1fr;
       }
+    }
 
-      .activity-log {
-        max-height: 250px;
-      }
+    .delivery-info {
+      background: #f0f8ff;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #197CAE;
+      margin-top: 20px;
+    }
 
-      .activity-entry {
-        padding: 10px;
-        flex-direction: column;
-        gap: 8px;
-      }
+    .delivery-info h4 {
+      color: #003049;
+      margin-bottom: 10px;
+    }
 
-      .activity-icon {
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-        align-self: flex-start;
-      }
-
-      .activity-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 2px;
-      }
-
-      .activity-log-actions {
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .activity-action-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 10px 16px;
-        font-size: 13px;
-      }
+    .delivery-address {
+      color: #003049;
+      line-height: 1.5;
     }
   </style>
 </head>
@@ -666,89 +473,6 @@
         </div>
       </div>
 
-      <!-- Activity Log Section -->
-      <div class="notes-section">
-        <div class="case-title">📊 Recent Activity</div>
-        <div class="activity-log-container">
-
-          <!-- Activity Log -->
-          <div class="activity-log" id="activityLog">
-            <div class="activity-entry">
-              <div class="activity-icon case-created">🆕</div>
-              <div class="activity-content">
-                <div class="activity-header">
-                  <span class="activity-user">Dr. Sarah Johnson</span>
-                  <span class="activity-time">2 min ago</span>
-                </div>
-                <div class="activity-action">Case created</div>
-                <div class="activity-details">New crown restoration case submitted for Maria Rodriguez, tooth #14</div>
-              </div>
-            </div>
-
-            <div class="activity-entry">
-              <div class="activity-icon assignment">👨‍🔬</div>
-              <div class="activity-content">
-                <div class="activity-header">
-                  <span class="activity-user">Lab Manager</span>
-                  <span class="activity-time">5 min ago</span>
-                </div>
-                <div class="activity-action">Assigned to technician</div>
-                <div class="activity-details">Case assigned to John Tech for processing</div>
-              </div>
-            </div>
-
-            <div class="activity-entry">
-              <div class="activity-icon status-change">📝</div>
-              <div class="activity-content">
-                <div class="activity-header">
-                  <span class="activity-user">John Tech</span>
-                  <span class="activity-time">10 min ago</span>
-                </div>
-                <div class="activity-action">Status updated</div>
-                <div class="activity-details">Changed status from "New" to "In Progress"</div>
-              </div>
-            </div>
-
-            <div class="activity-entry">
-              <div class="activity-icon note-added">💬</div>
-              <div class="activity-content">
-                <div class="activity-header">
-                  <span class="activity-user">Dr. Sarah Johnson</span>
-                  <span class="activity-time">15 min ago</span>
-                </div>
-                <div class="activity-action">Added special instructions</div>
-                <div class="activity-details">Rush order requirements and shade matching notes added</div>
-              </div>
-            </div>
-
-            <div class="activity-entry">
-              <div class="activity-icon file-upload">📎</div>
-              <div class="activity-content">
-                <div class="activity-header">
-                  <span class="activity-user">Dr. Sarah Johnson</span>
-                  <span class="activity-time">20 min ago</span>
-                </div>
-                <div class="activity-action">Uploaded impression scans</div>
-                <div class="activity-details">Digital impression files uploaded for fabrication</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Activity Log Actions -->
-          <div class="activity-log-actions">
-            <button class="activity-action-btn" onclick="loadMoreActivities()">
-              <span>⬇️</span> Load More
-            </button>
-            <button class="activity-action-btn" onclick="exportActivityLog()">
-              <span>📊</span> Export Log
-            </button>
-            <button class="activity-action-btn" onclick="clearOldActivities()" style="background: transparent; color: #666; border: 1px solid #ddd;">
-              <span>🗑️</span> Clear Old
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- Notes Section -->
       <div class="notes-section">
         <div class="case-title">Special Instructions & Notes</div>
@@ -796,359 +520,54 @@
   </div>
 
   <script>
-    // Current user info
-    const currentUser = {
-      name: "John Tech",
-      avatar: "👨‍🔬",
-      role: "Technician"
-    };
-
-    function addActivityEntry(action, details, type = 'status-change') {
-      const activityLog = document.getElementById('activityLog');
-      const now = new Date();
-      const timeAgo = "Just now";
-      
-      // Determine activity type and icon
-      let icon = '📝';
-      
-      if (action.toLowerCase().includes('note') || action.toLowerCase().includes('message')) {
-        type = 'note-added';
-        icon = '💬';
-      } else if (action.toLowerCase().includes('file') || action.toLowerCase().includes('upload')) {
-        type = 'file-upload';
-        icon = '📎';
-      } else if (action.toLowerCase().includes('assign')) {
-        type = 'assignment';
-        icon = '👨‍🔬';
-      } else if (action.toLowerCase().includes('message') || action.toLowerCase().includes('sent')) {
-        type = 'message-sent';
-        icon = '✉️';
-      } else if (action.toLowerCase().includes('creat')) {
-        type = 'case-created';
-        icon = '🆕';
-      } else if (action.toLowerCase().includes('complet')) {
-        type = 'status-change';
-        icon = '✅';
-      }
-      
-      // Create new activity entry
-      const activityEntry = document.createElement('div');
-      activityEntry.className = 'activity-entry';
-      activityEntry.style.opacity = '0';
-      activityEntry.style.transform = 'translateX(-10px)';
-      
-      activityEntry.innerHTML = `
-        <div class="activity-icon ${type}">${icon}</div>
-        <div class="activity-content">
-          <div class="activity-header">
-            <span class="activity-user">${currentUser.name}</span>
-            <span class="activity-time">${timeAgo}</span>
-          </div>
-          <div class="activity-action">${action}</div>
-          <div class="activity-details">${details}</div>
-        </div>
-      `;
-      
-      // Insert at the top of the activity log
-      if (activityLog.firstChild) {
-        activityLog.insertBefore(activityEntry, activityLog.firstChild);
-      } else {
-        activityLog.appendChild(activityEntry);
-      }
-      
-      // Animate in
-      setTimeout(() => {
-        activityEntry.style.transition = 'all 0.5s ease';
-        activityEntry.style.opacity = '1';
-        activityEntry.style.transform = 'translateX(0)';
-      }, 100);
-      
-      // Highlight briefly
-      setTimeout(() => {
-        activityEntry.style.backgroundColor = '#e8f5e8';
-        setTimeout(() => {
-          activityEntry.style.backgroundColor = 'white';
-        }, 2000);
-      }, 600);
+    function editCase() {
+      alert('📝 Opening case editor...\n\nThis would navigate to the case editing form with pre-populated data.');
     }
 
-    function loadMoreActivities() {
-      const activityLog = document.getElementById('activityLog');
-      
-      // Simulate loading more activities
-      const moreActivities = [
-        {
-          icon: '📝',
-          type: 'status-change',
-          user: 'John Tech',
-          time: '1 day ago',
-          action: 'Updated case priority',
-          details: 'Changed priority from Normal to High due to patient request'
-        },
-        {
-          icon: '📞',
-          type: 'message-sent',
-          user: 'Dr. Sarah Johnson',
-          time: '1 day ago',
-          action: 'Phone consultation',
-          details: 'Discussed case details and confirmed specifications'
-        },
-        {
-          icon: '🔍',
-          type: 'note-added',
-          user: 'Lab Manager',
-          time: '2 days ago',
-          action: 'Quality review',
-          details: 'Case reviewed and approved for production'
-        }
-      ];
-      
-      moreActivities.forEach((activity, index) => {
-        setTimeout(() => {
-          const activityEntry = document.createElement('div');
-          activityEntry.className = 'activity-entry';
-          activityEntry.style.opacity = '0';
-          activityEntry.style.transform = 'translateY(20px)';
-          
-          activityEntry.innerHTML = `
-            <div class="activity-icon ${activity.type}">${activity.icon}</div>
-            <div class="activity-content">
-              <div class="activity-header">
-                <span class="activity-user">${activity.user}</span>
-                <span class="activity-time">${activity.time}</span>
-              </div>
-              <div class="activity-action">${activity.action}</div>
-              <div class="activity-details">${activity.details}</div>
-            </div>
-          `;
-          
-          activityLog.appendChild(activityEntry);
-          
-          // Animate in
-          setTimeout(() => {
-            activityEntry.style.transition = 'all 0.5s ease';
-            activityEntry.style.opacity = '1';
-            activityEntry.style.transform = 'translateY(0)';
-          }, 100);
-          
-        }, index * 200);
-      });
-      
-      showNotification('📥 Loaded 3 more activities', '#197CAE');
-    }
-
-    function exportActivityLog() {
-      const activityEntries = document.querySelectorAll('#activityLog .activity-entry');
-      
-      if (!activityEntries || activityEntries.length === 0) {
-        showNotification('❌ No activities to export', '#f44336');
-        return;
-      }
-      
-      // Simulate export functionality
-      showNotification(`📊 Exporting ${activityEntries.length} activities...`, '#197CAE');
-      
-      setTimeout(() => {
-        addActivityEntry(
-          'Exported activity log',
-          `Generated export file with ${activityEntries.length} activity entries`
-        );
-        showNotification('✅ Activity log exported successfully!', '#4caf50');
-      }, 1500);
-    }
-
-    function clearOldActivities() {
-      if (confirm('🗑️ Clear Old Activity Entries?\n\nThis will remove activities older than 24 hours. Recent activities will be preserved.\n\nContinue?')) {
-        const activityLog = document.getElementById('activityLog');
-        const entries = activityLog.querySelectorAll('.activity-entry');
-        
-        // Keep first 3 entries (most recent), remove the rest
-        for (let i = 3; i < entries.length; i++) {
-          if (entries[i]) {
-            entries[i].style.transition = 'all 0.5s ease';
-            entries[i].style.opacity = '0';
-            entries[i].style.transform = 'translateX(-20px)';
-            
-            setTimeout((entry) => {
-              if (entry && entry.parentNode) {
-                entry.remove();
-              }
-            }, 500, entries[i]);
-          }
-        }
-        
-        // Add log entry for clearing
-        setTimeout(() => {
-          addActivityEntry(
-            'Cleared old activity entries',
-            'Removed activities older than 24 hours to keep log organized'
-          );
-        }, 1000);
-        
-        showNotification('🗑️ Old activities cleared', '#666');
-      }
-    }
-
-    function showNotification(message, color = '#197CAE') {
-      const notification = document.createElement('div');
-      notification.style.cssText = `
-        position: fixed; 
-        top: 20px; 
-        right: 20px; 
-        background: ${color}; 
-        color: white; 
-        padding: 12px 20px; 
-        border-radius: 20px; 
-        z-index: 1000; 
-        animation: slideUp 0.5s ease;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      `;
-      notification.innerHTML = message;
-      document.body.appendChild(notification);
-      
-      setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateY(-20px)';
-        setTimeout(() => notification.remove(), 300);
-      }, 3000);
+    function goBack() {
+      alert('← Returning to cases list...');
     }
 
     function updateStatus() {
       const statuses = ['New', 'In Progress', 'Quality Check', 'Completed', 'Delivered'];
       const currentStatus = 'In Progress';
       
-      const newStatus = prompt(`📝 Update Case Status\n\nCurrent Status: ${currentStatus}\n\nAvailable statuses:\n${statuses.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nEnter new status:`);
-      
-      if (newStatus && statuses.includes(newStatus)) {
-        // Update the display
-        const statusElements = document.querySelectorAll('.case-status');
-        statusElements.forEach(el => {
-          el.textContent = newStatus.toUpperCase();
-          el.className = `case-status status-${newStatus.toLowerCase().replace(' ', '-')}`;
-        });
-        
-        // Add to activity log
-        addActivityEntry(
-          `Changed status to "${newStatus}"`,
-          `Case status updated from "${currentStatus}" to "${newStatus}"`
-        );
-        
-        showNotification(`✅ Status updated to "${newStatus}"`, '#4caf50');
-      }
+      alert(`📝 Update Case Status\n\nCurrent Status: ${currentStatus}\n\nAvailable statuses:\n${statuses.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nThis would open a status update dialog.`);
     }
 
     function addNote() {
-      const note = prompt('💬 Add Case Note\n\nEnter your note:');
-      
-      if (note && note.trim()) {
-        addActivityEntry(
-          'Added case note',
-          `Note: "${note.length > 50 ? note.substring(0, 50) + '...' : note}"`
-        );
-        
-        showNotification('✅ Note added successfully!', '#4caf50');
+      const note = prompt('💬 Add a note to this case:');
+      if (note) {
+        alert(`✅ Note added successfully!\n\n"${note}"\n\nThis would be saved to the database and appear in the case timeline.`);
       }
     }
 
     function uploadPhotos() {
-      const fileTypes = ['Progress photo', 'X-ray image', 'Impression scan', 'Reference document'];
-      const selectedType = prompt(`📷 Upload Files\n\nSelect file type:\n${fileTypes.map((t, i) => `${i + 1}. ${t}`).join('\n')}\n\nEnter number:`);
-      
-      if (selectedType && selectedType >= 1 && selectedType <= 4) {
-        const fileName = `${fileTypes[selectedType - 1].toLowerCase().replace(' ', '_')}_${Date.now()}.jpg`;
-        
-        addActivityEntry(
-          'Uploaded file',
-          `Added file: "${fileName}" (${fileTypes[selectedType - 1]})`
-        );
-        
-        showNotification(`✅ File "${fileName}" uploaded successfully!`, '#4caf50');
-      }
+      alert('📷 Upload Photos\n\nThis would open a file upload dialog allowing you to:\n\n• Upload progress photos\n• Add before/after images\n• Document work stages\n• Attach reference images\n\nPhotos would be stored and linked to this case.');
     }
 
     function markComplete() {
       if (confirm('✅ Mark this case as complete?\n\nThis will:\n• Update the status to "Completed"\n• Set completion date\n• Notify the doctor\n• Generate completion report\n\nContinue?')) {
-        // Update status display
-        const statusElements = document.querySelectorAll('.case-status');
-        statusElements.forEach(el => {
-          el.textContent = 'COMPLETED';
-          el.className = 'case-status status-completed';
-        });
-        
-        addActivityEntry(
-          'Marked case as completed',
-          'Case completed and ready for delivery. Doctor notification sent automatically.'
-        );
-        
-        showNotification('🎉 Case marked as complete!', '#4caf50');
+        alert('🎉 Case marked as complete!\n\nThe doctor has been notified and the case is ready for pickup.');
       }
     }
 
     function sendMessage() {
-      const message = prompt('✉️ Send Message to Dr. Johnson\n\nEnter your message:');
-      
-      if (message && message.trim()) {
-        addActivityEntry(
-          'Sent message to doctor',
-          `Message: "${message}"`
-        );
-        
-        showNotification(`✅ Message sent to Dr. Johnson`, '#4caf50');
-      }
+      alert('✉️ Send Message to Dr. Johnson\n\nThis would open the messaging interface to:\n\n• Ask questions about the case\n• Request clarifications\n• Send progress updates\n• Share photos or documents\n• Schedule appointments');
     }
 
     function printCase() {
-      addActivityEntry(
-        'Generated case report',
-        'Printed comprehensive case details and documentation'
-      );
-      
-      showNotification('🖨️ Generating case report...', '#197CAE');
+      alert('🖨️ Print Case Details\n\nThis would generate a printable report including:\n\n• Complete case information\n• Technical specifications\n• Timeline and progress\n• Notes and instructions\n• Photos and documentation');
     }
 
-    function editCase() {
-      const sections = ['Patient Info', 'Specifications', 'Timeline', 'Notes', 'Files'];
-      const section = prompt(`📝 Edit Case\n\nWhich section would you like to edit?\n${sections.map((s, i) => `${i + 1}. ${s}`).join('\n')}\n\nEnter number:`);
-      
-      if (section && section >= 1 && section <= 5) {
-        addActivityEntry(
-          `Edited ${sections[section - 1]}`,
-          `Modified case ${sections[section - 1].toLowerCase()} section`
-        );
-        
-        showNotification(`📝 Opening ${sections[section - 1]} editor...`, '#197CAE');
-      }
-    }
-
-    function goBack() {
-      showNotification('← Returning to cases list...', '#197CAE');
-    }
-
-    // Initialize
+    // Animate progress bar on load
     document.addEventListener('DOMContentLoaded', function() {
+      // Add subtle animations to cards
       const cards = document.querySelectorAll('.main-info, .panel-card, .technical-specs, .notes-section');
       cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
         card.style.animation = 'slideUp 0.6s ease-out forwards';
       });
-
-      // Add real-time clock for "time ago" updates
-      setInterval(() => {
-        const timeElements = document.querySelectorAll('.activity-time');
-        timeElements.forEach((element, index) => {
-          if (element.textContent === 'Just now') {
-            element.textContent = '1 min ago';
-          } else if (element.textContent.includes('min ago')) {
-            const minutes = parseInt(element.textContent) + 1;
-            if (minutes < 60) {
-              element.textContent = `${minutes} min ago`;
-            } else {
-              element.textContent = '1 hour ago';
-            }
-          }
-        });
-      }, 60000); // Update every minute
     });
   </script>
 </body>

@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chat with Dr. Johnson - Dental Practice</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 800px;
+      margin: 0 auto;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chat-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 20px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #FFCB05;
+    }
+
+    .chat-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .doctor-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #FFCB05;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #003049;
+      font-weight: bold;
+    }
+
+    .chat-details h2 {
+      font-size: 20px;
+      margin-bottom: 3px;
+    }
+
+    .chat-details p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .status-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4CAF50;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      background: linear-gradient(45deg, #EDEDED 0%, #f5f5f5 100%);
+    }
+
+    .message {
+      display: flex;
+      animation: messageSlide 0.4s ease-out;
+    }
+
+    @keyframes messageSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.sent {
+      justify-content: flex-end;
+    }
+
+    .message.received {
+      justify-content: flex-start;
+    }
+
+    .message-bubble {
+      max-width: 70%;
+      padding: 15px 20px;
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .message-bubble:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .message.sent .message-bubble {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+      border-bottom-right-radius: 5px;
+    }
+
+    .message.received .message-bubble {
+      background: white;
+      color: #003049;
+      border: 2px solid #BCDDE4;
+      border-bottom-left-radius: 5px;
+    }
+
+    .message-info {
+      font-size: 11px;
+      opacity: 0.7;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .message.sent .message-info {
+      justify-content: flex-end;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .message.received .message-info {
+      justify-content: flex-start;
+      color: #666;
+    }
+
+    .message-attachment {
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      border: 1px dashed rgba(255, 255, 255, 0.3);
+    }
+
+    .message.received .message-attachment {
+      background: #f8f9fa;
+      border: 1px dashed #197CAE;
+    }
+
+    .attachment-preview {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .attachment-preview:hover {
+      transform: scale(1.02);
+    }
+
+    .attachment-icon {
+      font-size: 24px;
+    }
+
+    .attachment-info {
+      flex: 1;
+    }
+
+    .attachment-name {
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .attachment-size {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .photo-preview {
+      width: 200px;
+      height: 150px;
+      border-radius: 10px;
+      object-fit: cover;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .photo-preview:hover {
+      transform: scale(1.05);
+    }
+
+    .chat-input-area {
+      padding: 20px;
+      background: white;
+      border-top: 2px solid #BCDDE4;
+    }
+
+    .upload-previews {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .upload-preview {
+      position: relative;
+      background: #f8f9fa;
+      border: 2px dashed #197CAE;
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      max-width: 200px;
+    }
+
+    .remove-upload {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background: #d32f2f;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .message-input {
+      flex: 1;
+      border: 2px solid #BCDDE4;
+      border-radius: 20px;
+      padding: 12px 20px;
+      font-size: 14px;
+      resize: none;
+      min-height: 45px;
+      max-height: 120px;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .message-input:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+    }
+
+    .input-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-btn {
+      width: 45px;
+      height: 45px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .file-btn {
+      background: #f8f9fa;
+      color: #197CAE;
+      border: 2px solid #BCDDE4;
+    }
+
+    .file-btn:hover {
+      background: #BCDDE4;
+      transform: translateY(-2px);
+    }
+
+    .photo-btn {
+      background: #f8f9fa;
+      color: #197CAE;
+      border: 2px solid #BCDDE4;
+    }
+
+    .photo-btn:hover {
+      background: #BCDDE4;
+      transform: translateY(-2px);
+    }
+
+    .send-btn {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+    }
+
+    .send-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(25, 124, 174, 0.3);
+    }
+
+    .send-btn:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #666;
+      font-style: italic;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .typing-indicator.show {
+      opacity: 1;
+    }
+
+    .typing-dots {
+      display: flex;
+      gap: 3px;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #197CAE;
+      animation: typingBounce 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingBounce {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .case-reference {
+      background: rgba(255, 203, 5, 0.1);
+      border: 1px solid #FFCB05;
+      border-radius: 10px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .case-reference-title {
+      font-weight: 500;
+      color: #003049;
+      margin-bottom: 5px;
+    }
+
+    .case-reference-details {
+      color: #666;
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        height: 100vh;
+        border-radius: 0;
+        margin: -20px;
+      }
+
+      .chat-header {
+        padding: 15px 20px;
+      }
+
+      .doctor-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .chat-details h2 {
+        font-size: 18px;
+      }
+
+      .message-bubble {
+        max-width: 85%;
+      }
+
+      .input-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="chat-header">
+      <div class="chat-info">
+        <div class="doctor-avatar">SJ</div>
+        <div class="chat-details">
+          <h2>Dr. Sarah Johnson</h2>
+          <p>Downtown Dental Clinic</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          Online
+        </div>
+        <button class="btn btn-secondary" onclick="viewProfile()">👤 Profile</button>
+        <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="messagesContainer">
+      <!-- Sample messages -->
+      <div class="message received">
+        <div class="message-bubble">
+          Hi John! I have a question about the crown restoration for Maria Rodriguez. Could you please check the shade match?
+          <div class="case-reference">
+            <div class="case-reference-title">📋 Related Case: #0001</div>
+            <div class="case-reference-details">Crown Restoration - Maria Rodriguez - Tooth #14</div>
+          </div>
+          <div class="message-info">
+            <span>Dr. Johnson</span>
+            <span>•</span>
+            <span>2:15 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="message sent">
+        <div class="message-bubble">
+          Hello Dr. Johnson! I've double-checked the shade against the reference photo you provided. The A2 shade looks perfect. Let me send you a progress photo.
+          <div class="message-attachment">
+            <div class="attachment-preview" onclick="viewPhoto('progress-photo.jpg')">
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='150' viewBox='0 0 200 150'%3E%3Crect width='200' height='150' fill='%23f0f8ff'/%3E%3Ctext x='100' y='75' text-anchor='middle' dy='.3em' fill='%23197CAE' font-family='Arial' font-size='14'%3ECrown Progress Photo%3C/text%3E%3C/svg%3E" alt="Crown progress" class="photo-preview">
+            </div>
+          </div>
+          <div class="message-info">
+            <span>2:18 PM</span>
+            <span>•</span>
+            <span>✓✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="message received">
+        <div class="message-bubble">
+          Perfect! The color match looks excellent. One more thing - the patient mentioned she prefers a slightly more translucent finish. Can you adjust that?
+          <div class="message-info">
+            <span>Dr. Johnson</span>
+            <span>•</span>
+            <span>2:20 PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="message sent">
+        <div class="message-bubble">
+          Absolutely! I'll increase the translucency in the incisal third. Should have it ready by tomorrow morning. I'll also attach the technical specifications document for your records.
+          <div class="message-attachment">
+            <div class="attachment-preview" onclick="downloadFile('crown-specs.pdf')">
+              <div class="attachment-icon">📄</div>
+              <div class="attachment-info">
+                <div class="attachment-name">Crown_Specifications_#0001.pdf</div>
+                <div class="attachment-size">245 KB</div>
+              </div>
+            </div>
+          </div>
+          <div class="message-info">
+            <span>2:22 PM</span>
+            <span>•</span>
+            <span>✓✓</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="typing-indicator" id="typingIndicator">
+        <span>Dr. Johnson is typing</span>
+        <div class="typing-dots">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <div class="upload-previews" id="uploadPreviews"></div>
+      
+      <div class="input-container">
+        <textarea 
+          class="message-input" 
+          id="messageInput" 
+          placeholder="Type your message..."
+          rows="1"
+        ></textarea>
+        
+        <div class="input-actions">
+          <button class="action-btn file-btn" onclick="document.getElementById('fileInput').click()" title="Attach File">
+            📎
+          </button>
+          <button class="action-btn photo-btn" onclick="document.getElementById('photoInput').click()" title="Attach Photo">
+            📷
+          </button>
+          <button class="action-btn send-btn" id="sendBtn" onclick="sendMessage()" title="Send Message">
+            📤
+          </button>
+        </div>
+      </div>
+
+      <input type="file" id="fileInput" class="file-input" multiple accept=".pdf,.doc,.docx,.txt">
+      <input type="file" id="photoInput" class="file-input" multiple accept="image/*">
+    </div>
+  </div>
+
+  <script>
+    let pendingFiles = [];
+    let pendingPhotos = [];
+
+    // Auto-resize textarea
+    const messageInput = document.getElementById('messageInput');
+    messageInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+      
+      updateSendButton();
+    });
+
+    // Handle Enter key
+    messageInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // File input handlers
+    document.getElementById('fileInput').addEventListener('change', handleFileUpload);
+    document.getElementById('photoInput').addEventListener('change', handlePhotoUpload);
+
+    function handleFileUpload(event) {
+      const files = Array.from(event.target.files);
+      files.forEach(file => {
+        if (file.size > 10 * 1024 * 1024) { // 10MB limit
+          alert('File size must be less than 10MB');
+          return;
+        }
+        pendingFiles.push(file);
+      });
+      updateUploadPreviews();
+      event.target.value = '';
+    }
+
+    function handlePhotoUpload(event) {
+      const files = Array.from(event.target.files);
+      files.forEach(file => {
+        if (file.size > 5 * 1024 * 1024) { // 5MB limit for photos
+          alert('Photo size must be less than 5MB');
+          return;
+        }
+        pendingPhotos.push(file);
+      });
+      updateUploadPreviews();
+      event.target.value = '';
+    }
+
+    function updateUploadPreviews() {
+      const container = document.getElementById('uploadPreviews');
+      container.innerHTML = '';
+
+      [...pendingFiles, ...pendingPhotos].forEach((file, index) => {
+        const preview = document.createElement('div');
+        preview.className = 'upload-preview';
+        
+        const isPhoto = file.type.startsWith('image/');
+        const icon = isPhoto ? '🖼️' : '📄';
+        
+        preview.innerHTML = `
+          <span>${icon}</span>
+          <span>${file.name}</span>
+          <button class="remove-upload" onclick="removeUpload(${index}, '${isPhoto ? 'photo' : 'file'}')" title="Remove">×</button>
+        `;
+        
+        container.appendChild(preview);
+      });
+
+      updateSendButton();
+    }
+
+    function removeUpload(index, type) {
+      if (type === 'photo') {
+        pendingPhotos.splice(index - pendingFiles.length, 1);
+      } else {
+        pendingFiles.splice(index, 1);
+      }
+      updateUploadPreviews();
+    }
+
+    function updateSendButton() {
+      const sendBtn = document.getElementById('sendBtn');
+      const hasContent = messageInput.value.trim() || pendingFiles.length || pendingPhotos.length;
+      sendBtn.disabled = !hasContent;
+    }
+
+    function sendMessage() {
+      const message = messageInput.value.trim();
+      const hasAttachments = pendingFiles.length || pendingPhotos.length;
+      
+      if (!message && !hasAttachments) return;
+
+      // Show typing indicator briefly
+      const typingIndicator = document.getElementById('typingIndicator');
+      typingIndicator.classList.add('show');
+      
+      setTimeout(() => {
+        typingIndicator.classList.remove('show');
+        addMessage(message, true, [...pendingFiles, ...pendingPhotos]);
+        
+        // Clear inputs
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+        pendingFiles = [];
+        pendingPhotos = [];
+        updateUploadPreviews();
+        updateSendButton();
+        
+        // Auto-scroll to bottom
+        scrollToBottom();
+        
+        // Simulate doctor response after a delay
+        setTimeout(simulateDoctorResponse, 2000);
+      }, 1000);
+    }
+
+    function addMessage(text, isSent, attachments = []) {
+      const messagesContainer = document.getElementById('messagesContainer');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isSent ? 'sent' : 'received'}`;
+      
+      const currentTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+      const sender = isSent ? 'You' : 'Dr. Johnson';
+      
+      let attachmentHTML = '';
+      if (attachments.length > 0) {
+        attachmentHTML = '<div class="message-attachment">';
+        attachments.forEach(file => {
+          if (file.type && file.type.startsWith('image/')) {
+            const url = URL.createObjectURL(file);
+            attachmentHTML += `
+              <div class="attachment-preview" onclick="viewPhoto('${file.name}')">
+                <img src="${url}" alt="${file.name}" class="photo-preview">
+              </div>
+            `;
+          } else {
+            const fileName = file.name || file;
+            const fileSize = file.size ? `${(file.size / 1024).toFixed(1)} KB` : '245 KB';
+            attachmentHTML += `
+              <div class="attachment-preview" onclick="downloadFile('${fileName}')">
+                <div class="attachment-icon">📄</div>
+                <div class="attachment-info">
+                  <div class="attachment-name">${fileName}</div>
+                  <div class="attachment-size">${fileSize}</div>
+                </div>
+              </div>
+            `;
+          }
+        });
+        attachmentHTML += '</div>';
+      }
+      
+      messageDiv.innerHTML = `
+        <div class="message-bubble">
+          ${text}
+          ${attachmentHTML}
+          <div class="message-info">
+            ${isSent ? '' : '<span>' + sender + '</span><span>•</span>'}
+            <span>${currentTime}</span>
+            ${isSent ? '<span>•</span><span>✓✓</span>' : ''}
+          </div>
+        </div>
+      `;
+      
+      // Remove typing indicator from DOM temporarily
+      const typingIndicator = document.getElementById('typingIndicator');
+      const parent = typingIndicator.parentNode;
+      typingIndicator.remove();
+      
+      // Add message
+      messagesContainer.appendChild(messageDiv);
+      
+      // Add typing indicator back
+      parent.appendChild(typingIndicator);
+    }
+
+    function simulateDoctorResponse() {
+      const responses = [
+        "Thank you! That looks perfect. The patient will be very happy with the result.",
+        "Excellent work as always, John. When can we expect the final piece?",
+        "Great communication! I appreciate the detailed updates. The patient is scheduled for Friday.",
+        "Perfect! I'll let the patient know everything is on track. Thanks for the quick turnaround.",
+        "Looks fantastic! The translucency adjustment is exactly what we needed."
+      ];
+      
+      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+      addMessage(randomResponse, false);
+      scrollToBottom();
+    }
+
+    function scrollToBottom() {
+      const messagesContainer = document.getElementById('messagesContainer');
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function viewPhoto(filename) {
+      alert(`📷 Viewing photo: ${filename}\n\nThis would open a full-screen photo viewer with zoom and download options.`);
+    }
+
+    function downloadFile(filename) {
+      alert(`📄 Downloading file: ${filename}\n\nThis would initiate the file download.`);
+    }
+
+    function viewProfile() {
+      alert(`👤 Dr. Sarah Johnson Profile\n\n📍 Downtown Dental Clinic\n📧 s.johnson@downtowndental.com\n📞 (555) 123-4567\n\n🔬 Specialization: General Dentistry\n📊 Active Cases: 12\n⭐ Partnership Since: January 2023\n\n📈 Monthly Statistics:\n• Cases Completed: 45\n• Average Turnaround: 2.3 days\n• Quality Rating: 4.9/5`);
+    }
+
+    function goBack() {
+      alert('← Returning to messages list...');
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      scrollToBottom();
+      updateSendButton();
+      
+      // Simulate occasional typing indicators
+      setInterval(() => {
+        if (Math.random() < 0.1) { // 10% chance every 10 seconds
+          const typingIndicator = document.getElementById('typingIndicator');
+          typingIndicator.classList.add('show');
+          setTimeout(() => {
+            typingIndicator.classList.remove('show');
+          }, 3000);
+        }
+      }, 10000);
+    });
+  </script>
+</body>
+</html>

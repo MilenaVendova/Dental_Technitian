@@ -416,75 +416,21 @@
     }
 
     @media (max-width: 768px) {
-      body {
-        padding: 10px;
+      .info-grid {
+        grid-template-columns: 1fr;
       }
 
-      .header {
-        padding: 20px 15px;
+      .summary-details {
+        grid-template-columns: 1fr;
       }
 
-      .header-info h1 {
-        font-size: 24px;
+      .files-preview {
+        grid-template-columns: 1fr;
       }
 
-      .progress-step {
-        width: 25px;
-        height: 25px;
-        font-size: 12px;
-      }
-
-      .progress-line {
-        width: 30px;
-      }
-
-      .btn {
-        padding: 12px 20px;
-        font-size: 14px;
-        min-height: 44px;
-      }
-
-      .content {
-        padding: 20px 15px;
-      }
-
-      .summary-highlight {
-        padding: 20px 15px;
-        margin-bottom: 20px;
-      }
-
-      .summary-title {
-        font-size: 20px;
-      }
-
-      .summary-value {
-        font-size: 16px;
-      }
-
-      .review-section {
-        padding: 20px 15px;
-        margin-bottom: 20px;
-      }
-
-      .section-title {
-        font-size: 18px;
-      }
-
-      .edit-btn {
-        padding: 8px 14px;
-        font-size: 12px;
-      }
-
-      .info-label {
-        font-size: 11px;
-      }
-
-      .info-value {
-        font-size: 14px;
-      }
-
-      .tooth-chart-review {
-        padding: 15px;
+      .form-navigation {
+        flex-direction: column;
+        gap: 15px;
       }
 
       .tooth-number {
@@ -494,94 +440,7 @@
       }
 
       .teeth-group {
-        gap: 4px;
-      }
-
-      .midline {
-        font-size: 18px;
-        margin: 0 10px;
-      }
-
-      .file-item {
-        padding: 8px 10px;
-      }
-
-      .file-name {
-        font-size: 12px;
-      }
-
-      .file-size {
-        font-size: 10px;
-      }
-
-      .confirmation-box {
-        padding: 15px;
-      }
-
-      .confirmation-checkbox {
-        font-size: 14px;
-      }
-
-      .confirmation-checkbox input {
-        width: 20px;
-        height: 20px;
-      }
-
-      .form-navigation {
-        padding: 15px 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .app-container {
-        border-radius: 15px;
-        margin: 5px;
-      }
-
-      .header {
-        padding: 15px 10px;
-      }
-
-      .content {
-        padding: 15px 10px;
-      }
-
-      .review-section {
-        padding: 15px 10px;
-      }
-
-      .summary-highlight {
-        padding: 15px 10px;
-      }
-
-      .summary-title {
-        font-size: 18px;
-      }
-
-      .section-title {
-        font-size: 16px;
-      }
-
-      .tooth-chart-review {
-        padding: 10px;
-      }
-
-      .tooth-number {
-        width: 26px;
-        height: 26px;
-        font-size: 10px;
-      }
-
-      .teeth-group {
         gap: 3px;
-      }
-
-      .file-category-preview {
-        padding: 12px;
-      }
-
-      .confirmation-box {
-        padding: 12px;
       }
     }
   </style>
