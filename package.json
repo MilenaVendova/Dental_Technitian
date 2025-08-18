@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "dental-technitian-root",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "npm start --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "test": "npm test --prefix frontend",
+    "serve:ssr": "npm run serve:ssr:frontend --prefix frontend"
+  }
+}
+
