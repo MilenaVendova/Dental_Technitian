@@ -171,12 +171,6 @@
       padding: 15px 30px;
       background: white;
       border-bottom: 1px solid #BCDDE4;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .filter-tabs::-webkit-scrollbar {
-      display: none;
     }
 
     .filter-tab {
@@ -697,25 +691,6 @@
         Unread
         <span class="badge" id="unreadCount">3</span>
       </div>
-      <div class="filter-tab" data-filter="urgent">
-        Urgent Cases
-        <span class="badge" id="urgentCount">2</span>
-      </div>
-      <div class="filter-tab" data-filter="crowns">
-        Crowns
-      </div>
-      <div class="filter-tab" data-filter="bridges">
-        Bridges
-      </div>
-      <div class="filter-tab" data-filter="implants">
-        Implants
-      </div>
-      <div class="filter-tab" data-filter="veneers">
-        Veneers
-      </div>
-      <div class="filter-tab" data-filter="archived">
-        Archived
-      </div>
     </div>
 
     <div class="chat-list" id="chatList">
@@ -941,24 +916,6 @@
         chats.forEach(chat => {
           chat.style.display = chat.classList.contains('unread') ? 'flex' : 'none';
         });
-      } else if (filter === 'urgent') {
-        chats.forEach(chat => {
-          chat.style.display = chat.dataset.priority === 'urgent' ? 'flex' : 'none';
-        });
-      } else if (filter === 'archived') {
-        chatList.innerHTML = `
-          <div class="empty-state">
-            <div class="empty-icon">📦</div>
-            <div class="empty-title">No Archived Messages</div>
-            <div class="empty-description">Archived conversations will appear here</div>
-          </div>
-        `;
-      } else {
-        // Filter by case type (crown, bridge, implant, veneer)
-        chats.forEach(chat => {
-          const chatType = chat.dataset.type;
-          chat.style.display = chatType && chatType.includes(filter.slice(0, -1)) ? 'flex' : 'none';
-        });
       }
       
       updateBadgeCounts();
@@ -1010,11 +967,9 @@
       const visibleChats = document.querySelectorAll('.chat-item:not([style*="none"])');
       const allChats = document.querySelectorAll('.chat-item');
       const unreadChats = document.querySelectorAll('.chat-item.unread');
-      const urgentChats = document.querySelectorAll('[data-priority="urgent"]');
       
       document.getElementById('allCount').textContent = allChats.length;
       document.getElementById('unreadCount').textContent = unreadChats.length;
-      document.getElementById('urgentCount').textContent = urgentChats.length;
     }
 
     // Simulate new messages
