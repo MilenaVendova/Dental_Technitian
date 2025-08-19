@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Messages - TechLab Dental Partners</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      padding: 20px;
+      padding-top: max(20px, env(safe-area-inset-top));
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+      padding-left: max(20px, env(safe-area-inset-left));
+      padding-right: max(20px, env(safe-area-inset-right));
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .app-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 25px 30px;
+      color: white;
+      border-bottom: 3px solid #FFCB05;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-icon {
+      width: 45px;
+      height: 45px;
+      background: #FFCB05;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #003049;
+      font-weight: bold;
+    }
+
+    .header-title h1 {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .header-subtitle {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-icon {
+      font-size: 16px;
+    }
+
+    .btn-primary {
+      background: #FFCB05;
+      color: #003049;
+    }
+
+    .btn-primary:hover {
+      background: #FFD433;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 203, 5, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .search-bar {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 15px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .search-icon {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 18px;
+    }
+
+    .search-icon::before {
+      content: "🔍";
+    }
+
+    .search-input {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 14px;
+      flex: 1;
+      outline: none;
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 10px;
+      padding: 15px 30px;
+      background: white;
+      border-bottom: 1px solid #BCDDE4;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .filter-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-tab {
+      padding: 8px 16px;
+      border: 2px solid #BCDDE4;
+      border-radius: 20px;
+      background: white;
+      color: #003049;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-tab:hover {
+      background: #f0f8ff;
+      transform: translateY(-1px);
+    }
+
+    .filter-tab.active {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+      border-color: #003049;
+    }
+
+    .badge {
+      background: #FFCB05;
+      color: #003049;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: 18px;
+      text-align: center;
+    }
+
+    .filter-tab.active .badge {
+      background: white;
+      color: #003049;
+    }
+
+    .chat-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      background: linear-gradient(45deg, #EDEDED 0%, #f5f5f5 100%);
+    }
+
+    .chat-list::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-list::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .chat-list::-webkit-scrollbar-thumb {
+      background: #BCDDE4;
+      border-radius: 10px;
+    }
+
+    .chat-list::-webkit-scrollbar-thumb:hover {
+      background: #197CAE;
+    }
+
+    .chat-item {
+      background: white;
+      border-radius: 15px;
+      padding: 15px 20px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      animation: fadeIn 0.4s ease-out;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .chat-item:hover {
+      transform: translateX(5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border-color: #BCDDE4;
+    }
+
+    .chat-item.unread {
+      background: linear-gradient(135deg, #f0f8ff 0%, white 100%);
+      border-left: 4px solid #197CAE;
+    }
+
+    .chat-avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: white;
+      font-weight: bold;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .chat-avatar.group {
+      background: linear-gradient(135deg, #FFCB05 0%, #FFB000 100%);
+      color: #003049;
+    }
+
+    .status-dot {
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #4CAF50;
+      border: 2px solid white;
+    }
+
+    .status-dot.offline {
+      background: #9e9e9e;
+    }
+
+    .status-dot.busy {
+      background: #ff9800;
+    }
+
+    .chat-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chat-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .chat-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: #003049;
+    }
+
+    .chat-time {
+      font-size: 12px;
+      color: #666;
+      white-space: nowrap;
+    }
+
+    .chat-clinic {
+      font-size: 12px;
+      color: #197CAE;
+      margin-bottom: 8px;
+    }
+
+    .chat-preview {
+      font-size: 13px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .chat-item.unread .chat-preview {
+      font-weight: 500;
+      color: #003049;
+    }
+
+    .chat-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .case-tag {
+      background: #FFCB05;
+      color: #003049;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .case-tag::before {
+      content: "📋";
+      font-size: 10px;
+    }
+
+    .priority-tag {
+      background: #ff5252;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .attachment-indicator {
+      color: #197CAE;
+      font-size: 14px;
+    }
+
+    .attachment-indicator::before {
+      content: "📎";
+    }
+
+    .unread-count {
+      background: #197CAE;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: bold;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #666;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .empty-icon {
+      font-size: 64px;
+      color: #BCDDE4;
+      margin-bottom: 20px;
+    }
+
+    .empty-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #003049;
+      margin-bottom: 10px;
+    }
+
+    .empty-description {
+      font-size: 14px;
+      color: #666;
+      max-width: 300px;
+    }
+
+    .floating-compose {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .floating-compose::before {
+      content: "+";
+      font-weight: 300;
+    }
+
+    .floating-compose:hover {
+      transform: scale(1.1) rotate(90deg);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .urgent-indicator {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #ff5252;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+
+      .app-container {
+        height: 100vh;
+        border-radius: 0;
+        margin: 0;
+        max-width: none;
+      }
+
+      .app-header {
+        padding: 15px 20px;
+      }
+
+      .header-content {
+        margin-bottom: 15px;
+      }
+
+      .header-title h1 {
+        font-size: 20px;
+      }
+
+      .header-subtitle {
+        display: none;
+      }
+
+      .logo-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .btn {
+        padding: 8px 15px;
+        font-size: 13px;
+      }
+
+      .btn span:not(.btn-icon) {
+        display: none;
+      }
+
+      .search-bar {
+        padding: 10px 15px;
+      }
+
+      .filter-tabs {
+        padding: 12px 20px;
+      }
+
+      .filter-tab {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .chat-list {
+        padding: 8px;
+      }
+
+      .chat-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+      }
+
+      .chat-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+      }
+
+      .chat-name {
+        font-size: 14px;
+      }
+
+      .chat-preview {
+        font-size: 12px;
+      }
+
+      .unread-count {
+        right: 15px;
+      }
+
+      .floating-compose {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-header {
+        padding: 12px 15px;
+      }
+
+      .header-title h1 {
+        font-size: 18px;
+      }
+
+      .header-actions {
+        gap: 8px;
+      }
+
+      .btn {
+        padding: 8px;
+        border-radius: 12px;
+      }
+
+      .search-bar {
+        padding: 8px 12px;
+        font-size: 13px;
+      }
+
+      .chat-avatar {
+        width: 45px;
+        height: 45px;
+        font-size: 16px;
+      }
+
+      .chat-item {
+        padding: 10px 12px;
+        gap: 12px;
+      }
+
+      .floating-compose {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+      }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .chat-item:hover {
+        transform: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+
+      .floating-compose:hover {
+        transform: scale(1.1);
+      }
+
+      .chat-item:active {
+        transform: scale(0.98);
+        transition: transform 0.1s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.95);
+        transition: transform 0.1s ease;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="app-header">
+      <div class="header-content">
+        <div class="header-title">
+          <div class="logo-icon">TL</div>
+          <div>
+            <h1>TechLab Messages</h1>
+            <div class="header-subtitle">Dental Laboratory Communication Hub</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn btn-secondary" onclick="showReports()">
+            <span class="btn-icon">📊</span>
+            <span>Reports</span>
+          </button>
+          <button class="btn btn-primary" onclick="newChat()">
+            <span class="btn-icon">✨</span>
+            <span>New Chat</span>
+          </button>
+        </div>
+      </div>
+      <div class="search-bar">
+        <span class="search-icon"></span>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search messages, doctors, or case numbers...">
+      </div>
+    </div>
+
+    <div class="filter-tabs">
+      <div class="filter-tab active" data-filter="all">
+        All Messages
+        <span class="badge" id="allCount">12</span>
+      </div>
+      <div class="filter-tab" data-filter="unread">
+        Unread
+        <span class="badge" id="unreadCount">3</span>
+      </div>
+      <div class="filter-tab" data-filter="urgent">
+        Urgent Cases
+        <span class="badge" id="urgentCount">2</span>
+      </div>
+      <div class="filter-tab" data-filter="crowns">
+        Crowns
+      </div>
+      <div class="filter-tab" data-filter="bridges">
+        Bridges
+      </div>
+      <div class="filter-tab" data-filter="implants">
+        Implants
+      </div>
+      <div class="filter-tab" data-filter="veneers">
+        Veneers
+      </div>
+      <div class="filter-tab" data-filter="archived">
+        Archived
+      </div>
+    </div>
+
+    <div class="chat-list" id="chatList">
+      <!-- Unread urgent message -->
+      <div class="chat-item unread" data-priority="urgent" data-type="crown" onclick="openChat('Dr. Sarah Johnson')">
+        <div class="chat-avatar">
+          SJ
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Sarah Johnson</div>
+            <div class="chat-time">2:45 PM</div>
+          </div>
+          <div class="chat-clinic">Downtown Dental Clinic</div>
+          <div class="chat-preview">
+            <span class="urgent-indicator"></span>
+            Perfect! The color match looks excellent. One more thing...
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0001</div>
+            <div class="priority-tag">URGENT</div>
+            <div class="attachment-indicator"></div>
+          </div>
+        </div>
+        <div class="unread-count">2</div>
+      </div>
+
+      <!-- Regular unread message -->
+      <div class="chat-item unread" data-type="bridge" onclick="openChat('Dr. Michael Chen')">
+        <div class="chat-avatar">
+          MC
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Michael Chen</div>
+            <div class="chat-time">1:30 PM</div>
+          </div>
+          <div class="chat-clinic">Riverside Family Dentistry</div>
+          <div class="chat-preview">
+            Can we adjust the occlusion on the lower molars?
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0003</div>
+          </div>
+        </div>
+        <div class="unread-count">1</div>
+      </div>
+
+      <!-- Read message with attachment -->
+      <div class="chat-item" data-type="implant" onclick="openChat('Dr. Emily Rodriguez')">
+        <div class="chat-avatar">
+          ER
+          <div class="status-dot busy"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Emily Rodriguez</div>
+            <div class="chat-time">11:15 AM</div>
+          </div>
+          <div class="chat-clinic">Smile Bright Dental Care</div>
+          <div class="chat-preview">
+            Thank you for the specifications document
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0002</div>
+            <div class="attachment-indicator"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Read message -->
+      <div class="chat-item" data-type="veneer" onclick="openChat('Dr. James Wilson')">
+        <div class="chat-avatar">
+          JW
+          <div class="status-dot offline"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. James Wilson</div>
+            <div class="chat-time">Yesterday</div>
+          </div>
+          <div class="chat-clinic">North Point Dental</div>
+          <div class="chat-preview">
+            Excellent work on the veneer set! The patient loved them.
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0004</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Older message -->
+      <div class="chat-item" data-type="crown" onclick="openChat('Dr. Lisa Thompson')">
+        <div class="chat-avatar">
+          LT
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Lisa Thompson</div>
+            <div class="chat-time">Monday</div>
+          </div>
+          <div class="chat-clinic">Thompson & Associates</div>
+          <div class="chat-preview">
+            Let's schedule the next batch for Thursday morning
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0005</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Another older message -->
+      <div class="chat-item" data-type="implant" data-priority="urgent" onclick="openChat('Dr. Robert Martinez')">
+        <div class="chat-avatar">
+          RM
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Robert Martinez</div>
+            <div class="chat-time">Dec 18</div>
+          </div>
+          <div class="chat-clinic">City Center Dental</div>
+          <div class="chat-preview">
+            The implant abutments are ready for pickup
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0006</div>
+            <div class="priority-tag">URGENT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group consultation -->
+      <div class="chat-item" data-type="consultation" onclick="openChat('Team Consultation')">
+        <div class="chat-avatar group">
+          TC
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Team Consultation</div>
+            <div class="chat-time">Dec 17</div>
+          </div>
+          <div class="chat-clinic">Multi-clinic Discussion</div>
+          <div class="chat-preview">
+            Dr. Chen: I agree with the proposed treatment plan
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Complex Case</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional messages -->
+      <div class="chat-item" data-type="bridge" onclick="openChat('Dr. Amanda Foster')">
+        <div class="chat-avatar">
+          AF
+          <div class="status-dot"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Amanda Foster</div>
+            <div class="chat-time">Dec 16</div>
+          </div>
+          <div class="chat-clinic">Westside Dental Group</div>
+          <div class="chat-preview">
+            Bridge framework looks great, ready for porcelain
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0007</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-item" data-type="crown" onclick="openChat('Dr. Daniel Kim')">
+        <div class="chat-avatar">
+          DK
+          <div class="status-dot offline"></div>
+        </div>
+        <div class="chat-content">
+          <div class="chat-header-row">
+            <div class="chat-name">Dr. Daniel Kim</div>
+            <div class="chat-time">Dec 15</div>
+          </div>
+          <div class="chat-clinic">Park Avenue Dentistry</div>
+          <div class="chat-preview">
+            Need three more crowns for next week's patients
+          </div>
+          <div class="chat-meta">
+            <div class="case-tag">Case #0008</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="floating-compose" onclick="newChat()"></div>
+  </div>
+
+  <script>
+    // Filter functionality
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const chatList = document.getElementById('chatList');
+    
+    filterTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        filterTabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const filter = this.dataset.filter;
+        filterChats(filter);
+      });
+    });
+
+    function filterChats(filter) {
+      const chats = chatList.querySelectorAll('.chat-item');
+      
+      if (filter === 'all') {
+        chats.forEach(chat => chat.style.display = 'flex');
+      } else if (filter === 'unread') {
+        chats.forEach(chat => {
+          chat.style.display = chat.classList.contains('unread') ? 'flex' : 'none';
+        });
+      } else if (filter === 'urgent') {
+        chats.forEach(chat => {
+          chat.style.display = chat.dataset.priority === 'urgent' ? 'flex' : 'none';
+        });
+      } else if (filter === 'archived') {
+        chatList.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <div class="empty-title">No Archived Messages</div>
+            <div class="empty-description">Archived conversations will appear here</div>
+          </div>
+        `;
+      } else {
+        // Filter by case type (crown, bridge, implant, veneer)
+        chats.forEach(chat => {
+          const chatType = chat.dataset.type;
+          chat.style.display = chatType && chatType.includes(filter.slice(0, -1)) ? 'flex' : 'none';
+        });
+      }
+      
+      updateBadgeCounts();
+    }
+
+    // Search functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const chats = document.querySelectorAll('.chat-item');
+      
+      if (searchTerm === '') {
+        chats.forEach(chat => chat.style.display = 'flex');
+      } else {
+        chats.forEach(chat => {
+          const name = chat.querySelector('.chat-name')?.textContent.toLowerCase() || '';
+          const clinic = chat.querySelector('.chat-clinic')?.textContent.toLowerCase() || '';
+          const preview = chat.querySelector('.chat-preview')?.textContent.toLowerCase() || '';
+          const caseTag = chat.querySelector('.case-tag')?.textContent.toLowerCase() || '';
+          
+          if (name.includes(searchTerm) || 
+              clinic.includes(searchTerm) || 
+              preview.includes(searchTerm) || 
+              caseTag.includes(searchTerm)) {
+            chat.style.display = 'flex';
+          } else {
+            chat.style.display = 'none';
+          }
+        });
+      }
+    });
+
+    function openChat(doctorName) {
+      console.log(`Opening chat with ${doctorName}`);
+      // In a real application, this would navigate to the chat view
+      alert(`Opening chat with ${doctorName}\n\nThis would navigate to the individual chat view.`);
+    }
+
+    function newChat() {
+      alert('New Chat\n\nOptions:\n• Select a doctor from your contacts\n• Create a new case\n• Start a group consultation\n• Import from patient records');
+    }
+
+    function showReports() {
+      alert('Reports Dashboard\n\n📊 Monthly Statistics:\n• Cases Completed: 145\n• Average Turnaround: 2.1 days\n• Quality Rating: 4.8/5\n• Active Partnerships: 23 clinics');
+    }
+
+    // Update badge counts
+    function updateBadgeCounts() {
+      const visibleChats = document.querySelectorAll('.chat-item:not([style*="none"])');
+      const allChats = document.querySelectorAll('.chat-item');
+      const unreadChats = document.querySelectorAll('.chat-item.unread');
+      const urgentChats = document.querySelectorAll('[data-priority="urgent"]');
+      
+      document.getElementById('allCount').textContent = allChats.length;
+      document.getElementById('unreadCount').textContent = unreadChats.length;
+      document.getElementById('urgentCount').textContent = urgentChats.length;
+    }
+
+    // Simulate new messages
+    function simulateNewMessage() {
+      const randomChats = document.querySelectorAll('.chat-item:not(.unread)');
+      if (randomChats.length > 0) {
+        const randomIndex = Math.floor(Math.random() * randomChats.length);
+        const chat = randomChats[randomIndex];
+        
+        chat.classList.add('unread');
+        
+        // Add unread count if doesn't exist
+        if (!chat.querySelector('.unread-count')) {
+          const unreadCount = document.createElement('div');
+          unreadCount.className = 'unread-count';
+          unreadCount.textContent = '1';
+          chat.appendChild(unreadCount);
+        }
+        
+        // Update time
+        const timeElement = chat.querySelector('.chat-time');
+        if (timeElement) {
+          timeElement.textContent = 'Just now';
+        }
+        
+        // Move to top
+        chatList.insertBefore(chat, chatList.firstChild);
+        
+        updateBadgeCounts();
+      }
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      updateBadgeCounts();
+      
+      // Mobile viewport handling
+      if (window.innerWidth <= 768) {
+        const viewport = document.querySelector('meta[name="viewport"]');
+        if (viewport) {
+          viewport.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
+        }
+        
+        // Touch feedback
+        document.querySelectorAll('.chat-item').forEach(item => {
+          item.addEventListener('touchstart', function() {
+            this.style.backgroundColor = '#f8f9fa';
+          });
+          
+          item.addEventListener('touchend', function() {
+            setTimeout(() => {
+              this.style.backgroundColor = '';
+            }, 150);
+          });
+        });
+      }
+      
+      // Simulate periodic new messages
+      setInterval(() => {
+        if (Math.random() < 0.1) {
+          simulateNewMessage();
+        }
+      }, 30000);
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Cmd/Ctrl + K for search
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        searchInput.focus();
+      }
+      
+      // Cmd/Ctrl + N for new chat
+      if ((e.metaKey || e.ctrlKey) && e.key === 'n') {
+        e.preventDefault();
+        newChat();
+      }
+    });
+  </script>
+</body>
+</html>
