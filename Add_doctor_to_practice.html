@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dental Practice Management - Add Doctor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #BCDDE4;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .app-container {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      width: 100%;
+      max-width: 700px;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-info h2 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .header-info p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-5px);
+    }
+
+    .form-content {
+      padding: 40px 30px;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin-bottom: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+      border-color: #197CAE;
+      box-shadow: 0 5px 15px rgba(25, 124, 174, 0.1);
+    }
+
+    .section-title {
+      color: #003049;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      color: #003049;
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .required {
+      color: #e74c3c;
+    }
+
+    /* Searchable Dropdown Styles */
+    .searchable-dropdown {
+      position: relative;
+      width: 100%;
+    }
+
+    .dropdown-input {
+      width: 100%;
+      padding: 12px 45px 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+      cursor: text;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .dropdown-input:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .dropdown-input:hover {
+      border-color: #197CAE;
+    }
+
+    .dropdown-arrow {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 6px solid #666;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .dropdown-arrow.open {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .dropdown-options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 2px solid #197CAE;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .dropdown-options.show {
+      display: block;
+    }
+
+    .dropdown-option {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .dropdown-option:last-child {
+      border-bottom: none;
+    }
+
+    .dropdown-option:hover {
+      background-color: #f8f9fa;
+    }
+
+    .dropdown-option.selected {
+      background-color: #197CAE;
+      color: white;
+    }
+
+    .dropdown-option.hidden {
+      display: none;
+    }
+
+    .no-results {
+      padding: 12px 16px;
+      color: #666;
+      font-style: italic;
+      text-align: center;
+    }
+
+    /* Add New Doctor Button */
+    .add-doctor-btn {
+      background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .add-doctor-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .form-select:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+    }
+
+    .form-select:hover {
+      border-color: #197CAE;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+      font-family: inherit;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+      transform: translateY(-1px);
+    }
+
+    .form-input:hover {
+      border-color: #197CAE;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .doctor-preview {
+      background: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 15px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .doctor-preview.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .doctor-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .doctor-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #197CAE, #003049);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .doctor-details h4 {
+      color: #003049;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+
+    .doctor-details p {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-end;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: inherit;
+      min-width: 120px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(25, 124, 174, 0.4);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #197CAE;
+      border: 2px solid #197CAE;
+    }
+
+    .btn-secondary:hover {
+      background: #197CAE;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .practice-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+    }
+
+    .error-message {
+      background: #ffeaa7;
+      border: 1px solid #fdcb6e;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #e17055;
+      font-size: 14px;
+      display: none;
+    }
+
+    .success-message {
+      background: #55efc4;
+      border: 1px solid #00b894;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #00b894;
+      font-size: 14px;
+      display: none;
+    }
+
+    .practice-info {
+      background: #e3f2fd;
+      border-left: 4px solid #197CAE;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .practice-info h4 {
+      color: #003049;
+      margin-bottom: 5px;
+    }
+
+    .practice-info p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      .form-header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+
+      .form-actions {
+        justify-content: center;
+      }
+
+      .btn {
+        min-width: 140px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-container {
+        margin: 10px;
+      }
+
+      .form-content {
+        padding: 30px 20px;
+      }
+
+      .form-section {
+        padding: 20px;
+      }
+    }
+
+    .loading {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .loading .btn-primary {
+      background: #ccc;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+      padding: 20px;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #EDEDED;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      width: 100%;
+      max-width: 800px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+      padding: 25px 30px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .modal-header p {
+      opacity: 0.9;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .modal-form-section {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .modal-form-section:hover {
+      border-color: #197CAE;
+    }
+
+    .modal-form-section h3 {
+      color: #003049;
+      font-size: 18px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-form-group {
+      margin-bottom: 20px;
+    }
+
+    .modal-form-group label {
+      display: block;
+      font-weight: 500;
+      color: #003049;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .modal-form-group input,
+    .modal-form-group select,
+    .modal-form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #003049;
+      background: white;
+      transition: all 0.3s ease;
+      font-family: inherit;
+    }
+
+    .modal-form-group input:focus,
+    .modal-form-group select:focus,
+    .modal-form-group textarea:focus {
+      outline: none;
+      border-color: #197CAE;
+      box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+    }
+
+    .modal-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .modal-form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 30px;
+      padding: 25px;
+      background: white;
+      border-radius: 15px;
+    }
+
+    .modal-help-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+      font-style: italic;
+    }
+
+    .modal-success-message {
+      background: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .modal-error-message {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        margin: 10px;
+        max-height: 95vh;
+      }
+
+      .modal-form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-form-actions {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="form-header">
+      <div class="header-info">
+        <h2>Add Doctor to Practice</h2>
+        <p>Assign a doctor to work at this practice</p>
+      </div>
+      <button class="back-btn" onclick="goBack()">
+        <span>←</span>
+        Back to Practice
+      </button>
+    </div>
+
+    <div class="form-content">
+      <div class="error-message" id="errorMessage"></div>
+      <div class="success-message" id="successMessage"></div>
+
+      <!-- Practice Info -->
+      <div class="practice-info">
+        <h4>Sunshine Dental Care</h4>
+        <p>123 Healthcare Plaza, Suite 200, Medical District, CA 90210</p>
+      </div>
+
+      <form id="addDoctorForm">
+        <div class="form-section">
+          <h3 class="section-title">
+            <svg class="practice-icon" viewBox="0 0 24 24" fill="#197CAE">
+              <path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>
+            </svg>
+            Doctor Assignment
+          </h3>
+          
+          <div class="form-group">
+            <label class="form-label">
+              Select or Search Doctor <span class="required">*</span>
+            </label>
+            <div class="searchable-dropdown">
+              <input 
+                type="text" 
+                class="dropdown-input" 
+                id="doctorInput" 
+                placeholder="Search or select a doctor..."
+                autocomplete="off"
+                required
+              >
+              <div class="dropdown-arrow" id="dropdownArrow"></div>
+              <div class="dropdown-options" id="dropdownOptions">
+                <div class="dropdown-option" data-value="1" data-name="Dr. Sarah Johnson" data-specialty="General Dentistry" data-license="DDS123456" data-experience="8 years">
+                  Dr. Sarah Johnson - General Dentistry
+                </div>
+                <div class="dropdown-option" data-value="2" data-name="Dr. Michael Chen" data-specialty="Orthodontics" data-license="DDS789012" data-experience="12 years">
+                  Dr. Michael Chen - Orthodontics
+                </div>
+                <div class="dropdown-option" data-value="3" data-name="Dr. Emily Rodriguez" data-specialty="Oral Surgery" data-license="DDS345678" data-experience="15 years">
+                  Dr. Emily Rodriguez - Oral Surgery
+                </div>
+                <div class="dropdown-option" data-value="4" data-name="Dr. James Wilson" data-specialty="Pediatric Dentistry" data-license="DDS901234" data-experience="6 years">
+                  Dr. James Wilson - Pediatric Dentistry
+                </div>
+                <div class="dropdown-option" data-value="5" data-name="Dr. Lisa Thompson" data-specialty="Endodontics" data-license="DDS567890" data-experience="10 years">
+                  Dr. Lisa Thompson - Endodontics
+                </div>
+                <div class="dropdown-option" data-value="6" data-name="Dr. Robert Davis" data-specialty="Periodontics" data-license="DDS234567" data-experience="18 years">
+                  Dr. Robert Davis - Periodontics
+                </div>
+                <div class="no-results" id="noResults" style="display: none;">
+                  No doctors found matching your search
+                </div>
+              </div>
+            </div>
+            <div class="input-hint">Type to search for a doctor or click the arrow to browse all doctors</div>
+            
+            <!-- Add New Doctor Button -->
+            <button type="button" class="add-doctor-btn" onclick="addNewDoctor()">
+              <span>+</span>
+              Add New Doctor
+            </button>
+          </div>
+
+          <!-- Hidden input to store selected doctor ID -->
+          <input type="hidden" id="selectedDoctorId" name="doctorId">
+
+          <!-- Doctor Preview -->
+          <div class="doctor-preview" id="doctorPreview">
+            <div class="doctor-info">
+              <div class="doctor-avatar" id="doctorAvatar">SJ</div>
+              <div class="doctor-details">
+                <h4 id="doctorName">Dr. Sarah Johnson</h4>
+                <p><strong>Specialty:</strong> <span id="doctorSpecialty">General Dentistry</span></p>
+                <p><strong>License:</strong> <span id="doctorLicense">DDS123456</span></p>
+                <p><strong>Experience:</strong> <span id="doctorExperience">8 years</span></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">
+              Start Date <span class="required">*</span>
+            </label>
+            <input 
+              type="date" 
+              class="form-input" 
+              id="startDate" 
+              name="startDate" 
+              required
+            >
+            <div class="input-hint">When will this doctor start working at the practice?</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">End Date (Optional)</label>
+            <input 
+              type="date" 
+              class="form-input" 
+              id="endDate" 
+              name="endDate"
+            >
+            <div class="input-hint">Leave blank if this is a permanent assignment</div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="resetForm()">
+            Clear Form
+          </button>
+          <button type="submit" class="btn btn-primary">
+            Add Doctor to Practice
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add New Doctor Modal -->
+  <div class="modal-overlay" id="newDoctorModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <h2>➕ Add New Doctor</h2>
+          <p>Register a new dental professional to our network</p>
+        </div>
+        <button class="modal-close" onclick="closeNewDoctorModal()">✕ Close</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-success-message" id="modalSuccessMessage">
+          ✅ Doctor profile created successfully!
+        </div>
+
+        <div class="modal-error-message" id="modalErrorMessage">
+          ❌ Please check the form for errors and try again.
+        </div>
+
+        <form id="newDoctorForm">
+          <div class="modal-form-section">
+            <h3>👨‍⚕️ Personal Information</h3>
+            
+            <div class="modal-form-group">
+              <label for="newDoctorFullName">Full Name <span class="required">*</span></label>
+              <input type="text" id="newDoctorFullName" name="fullName" placeholder="Dr. Sarah Johnson" required>
+            </div>
+
+            <div class="modal-form-group">
+              <label for="newDoctorUsername">Username <span class="required">*</span></label>
+              <input type="text" id="newDoctorUsername" name="username" placeholder="sarah.johnson" required>
+              <div class="modal-help-text">Unique username for login purposes</div>
+            </div>
+          </div>
+
+          <div class="modal-form-section">
+            <h3>📞 Contact Information</h3>
+            
+            <div class="modal-form-group">
+              <label for="newDoctorEmail">Email Address <span class="required">*</span></label>
+              <input type="email" id="newDoctorEmail" name="email" placeholder="sarah.johnson@dentalclinic.com" required>
+            </div>
+
+            <div class="modal-form-group">
+              <label for="newDoctorPhone">Phone Number <span class="required">*</span></label>
+              <input type="tel" id="newDoctorPhone" name="phone" placeholder="(555) 123-4567" required>
+            </div>
+          </div>
+
+          <div class="modal-form-actions">
+            <button type="button" class="btn btn-secondary" onclick="resetNewDoctorForm()">
+              🔄 Reset Form
+            </button>
+            <button type="submit" class="btn btn-primary">
+              ✅ Create Doctor Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Doctor dropdown functionality
+    const doctorInput = document.getElementById('doctorInput');
+    const dropdownOptions = document.getElementById('dropdownOptions');
+    const dropdownArrow = document.getElementById('dropdownArrow');
+    const selectedDoctorId = document.getElementById('selectedDoctorId');
+    const noResults = document.getElementById('noResults');
+    let isDropdownOpen = false;
+
+    // Set today's date as default start date
+    document.getElementById('startDate').valueAsDate = new Date();
+
+    // Toggle dropdown
+    function toggleDropdown() {
+      isDropdownOpen = !isDropdownOpen;
+      dropdownOptions.classList.toggle('show', isDropdownOpen);
+      dropdownArrow.classList.toggle('open', isDropdownOpen);
+    }
+
+    // Close dropdown
+    function closeDropdown() {
+      isDropdownOpen = false;
+      dropdownOptions.classList.remove('show');
+      dropdownArrow.classList.remove('open');
+    }
+
+    // Filter dropdown options
+    function filterOptions() {
+      const searchTerm = doctorInput.value.toLowerCase();
+      const options = dropdownOptions.querySelectorAll('.dropdown-option');
+      let visibleCount = 0;
+
+      options.forEach(option => {
+        const text = option.textContent.toLowerCase();
+        const isVisible = text.includes(searchTerm);
+        option.classList.toggle('hidden', !isVisible);
+        if (isVisible) visibleCount++;
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+      
+      if (!isDropdownOpen && searchTerm) {
+        toggleDropdown();
+      }
+    }
+
+    // Select doctor option
+    function selectDoctor(option) {
+      const doctorId = option.getAttribute('data-value');
+      const doctorName = option.getAttribute('data-name');
+      
+      doctorInput.value = doctorName;
+      selectedDoctorId.value = doctorId;
+      closeDropdown();
+      showDoctorPreview(option);
+    }
+
+    // Show doctor preview
+    function showDoctorPreview(option) {
+      const preview = document.getElementById('doctorPreview');
+      
+      if (option) {
+        const name = option.getAttribute('data-name');
+        const specialty = option.getAttribute('data-specialty');
+        const license = option.getAttribute('data-license');
+        const experience = option.getAttribute('data-experience');
+        
+        // Update preview content
+        document.getElementById('doctorName').textContent = name;
+        document.getElementById('doctorSpecialty').textContent = specialty;
+        document.getElementById('doctorLicense').textContent = license;
+        document.getElementById('doctorExperience').textContent = experience;
+        
+        // Update avatar with initials
+        const initials = name.split(' ').map(word => word.charAt(0)).join('');
+        document.getElementById('doctorAvatar').textContent = initials;
+        
+        preview.classList.add('show');
+      } else {
+        preview.classList.remove('show');
+      }
+    }
+
+    // Event listeners
+    doctorInput.addEventListener('input', filterOptions);
+    doctorInput.addEventListener('focus', () => {
+      if (!isDropdownOpen) toggleDropdown();
+    });
+
+    dropdownArrow.addEventListener('click', toggleDropdown);
+
+    // Handle option clicks
+    dropdownOptions.addEventListener('click', (e) => {
+      if (e.target.classList.contains('dropdown-option') && !e.target.classList.contains('hidden')) {
+        selectDoctor(e.target);
+      }
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.searchable-dropdown')) {
+        closeDropdown();
+      }
+    });
+
+    // Validate input on blur
+    doctorInput.addEventListener('blur', () => {
+      setTimeout(() => {
+        if (!selectedDoctorId.value && doctorInput.value) {
+          // Check if the input matches any doctor name exactly
+          const options = dropdownOptions.querySelectorAll('.dropdown-option');
+          let found = false;
+          
+          options.forEach(option => {
+            if (option.getAttribute('data-name').toLowerCase() === doctorInput.value.toLowerCase()) {
+              selectDoctor(option);
+              found = true;
+            }
+          });
+          
+          if (!found) {
+            doctorInput.style.borderColor = '#e74c3c';
+            showError('Please select a valid doctor from the list or add a new doctor.');
+          }
+        }
+      }, 200);
+    });
+
+    // Add new doctor function
+    function addNewDoctor() {
+      openNewDoctorModal();
+    }
+
+    // Modal functions
+    function openNewDoctorModal() {
+      document.getElementById('newDoctorModal').classList.add('show');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+      hideModalMessages();
+    }
+
+    function closeNewDoctorModal() {
+      // Check if form has any data entered
+      if (hasFormData() && 
+          !confirm('Are you sure you want to close? Any unsaved changes will be lost.')) {
+        return;
+      }
+      document.getElementById('newDoctorModal').classList.remove('show');
+      document.body.style.overflow = 'auto'; // Restore scrolling
+      resetNewDoctorForm();
+    }
+
+    // Function to check if form has any data entered
+    function hasFormData() {
+      const form = document.getElementById('newDoctorForm');
+      const inputs = form.querySelectorAll('input, select, textarea');
+      
+      for (let input of inputs) {
+        if (input.value.trim() !== '') {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function resetNewDoctorForm() {
+      document.getElementById('newDoctorForm').reset();
+      hideModalMessages();
+    }
+
+    function hideModalMessages() {
+      document.getElementById('modalSuccessMessage').style.display = 'none';
+      document.getElementById('modalErrorMessage').style.display = 'none';
+    }
+
+    function showModalSuccess(message) {
+      hideModalMessages();
+      const successEl = document.getElementById('modalSuccessMessage');
+      successEl.textContent = message || '✅ Doctor profile created successfully!';
+      successEl.style.display = 'block';
+    }
+
+    function showModalError(message) {
+      hideModalMessages();
+      const errorEl = document.getElementById('modalErrorMessage');
+      errorEl.textContent = message || '❌ Please check the form for errors and try again.';
+      errorEl.style.display = 'block';
+    }
+
+    // Add new doctor to dropdown options
+    function addDoctorToDropdown(doctorData) {
+      const dropdownOptions = document.getElementById('dropdownOptions');
+      const noResults = document.getElementById('noResults');
+      
+      // Create new option element
+      const newOption = document.createElement('div');
+      newOption.className = 'dropdown-option';
+      newOption.setAttribute('data-value', doctorData.id);
+      newOption.setAttribute('data-name', doctorData.fullName);
+      newOption.setAttribute('data-specialty', 'General Dentistry'); // Default specialty
+      newOption.setAttribute('data-license', 'TBD'); // To be determined
+      newOption.setAttribute('data-experience', 'New Doctor'); // New doctor indicator
+      newOption.textContent = `${doctorData.fullName} - New Doctor`;
+      
+      // Add click event to new option
+      newOption.addEventListener('click', () => {
+        if (!newOption.classList.contains('hidden')) {
+          selectDoctor(newOption);
+        }
+      });
+      
+      // Insert before the "no results" element
+      dropdownOptions.insertBefore(newOption, noResults);
+      
+      // Auto-select the newly created doctor
+      selectDoctor(newOption);
+    }
+
+    // Generate unique ID for new doctors (in real app, this would come from backend)
+    function generateDoctorId() {
+      return Date.now().toString();
+    }
+
+    // Auto-format phone numbers in modal
+    function formatPhoneNumber(input) {
+      let value = input.value.replace(/\D/g, '');
+      if (value.length >= 6) {
+        value = value.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+      } else if (value.length >= 3) {
+        value = value.replace(/(\d{3})(\d{0,3})/, '($1) $2');
+      }
+      input.value = value;
+    }
+
+    // New Doctor Form submission
+    document.getElementById('newDoctorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const doctorData = Object.fromEntries(formData.entries());
+      
+      // Basic validation
+      const requiredFields = ['fullName', 'username', 'email', 'phone'];
+      let isValid = true;
+      let missingField = '';
+      
+      for (let field of requiredFields) {
+        if (!doctorData[field] || doctorData[field].trim() === '') {
+          isValid = false;
+          missingField = field;
+          break;
+        }
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (isValid && !emailRegex.test(doctorData.email)) {
+        isValid = false;
+        showModalError('❌ Please enter a valid email address.');
+        return;
+      }
+      
+      // Username validation (basic check for special characters)
+      if (isValid && !/^[a-zA-Z0-9._-]+$/.test(doctorData.username)) {
+        isValid = false;
+        showModalError('❌ Username can only contain letters, numbers, dots, hyphens, and underscores.');
+        return;
+      }
+      
+      if (isValid) {
+        // Add unique ID
+        doctorData.id = generateDoctorId();
+        
+        // Simulate API call
+        showModalSuccess('✅ Creating doctor profile...');
+        
+        setTimeout(() => {
+          // Log the data that would be sent to the database
+          console.log('New doctor data to be saved:', doctorData);
+          console.log('SQL would be similar to:');
+          console.log(`INSERT INTO tbDoctors (FullName, Username, Email, Phone) 
+VALUES ('${doctorData.fullName}', '${doctorData.username}', '${doctorData.email}', '${doctorData.phone}')`);
+          
+          // Add doctor to dropdown and select them
+          addDoctorToDropdown(doctorData);
+          
+          showModalSuccess(`✅ ${doctorData.fullName} has been successfully added to the network!`);
+          
+          // Close modal after success
+          setTimeout(() => {
+            closeNewDoctorModal();
+            showSuccess(`${doctorData.fullName} has been selected for this practice assignment.`);
+          }, 2000);
+          
+        }, 1500);
+      } else {
+        showModalError(`❌ Please fill in the required field: ${missingField.replace(/([A-Z])/g, ' $1').toLowerCase()}.`);
+      }
+    });
+
+    // Add phone formatting to modal phone input
+    document.getElementById('newDoctorPhone').addEventListener('input', function() {
+      formatPhoneNumber(this);
+    });
+
+    // Close modal when clicking outside of it
+    document.getElementById('newDoctorModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeNewDoctorModal();
+      }
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('newDoctorModal').classList.contains('show')) {
+        closeNewDoctorModal();
+      }
+    });
+
+    // Form submission
+    document.getElementById('addDoctorForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const doctorId = selectedDoctorId.value;
+      
+      const assignmentData = {
+        practiceId: 1, // This would come from the practice context
+        doctorId: parseInt(doctorId),
+        startDate: formData.get('startDate'),
+        endDate: formData.get('endDate') || null
+      };
+
+      // Validate required fields
+      if (!doctorId) {
+        showError('Please select a doctor.');
+        doctorInput.focus();
+        return;
+      }
+
+      if (!assignmentData.startDate) {
+        showError('Start date is required.');
+        return;
+      }
+
+      // Validate date logic
+      if (assignmentData.endDate && new Date(assignmentData.endDate) <= new Date(assignmentData.startDate)) {
+        showError('End date must be after start date.');
+        return;
+      }
+
+      // Show loading state
+      showLoading(true);
+
+      // Simulate API call
+      setTimeout(() => {
+        showLoading(false);
+        const doctorName = doctorInput.value;
+        showSuccess(`${doctorName} has been successfully added to the practice!`);
+        
+        // Log the data that would be sent to the database
+        console.log('Doctor assignment data to be inserted:', assignmentData);
+        console.log('SQL would be similar to:');
+        console.log(`INSERT INTO tbDoctor_Practice (PracitceID, DoctorID, StartDate, EndDate) 
+VALUES (${assignmentData.practiceId}, ${assignmentData.doctorId}, '${assignmentData.startDate}', ${assignmentData.endDate ? "'" + assignmentData.endDate + "'" : 'NULL'})`);
+        
+        // Reset form after successful submission
+        setTimeout(() => {
+          resetForm();
+          hideMessages();
+        }, 3000);
+      }, 1500);
+    });
+
+    function showError(message) {
+      const errorEl = document.getElementById('errorMessage');
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+      document.getElementById('successMessage').style.display = 'none';
+      
+      // Scroll to top to show message
+      document.querySelector('.app-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function showSuccess(message) {
+      const successEl = document.getElementById('successMessage');
+      successEl.textContent = message;
+      successEl.style.display = 'block';
+      document.getElementById('errorMessage').style.display = 'none';
+      
+      // Scroll to top to show message
+      document.querySelector('.app-container').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideMessages() {
+      document.getElementById('errorMessage').style.display = 'none';
+      document.getElementById('successMessage').style.display = 'none';
+    }
+
+    function showLoading(isLoading) {
+      const container = document.querySelector('.app-container');
+      if (isLoading) {
+        container.classList.add('loading');
+      } else {
+        container.classList.remove('loading');
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('addDoctorForm').reset();
+      document.getElementById('startDate').valueAsDate = new Date();
+      doctorInput.value = '';
+      selectedDoctorId.value = '';
+      doctorInput.style.borderColor = '#e0e0e0';
+      document.getElementById('doctorPreview').classList.remove('show');
+      closeDropdown();
+      hideMessages();
+      
+      // Add visual feedback for form reset
+      const inputs = document.querySelectorAll('.form-input, .dropdown-input');
+      inputs.forEach(input => {
+        input.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          input.style.transform = 'scale(1)';
+        }, 200);
+      });
+    }
+
+    function goBack() {
+      if (confirm('Are you sure you want to go back? Any unsaved changes will be lost.')) {
+        alert('Returning to practice profile...');
+      }
+    }
+
+    // Add real-time validation feedback
+    document.addEventListener('DOMContentLoaded', function() {
+      const startDateInput = document.getElementById('startDate');
+      const endDateInput = document.getElementById('endDate');
+      
+      // Validate end date when it changes
+      endDateInput.addEventListener('change', function() {
+        const startDate = new Date(startDateInput.value);
+        const endDate = new Date(this.value);
+        
+        if (this.value && endDate <= startDate) {
+          this.style.borderColor = '#e74c3c';
+          showError('End date must be after start date.');
+        } else {
+          this.style.borderColor = '#197CAE';
+          hideMessages();
+        }
+      });
+
+      // Add hover effects to form sections
+      const sections = document.querySelectorAll('.form-section');
+      sections.forEach(section => {
+        section.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-2px)';
+        });
+        section.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
