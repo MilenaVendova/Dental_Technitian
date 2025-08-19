@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management - Dental Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #BCDDE4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .app-container {
+            background: #EDEDED;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            padding: 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-info h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header-info p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #FFCB05;
+            color: #003049;
+        }
+
+        .btn-primary:hover {
+            background: #e6b405;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            border-color: #197CAE;
+            transform: translateY(-2px);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #197CAE;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #003049;
+            font-size: 12px;
+        }
+
+        .page-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            padding: 10px 15px 10px 40px;
+            border: 2px solid #197CAE;
+            border-radius: 20px;
+            font-size: 14px;
+            width: 250px;
+            background: white;
+        }
+
+        .search-box::before {
+            content: "🔍";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #197CAE;
+            border-radius: 20px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .patients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .patient-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .patient-card:hover {
+            border-color: #197CAE;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 48, 73, 0.1);
+        }
+
+        .patient-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .patient-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .patient-info h3 {
+            color: #003049;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .patient-age {
+            color: #197CAE;
+            font-size: 13px;
+        }
+
+        .patient-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 2px;
+        }
+
+        .detail-value {
+            font-size: 14px;
+            color: #003049;
+            font-weight: 500;
+        }
+
+        .cases-summary {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #197CAE;
+        }
+
+        .cases-summary h4 {
+            color: #003049;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .case-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .case-type {
+            color: #003049;
+            font-weight: 500;
+        }
+
+        .case-status {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #e8f5e8;
+            color: #388e3c;
+        }
+
+        .status-in-progress {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .status-urgent {
+            background: #ffebee;
+            color: #d32f2f;
+        }
+
+        .status-new {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .patient-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 15px;
+        }
+
+        .doctor-badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #003049;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideInModal {
+            from {
+                opacity: 0;
+                transform: translateY(-30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-container {
+            background: #EDEDED;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: slideInModal 0.4s ease-out;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            padding: 25px 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .modal-header p {
+            opacity: 0.9;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-close:active {
+            transform: scale(0.95);
+        }
+
+        .modal-content {
+            padding: 30px;
+            max-height: calc(90vh - 120px);
+            overflow-y: auto;
+        }
+
+        /* Form Styles for Modal */
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .form-card:hover {
+            border-color: #197CAE;
+            transform: translateY(-2px);
+        }
+
+        .form-card h3 {
+            color: #003049;
+            font-size: 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #EDEDED;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: #003049;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #EDEDED;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            border-color: #197CAE;
+            box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='4' height='5'><path fill='%23197CAE' d='M2 0L0 2h4zm0 5L0 3h4z'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 12px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #EDEDED;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .field-counter {
+            color: #197CAE;
+            font-size: 12px;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        .required-indicator {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-color: #28a745;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border-color: #17a2b8;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #EDEDED;
+            justify-content: center;
+        }
+
+        .form-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .form-btn-primary {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+        }
+
+        .form-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(25, 124, 174, 0.4);
+        }
+
+        .form-btn-secondary {
+            background: #EDEDED;
+            color: #003049;
+            border: 2px solid #197CAE;
+        }
+
+        .form-btn-secondary:hover {
+            background: #BCDDE4;
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .page-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters {
+                justify-content: center;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .patients-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .patient-details {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-container {
+                margin: 10px;
+                max-height: 95vh;
+            }
+
+            .form-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="header-info">
+                <h1>Patient Management</h1>
+                <p>Manage all patients across dental practices</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-primary" onclick="addNewPatient()">+ New Patient</button>
+                <a href="#" class="btn btn-secondary" onclick="goHome()">← Back to Dashboard</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Statistics Bar -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalPatients">35</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeCases">18</div>
+                    <div class="stat-label">Active Cases</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completedCases">47</div>
+                    <div class="stat-label">Completed Cases</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="urgentCases">5</div>
+                    <div class="stat-label">Urgent Cases</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="practices">4</div>
+                    <div class="stat-label">Practices</div>
+                </div>
+            </div>
+
+            <!-- Page Controls -->
+            <div class="page-controls">
+                <div class="search-filters">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search patients..." onkeyup="filterPatients()">
+                    </div>
+                    <select class="filter-select" id="doctorFilter" onchange="filterPatients()">
+                        <option value="">All Doctors</option>
+                        <option value="Dr. Sarah Johnson">Dr. Sarah Johnson</option>
+                        <option value="Dr. Michael Martinez">Dr. Michael Martinez</option>
+                        <option value="Dr. Lisa Williams">Dr. Lisa Williams</option>
+                        <option value="Dr. David Chen">Dr. David Chen</option>
+                    </select>
+                    <select class="filter-select" id="practiceFilter" onchange="filterPatients()">
+                        <option value="">All Practices</option>
+                        <option value="Downtown Dental Clinic">Downtown Dental</option>
+                        <option value="Elite Smile Center">Elite Smile</option>
+                        <option value="Perfect Teeth Practice">Perfect Teeth</option>
+                        <option value="Advanced Dental Care">Advanced Dental</option>
+                    </select>
+                    <select class="filter-select" id="statusFilter" onchange="filterPatients()">
+                        <option value="">All Statuses</option>
+                        <option value="urgent">Urgent Cases</option>
+                        <option value="in-progress">Active Cases</option>
+                        <option value="completed">Recent Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Patients Grid -->
+            <div class="patients-grid" id="patientsGrid">
+                <!-- Patients will be populated by JavaScript -->
+            </div>
+
+            <div class="no-results" id="noResults" style="display: none;">
+                <h3>No patients found</h3>
+                <p>Try adjusting your search criteria</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Patient Modal -->
+    <div class="modal-overlay" id="addPatientModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div>
+                    <h2>➕ Add New Patient</h2>
+                    <p>Create a new patient profile with complete information</p>
+                </div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+
+            <div class="modal-content">
+                <div id="successAlert" class="alert alert-success" style="display: none;">
+                    New patient profile created successfully!
+                </div>
+
+                <div id="infoAlert" class="alert alert-info">
+                    💡 Fill in the patient information below. Only first and last name are required fields.
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <form id="newPatientForm">
+                    <div class="form-grid">
+                        <!-- Basic Information -->
+                        <div class="form-card">
+                            <h3>👤 Basic Information</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">First Name <span class="required-indicator">*</span></label>
+                                <input type="text" class="form-input" id="firstName" placeholder="Enter first name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Last Name <span class="required-indicator">*</span></label>
+                                <input type="text" class="form-input" id="lastName" placeholder="Enter last name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="dateOfBirth">Date of Birth</label>
+                                <input type="date" class="form-input" id="dateOfBirth">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="gender">Gender</label>
+                                <select class="form-input form-select" id="gender">
+                                    <option value="">Select gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                    <option value="prefer-not-to-say">Prefer not to say</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="toothShade">Natural Tooth Shade</label>
+                                <input type="text" class="form-input" id="toothShade" placeholder="e.g., A1, A2, B1, C2" maxlength="10">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="insurance">Health Insurance Number</label>
+                                <textarea class="form-input form-textarea" id="insurance" placeholder="Enter health insurance number" maxlength="20"></textarea>
+                                <div class="field-counter" id="insuranceCounter">0/20</div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="form-card">
+                            <h3>📞 Contact Information</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone Number</label>
+                                <input type="tel" class="form-input" id="phone" placeholder="(555) 123-4567">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input type="email" class="form-input" id="email" placeholder="patient@email.com">
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="form-card">
+                            <h3>📝 Notes</h3>
+                            
+                            <div class="form-group">
+                                <label class="form-label" for="notes">Patient Notes</label>
+                                <textarea class="form-input form-textarea" id="notes" placeholder="Enter any relevant notes, observations, preferences, or special instructions for this patient" rows="4" maxlength="2048"></textarea>
+                                <div class="field-counter" id="notesCounter">0/2048</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="form-btn form-btn-secondary" onclick="resetForm()">Clear Form</button>
+                        <button type="submit" class="form-btn form-btn-primary">➕ Create Patient</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Expanded patients data from multiple doctors and practices
+        const patients = [
+            {
+                id: 1,
+                name: "Maria Rodriguez",
+                age: 38,
+                phone: "(555) 123-4567",
+                email: "maria.rodriguez@email.com",
+                lastVisit: "2025-08-15",
+                doctor: "Dr. Sarah Johnson",
+                practice: "Downtown Dental Clinic",
+                cases: [
+                    { type: "Crown Restoration", tooth: "#14", status: "in-progress", date: "2025-08-20" },
+                    { type: "Bridge (3-unit)", tooth: "#12-14", status: "completed", date: "2025-07-15" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Emily Johnson",
+                age: 35,
+                phone: "(555) 567-8901",
+                email: "emily.johnson@email.com",
+                lastVisit: "2025-08-12",
+                doctor: "Dr. Michael Martinez",
+                practice: "Elite Smile Center",
+                cases: [
+                    { type: "Bridge (4-unit)", tooth: "#13-16", status: "in-progress", date: "2025-08-25" },
+                    { type: "Temporary Crown", tooth: "#13", status: "completed", date: "2025-08-01" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Patricia Williams",
+                age: 42,
+                phone: "(555) 234-5678",
+                email: "patricia.williams@email.com",
+                lastVisit: "2025-08-10",
+                doctor: "Dr. Lisa Williams",
+                practice: "Perfect Teeth Practice",
+                cases: [
+                    { type: "Porcelain Veneers", tooth: "#7-10", status: "completed", date: "2025-08-05" },
+                    { type: "Crown Restoration", tooth: "#6", status: "urgent", date: "2025-08-18" },
+                    { type: "Inlay", tooth: "#19", status: "completed", date: "2025-07-20" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Michael Thompson",
+                age: 29,
+                phone: "(555) 345-6789",
+                email: "michael.thompson@email.com",
+                lastVisit: "2025-08-08",
+                doctor: "Dr. David Chen",
+                practice: "Advanced Dental Care",
+                cases: [
+                    { type: "Implant Crown", tooth: "#19", status: "completed", date: "2025-08-10" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Jennifer Davis",
+                age: 45,
+                phone: "(555) 456-7890",
+                email: "jennifer.davis@email.com",
+                lastVisit: "2025-08-07",
+                doctor: "Dr. Sarah Johnson",
+                practice: "Downtown Dental Clinic",
+                cases: [
+                    { type: "Bridge (4-unit)", tooth: "#25-28", status: "in-progress", date: "2025-08-22" },
+                    { type: "Crown Restoration", tooth: "#30", status: "completed", date: "2025-07-25" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Robert Wilson",
+                age: 52,
+                phone: "(555) 678-9012",
+                email: "robert.wilson@email.com",
+                lastVisit: "2025-08-05",
+                doctor: "Dr. Michael Martinez",
+                practice: "Elite Smile Center",
+                cases: [
+                    { type: "Partial Denture", tooth: "Lower Left", status: "urgent", date: "2025-08-19" },
+                    { type: "Crown Restoration", tooth: "#4", status: "completed", date: "2025-07-15" }
+                ]
+            },
+            {
+                id: 7,
+                name: "Linda Martinez",
+                age: 39,
+                phone: "(555) 789-0123",
+                email: "linda.martinez@email.com",
+                lastVisit: "2025-08-03",
+                doctor: "Dr. Lisa Williams",
+                practice: "Perfect Teeth Practice",
+                cases: [
+                    { type: "Orthodontic Retainer", tooth: "Upper/Lower", status: "completed", date: "2025-08-03" },
+                    { type: "Whitening Trays", tooth: "Full Arch", status: "new", date: "2025-08-20" }
+                ]
+            },
+            {
+                id: 8,
+                name: "David Anderson",
+                age: 47,
+                phone: "(555) 890-1234",
+                email: "david.anderson@email.com",
+                lastVisit: "2025-08-01",
+                doctor: "Dr. David Chen",
+                practice: "Advanced Dental Care",
+                cases: [
+                    { type: "Crown Restoration", tooth: "#8", status: "urgent", date: "2025-08-18" },
+                    { type: "Veneer", tooth: "#9", status: "in-progress", date: "2025-08-25" }
+                ]
+            },
+            {
+                id: 9,
+                name: "Susan Brown",
+                age: 33,
+                phone: "(555) 901-2345",
+                email: "susan.brown@email.com",
+                lastVisit: "2025-07-30",
+                doctor: "Dr. Sarah Johnson",
+                practice: "Downtown Dental Clinic",
+                cases: [
+                    { type: "Whitening Trays", tooth: "Full Arch", status: "completed", date: "2025-07-30" }
+                ]
+            },
+            {
+                id: 10,
+                name: "James Garcia",
+                age: 41,
+                phone: "(555) 012-3456",
+                email: "james.garcia@email.com",
+                lastVisit: "2025-07-28",
+                doctor: "Dr. Michael Martinez",
+                practice: "Elite Smile Center",
+                cases: [
+                    { type: "Bridge (3-unit)", tooth: "#14-16", status: "in-progress", date: "2025-08-21" },
+                    { type: "Crown Restoration", tooth: "#3", status: "urgent", date: "2025-08-19" }
+                ]
+            },
+            {
+                id: 11,
+                name: "Nancy Taylor",
+                age: 55,
+                phone: "(555) 111-2222",
+                email: "nancy.taylor@email.com",
+                lastVisit: "2025-07-25",
+                doctor: "Dr. Lisa Williams",
+                practice: "Perfect Teeth Practice",
+                cases: [
+                    { type: "Complete Denture", tooth: "Upper", status: "in-progress", date: "2025-08-23" },
+                    { type: "Extraction", tooth: "#32", status: "completed", date: "2025-07-20" }
+                ]
+            },
+            {
+                id: 12,
+                name: "Kevin Moore",
+                age: 36,
+                phone: "(555) 333-4444",
+                email: "kevin.moore@email.com",
+                lastVisit: "2025-07-22",
+                doctor: "Dr. David Chen",
+                practice: "Advanced Dental Care",
+                cases: [
+                    { type: "Implant Crown", tooth: "#30", status: "new", date: "2025-08-30" }
+                ]
+            }
+        ];
+
+        let displayedPatients = [...patients];
+
+        function renderPatients(patientsToRender) {
+            const grid = document.getElementById('patientsGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (patientsToRender.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+            
+            grid.innerHTML = patientsToRender.map(patient => `
+                <div class="patient-card" onclick="viewPatientDetails(${patient.id})">
+                    <div class="patient-header">
+                        <div class="patient-avatar">${getInitials(patient.name)}</div>
+                        <div class="patient-info">
+                            <h3>${patient.name}</h3>
+                            <div class="patient-age">Age: ${patient.age}</div>
+                            <div class="doctor-badge">${patient.doctor}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="patient-details">
+                        <div class="detail-item">
+                            <div class="detail-label">Phone</div>
+                            <div class="detail-value">${patient.phone}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Practice</div>
+                            <div class="detail-value">${patient.practice.replace(' Clinic', '').replace(' Center', '').replace(' Practice', '').replace(' Care', '')}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Last Visit</div>
+                            <div class="detail-value">${formatDate(patient.lastVisit)}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Total Cases</div>
+                            <div class="detail-value">${patient.cases.length}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="cases-summary">
+                        <h4>Recent Cases</h4>
+                        ${patient.cases.slice(0, 3).map(case_ => `
+                            <div class="case-item">
+                                <span class="case-type">${case_.type} (${case_.tooth})</span>
+                                <span class="case-status status-${case_.status}">${case_.status.replace('-', ' ').toUpperCase()}</span>
+                            </div>
+                        `).join('')}
+                        ${patient.cases.length > 3 ? `<div style="font-size: 12px; color: #666; margin-top: 8px;">+${patient.cases.length - 3} more cases</div>` : ''}
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button class="btn btn-primary btn-small" onclick="event.stopPropagation(); viewPatientProfile(${patient.id})">
+                            View Profile
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="event.stopPropagation(); addNewCase(${patient.id})">
+                            New Case
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterPatients() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const doctorFilter = document.getElementById('doctorFilter').value;
+            const practiceFilter = document.getElementById('practiceFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            displayedPatients = patients.filter(patient => {
+                const matchesSearch = !searchTerm || 
+                    patient.name.toLowerCase().includes(searchTerm) ||
+                    patient.phone.includes(searchTerm) ||
+                    patient.email.toLowerCase().includes(searchTerm) ||
+                    patient.doctor.toLowerCase().includes(searchTerm) ||
+                    patient.practice.toLowerCase().includes(searchTerm) ||
+                    patient.cases.some(case_ => 
+                        case_.type.toLowerCase().includes(searchTerm) ||
+                        case_.status.toLowerCase().includes(searchTerm)
+                    );
+
+                const matchesDoctor = !doctorFilter || patient.doctor === doctorFilter;
+                const matchesPractice = !practiceFilter || patient.practice.includes(practiceFilter);
+                const matchesStatus = !statusFilter || patient.cases.some(case_ => case_.status === statusFilter);
+
+                return matchesSearch && matchesDoctor && matchesPractice && matchesStatus;
+            });
+            
+            renderPatients(displayedPatients);
+        }
+
+        function getInitials(name) {
+            return name.split(' ')
+                      .map(word => word.charAt(0))
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2);
+        }
+
+        function formatDate(dateString) {
+            return new Date(dateString).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function viewPatientProfile(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            alert(`👤 Opening full profile for ${patient.name}\n\nDoctor: ${patient.doctor}\nPractice: ${patient.practice}\n\nThis would show:\n• Complete patient information\n• Medical and dental history\n• All cases and treatments\n• Contact and insurance details\n• Treatment timeline\n• Photos and documentation\n• Communication history\n\nRedirecting to patient profile page...`);
+        }
+
+        function viewPatientDetails(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            const casesList = patient.cases.map(case_ => 
+                `• ${case_.type} (${case_.tooth}) - ${case_.status.toUpperCase()} - Due: ${formatDate(case_.date)}`
+            ).join('\n');
+            
+            alert(`👤 Patient Details: ${patient.name}\n\nAge: ${patient.age}\nPhone: ${patient.phone}\nEmail: ${patient.email}\nDoctor: ${patient.doctor}\nPractice: ${patient.practice}\nLast Visit: ${formatDate(patient.lastVisit)}\n\nCases:\n${casesList}\n\nThis would open the detailed patient profile with complete case history, photos, and notes.`);
+        }
+
+        function addNewCase(patientId) {
+            const patient = patients.find(p => p.id === patientId);
+            alert(`➕ Adding new case for ${patient.name}\n\nDoctor: ${patient.doctor}\nPractice: ${patient.practice}\n\nThis would open the case creation form with:\n• Case type selection\n• Tooth/area specification\n• Material preferences\n• Timeline and priority\n• Special instructions\n• Photos and impressions`);
+        }
+
+        // Modal Functions
+        function addNewPatient() {
+            document.getElementById('addPatientModal').style.display = 'flex';
+            document.getElementById('firstName').focus();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('addPatientModal');
+            const form = document.getElementById('newPatientForm');
+            
+            // Check if form has any data
+            const hasData = Array.from(form.elements).some(element => 
+                element.type !== 'submit' && element.type !== 'button' && element.value.trim() !== ''
+            );
+            
+            if (hasData) {
+                if (confirm('Are you sure you want to close? Any entered information will be lost.')) {
+                    modal.style.display = 'none';
+                    resetForm();
+                }
+            } else {
+                modal.style.display = 'none';
+                resetForm();
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('newPatientForm').reset();
+            updateProgress();
+            resetCounters();
+            document.getElementById('successAlert').style.display = 'none';
+            document.getElementById('infoAlert').style.display = 'block';
+        }
+
+        function updateProgress() {
+            const requiredFields = ['firstName', 'lastName'];
+            const optionalFields = ['dateOfBirth', 'gender', 'toothShade', 'insurance', 'phone', 'email', 'notes'];
+            const allFields = [...requiredFields, ...optionalFields];
+            
+            let filledFields = 0;
+            allFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                if (field && field.value.trim() !== '') {
+                    filledFields++;
+                }
+            });
+            
+            const progress = (filledFields / allFields.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function setupCharacterCounters() {
+            const counters = [
+                { fieldId: 'insurance', counterId: 'insuranceCounter', maxLength: 20 },
+                { fieldId: 'notes', counterId: 'notesCounter', maxLength: 2048 }
+            ];
+
+            counters.forEach(counter => {
+                const field = document.getElementById(counter.fieldId);
+                const counterDisplay = document.getElementById(counter.counterId);
+                
+                if (field && counterDisplay) {
+                    field.addEventListener('input', function() {
+                        const currentLength = this.value.length;
+                        counterDisplay.textContent = `${currentLength}/${counter.maxLength}`;
+                        
+                        if (currentLength > counter.maxLength * 0.9) {
+                            counterDisplay.style.color = '#dc3545';
+                        } else if (currentLength > counter.maxLength * 0.7) {
+                            counterDisplay.style.color = '#856404';
+                        } else {
+                            counterDisplay.style.color = '#197CAE';
+                        }
+                    });
+                }
+            });
+        }
+
+        function resetCounters() {
+            const counterIds = ['insuranceCounter', 'notesCounter'];
+            const maxLengths = [20, 2048];
+            
+            counterIds.forEach((counterId, index) => {
+                const counter = document.getElementById(counterId);
+                if (counter) {
+                    counter.textContent = `0/${maxLengths[index]}`;
+                    counter.style.color = '#197CAE';
+                }
+            });
+        }
+
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 6) {
+                value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+            } else if (value.length >= 3) {
+                value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+            }
+            input.value = value;
+        }
+
+        function goHome() {
+            alert('🔙 Returning to dashboard...');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('addPatientModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('addPatientModal').style.display === 'flex') {
+                closeModal();
+            }
+        });
+
+        // Form submission
+        document.getElementById('newPatientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Collect form data
+            const patientData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                gender: document.getElementById('gender').value,
+                toothShade: document.getElementById('toothShade').value,
+                insurance: document.getElementById('insurance').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                notes: document.getElementById('notes').value
+            };
+            
+            // Show success message
+            document.getElementById('infoAlert').style.display = 'none';
+            const successAlert = document.getElementById('successAlert');
+            successAlert.style.display = 'block';
+            
+            // Scroll to top of modal
+            document.querySelector('.modal-content').scrollTop = 0;
+            
+            // After 2 seconds, ask if user wants to add another patient
+            setTimeout(() => {
+                if (confirm('Patient created successfully! 🎉\n\nWould you like to add another patient?')) {
+                    resetForm();
+                } else {
+                    closeModal();
+                    // Update patient count in stats (simulate adding to the list)
+                    const totalPatientsElement = document.getElementById('totalPatients');
+                    const currentCount = parseInt(totalPatientsElement.textContent);
+                    totalPatientsElement.textContent = currentCount + 1;
+                }
+            }, 2000);
+            
+            console.log('New patient data:', patientData);
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            renderPatients(displayedPatients);
+            
+            // Setup modal form functionality
+            setupCharacterCounters();
+            
+            // Phone number formatting for modal form
+            const phoneInput = document.getElementById('phone');
+            phoneInput.addEventListener('input', function() {
+                formatPhoneNumber(this);
+            });
+            
+            // Progress tracking for modal form
+            const formInputs = document.querySelectorAll('.form-input, .form-select, .form-textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+                input.addEventListener('change', updateProgress);
+                
+                // Visual feedback on focus
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#197CAE';
+                    this.style.boxShadow = '0 0 0 3px rgba(25, 124, 174, 0.1)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (this.value.trim() === '' && this.hasAttribute('required')) {
+                        this.style.borderColor = '#dc3545';
+                        this.style.boxShadow = '0 0 0 3px rgba(220, 53, 69, 0.1)';
+                    } else {
+                        this.style.borderColor = '#EDEDED';
+                        this.style.boxShadow = 'none';
+                    }
+                });
+            });
+            
+            // Animate stats on load
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalValue = parseInt(stat.textContent);
+                stat.textContent = '0';
+
+                let current = 0;
+                const increment = finalValue / 20;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= finalValue) {
+                        stat.textContent = finalValue;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current);
+                    }
+                }, 50);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Reports - Dental Laboratory</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #BCDDE4;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #EDEDED;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            padding: 30px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        .header p {
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .back-btn, .export-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .back-btn:hover, .export-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .controls-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 20px;
+            align-items: end;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #003049;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #EDEDED;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #197CAE;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(25, 124, 174, 0.15);
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            height: fit-content;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(25, 124, 174, 0.3);
+        }
+
+        .metrics-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 48, 73, 0.08);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .metric-card:hover {
+            border-color: #197CAE;
+            transform: translateY(-2px);
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .metric-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #003049;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .metric-trend {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .trend-up {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .metric-value {
+            font-size: 42px;
+            font-weight: bold;
+            color: #197CAE;
+            margin-bottom: 8px;
+        }
+
+        .metric-subtitle {
+            color: #7C8B99;
+            font-size: 14px;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 48, 73, 0.08);
+            border: none;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 48, 73, 0.12);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #003049;
+        }
+
+        .chart-period {
+            font-size: 12px;
+            color: #7C8B99;
+            background: linear-gradient(135deg, #EDEDED, #d4e6f1);
+            padding: 6px 15px;
+            border-radius: 20px;
+            border: 1px solid rgba(25, 124, 174, 0.1);
+        }
+
+        .chart-container {
+            position: relative;
+            height: auto;
+            width: 100%;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border: none;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tier List Styles */
+        .tier-list-container {
+            width: 100%;
+        }
+
+        .tier-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            background: white;
+        }
+
+        .tier-label {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            margin: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tier-items {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 15px 10px;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            min-height: 90px;
+            border-radius: 0 25px 25px 0;
+        }
+
+        .tier-item {
+            background: linear-gradient(135deg, #197CAE 0%, #003049 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            width: 100%;
+            height: 60px;
+            box-shadow: 0 4px 12px rgba(25, 124, 174, 0.3);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            gap: 8px;
+        }
+
+        .tier-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(25, 124, 174, 0.4);
+            background: linear-gradient(135deg, #003049 0%, #197CAE 100%);
+        }
+
+        .item-name {
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .item-count {
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.95;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 4px 12px;
+            border-radius: 15px;
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        /* Ranking Colors */
+        .first-place .tier-label {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .second-place .tier-label {
+            background: linear-gradient(135deg, #C0C0C0, #A9A9A9);
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4);
+        }
+
+        .third-place .tier-label {
+            background: linear-gradient(135deg, #CD7F32, #B8860B);
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.4);
+        }
+
+        .fourth-place .tier-label {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+        }
+
+        .fifth-place .tier-label {
+            background: linear-gradient(135deg, #7B68EE, #6A5ACD);
+            box-shadow: 0 4px 15px rgba(123, 104, 238, 0.4);
+        }
+
+        /* Chart info */
+        .chart-card::after {
+            content: "Top 5 performers ranked 1st to 5th place";
+            display: block;
+            text-align: center;
+            font-size: 11px;
+            color: #7C8B99;
+            margin-top: 10px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        @media (min-width: 769px) {
+            .chart-card::after {
+                content: "Rankings based on monthly performance metrics";
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chart-card::after {
+                content: "1st = Best, 5th = 5th place";
+                font-size: 9px;
+                margin-top: 8px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .metrics-section {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header-actions {
+                flex-direction: row;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .metrics-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .charts-row {
+                gap: 20px;
+            }
+
+            .chart-card {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
+            .chart-container {
+                padding: 10px;
+            }
+
+            .chart-title {
+                font-size: 16px;
+                text-align: center;
+            }
+
+            .chart-period {
+                font-size: 11px;
+                text-align: center;
+            }
+
+            .chart-header {
+                text-align: center;
+                margin-bottom: 15px;
+            }
+
+            .metric-card {
+                padding: 20px;
+                margin-bottom: 10px;
+            }
+
+            .metric-value {
+                font-size: 28px;
+            }
+
+            .metric-title {
+                font-size: 14px;
+            }
+
+            /* Ranking list mobile adjustments */
+            .tier-label {
+                width: 60px;
+                height: 60px;
+                font-size: 16px;
+                margin: 8px;
+            }
+
+            .tier-items {
+                padding: 12px 8px;
+                gap: 8px;
+                justify-content: center;
+                min-height: 75px;
+            }
+
+            .tier-item {
+                flex: 1;
+                width: 100%;
+                height: 55px;
+                padding: 15px 20px;
+                border-radius: 40px;
+                gap: 6px;
+            }
+
+            .item-name {
+                font-size: 14px;
+                line-height: 1.2;
+            }
+
+            .item-count {
+                font-size: 11px;
+                padding: 3px 8px;
+                border-radius: 12px;
+            }
+
+            .chart-card {
+                border-radius: 20px;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .chart-container {
+                border-radius: 15px;
+                padding: 15px;
+            }
+
+            .tier-row {
+                border-radius: 20px;
+                margin-bottom: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+
+            .header {
+                padding: 15px;
+            }
+
+            .header h1 {
+                font-size: 20px;
+            }
+
+            .header p {
+                font-size: 13px;
+            }
+
+            .chart-card {
+                padding: 15px;
+                margin-bottom: 20px;
+                border-radius: 12px;
+            }
+
+            .chart-container {
+                padding: 10px;
+            }
+
+            .chart-header {
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .chart-title {
+                font-size: 15px;
+                font-weight: 600;
+            }
+
+            .chart-period {
+                font-size: 10px;
+                padding: 3px 8px;
+                margin-top: 5px;
+            }
+
+            .metric-value {
+                font-size: 24px;
+            }
+
+            .metric-title {
+                font-size: 13px;
+            }
+
+            .metric-card {
+                padding: 15px;
+                margin-bottom: 15px;
+            }
+
+            .metric-subtitle {
+                font-size: 12px;
+            }
+
+            .controls-section {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+
+            .form-select {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .generate-btn {
+                padding: 10px 20px;
+                font-size: 13px;
+            }
+
+            /* Ranking list mobile adjustments */
+            .tier-label {
+                width: 50px;
+                height: 50px;
+                font-size: 14px;
+                margin: 6px;
+            }
+
+            .tier-row {
+                margin-bottom: 10px;
+                border-radius: 18px;
+            }
+
+            .tier-items {
+                padding: 8px 6px;
+                gap: 6px;
+                min-height: 70px;
+                border-radius: 0 18px 18px 0;
+                justify-content: center;
+            }
+
+            .tier-item {
+                flex: 1;
+                width: 100%;
+                height: 50px;
+                padding: 12px 16px;
+                border-radius: 30px;
+                gap: 4px;
+            }
+
+            .item-name {
+                font-size: 13px;
+                line-height: 1.1;
+            }
+
+            .item-count {
+                font-size: 10px;
+                padding: 2px 6px;
+                border-radius: 10px;
+            }
+
+            .chart-card {
+                border-radius: 18px;
+                padding: 15px;
+                margin-bottom: 18px;
+            }
+
+            .chart-container {
+                border-radius: 12px;
+                padding: 12px;
+            }
+        }
+
+        /* Additional styling for better chart interaction */
+        .chart-container:hover {
+            box-shadow: 0 2px 8px rgba(25, 124, 174, 0.15);
+        }
+
+        .chart-container:focus-within {
+            outline: 2px solid #197CAE;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>📊 Lab Reports</h1>
+                <p>Production analytics and performance insights</p>
+            </div>
+            <div class="header-actions">
+                <button class="export-btn" onclick="exportReports()">
+                    📈 Export Reports
+                </button>
+                <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="controls-section">
+                <div class="controls-grid">
+                    <div class="form-group">
+                        <label>Report Period</label>
+                        <select class="form-select" id="periodFilter" onchange="updateReports()">
+                            <option value="week">This Week</option>
+                            <option value="month" selected>This Month</option>
+                            <option value="quarter">This Quarter</option>
+                            <option value="year">This Year</option>
+                            <option value="custom">Custom Range</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Department</label>
+                        <select class="form-select" id="departmentFilter" onchange="updateReports()">
+                            <option value="all" selected>All Departments</option>
+                            <option value="crowns">Crown & Bridge</option>
+                            <option value="dentures">Dentures</option>
+                            <option value="orthodontics">Orthodontics</option>
+                            <option value="implants">Implants</option>
+                        </select>
+                    </div>
+                    <button class="generate-btn" onclick="generateReport()">Generate Report</button>
+                </div>
+            </div>
+
+            <div class="metrics-section">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">📋 Total Orders</div>
+                        <div class="metric-trend trend-up">↗ +12%</div>
+                    </div>
+                    <div class="metric-value">347</div>
+                    <div class="metric-subtitle">This month vs last month</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">💰 Revenue</div>
+                        <div class="metric-trend trend-up">↗ +8%</div>
+                    </div>
+                    <div class="metric-value">$89,240</div>
+                    <div class="metric-subtitle">Monthly revenue generated</div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <div class="metric-title">👨‍⚕️ New Doctors</div>
+                        <div class="metric-trend trend-up">↗ +3</div>
+                    </div>
+                    <div class="metric-value">8</div>
+                    <div class="metric-subtitle">New partnerships this month</div>
+                </div>
+            </div>
+
+            <div class="charts-section">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">🏆 Top 5 Item Types</div>
+                        <div class="chart-period">This Month</div>
+                    </div>
+                    <div class="tier-list-container">
+                        <div class="tier-row first-place">
+                            <div class="tier-label">1st</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Crowns</span>
+                                    <span class="item-count">156 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row second-place">
+                            <div class="tier-label">2nd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Bridges</span>
+                                    <span class="item-count">76 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row third-place">
+                            <div class="tier-label">3rd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dentures</span>
+                                    <span class="item-count">63 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fourth-place">
+                            <div class="tier-label">4th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Implants</span>
+                                    <span class="item-count">28 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fifth-place">
+                            <div class="tier-label">5th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Veneers</span>
+                                    <span class="item-count">18 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">🏆 Top 5 Doctors</div>
+                        <div class="chart-period">This Month</div>
+                    </div>
+                    <div class="tier-list-container">
+                        <div class="tier-row first-place">
+                            <div class="tier-label">1st</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dr. Smith</span>
+                                    <span class="item-count">45 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row second-place">
+                            <div class="tier-label">2nd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dr. Johnson</span>
+                                    <span class="item-count">38 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row third-place">
+                            <div class="tier-label">3rd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dr. Brown</span>
+                                    <span class="item-count">32 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fourth-place">
+                            <div class="tier-label">4th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dr. Davis</span>
+                                    <span class="item-count">28 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fifth-place">
+                            <div class="tier-label">5th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Dr. Wilson</span>
+                                    <span class="item-count">24 orders</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-row">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title">🏆 Top 5 Materials</div>
+                        <div class="chart-period">This Month</div>
+                    </div>
+                    <div class="tier-list-container">
+                        <div class="tier-row first-place">
+                            <div class="tier-label">1st</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Zirconia</span>
+                                    <span class="item-count">142 uses</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row second-place">
+                            <div class="tier-label">2nd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">PMA</span>
+                                    <span class="item-count">89 uses</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row third-place">
+                            <div class="tier-label">3rd</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Porcelain</span>
+                                    <span class="item-count">67 uses</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fourth-place">
+                            <div class="tier-label">4th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Metal Alloy</span>
+                                    <span class="item-count">34 uses</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tier-row fifth-place">
+                            <div class="tier-label">5th</div>
+                            <div class="tier-items">
+                                <div class="tier-item">
+                                    <span class="item-name">Composite</span>
+                                    <span class="item-count">23 uses</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animate metric values on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const metricValues = document.querySelectorAll('.metric-value');
+            metricValues.forEach(metric => {
+                const text = metric.textContent;
+                const isNumber = !isNaN(parseFloat(text.replace(/[^0-9.-]/g, '')));
+                
+                if (isNumber) {
+                    const finalValue = parseFloat(text.replace(/[^0-9.-]/g, ''));
+                    const hasSymbol = text.includes('$');
+                    const symbol = text.includes('$') ? '$' : '';
+                    
+                    metric.textContent = hasSymbol ? symbol + '0' : '0';
+                    
+                    let current = 0;
+                    const increment = finalValue / 40;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= finalValue) {
+                            metric.textContent = text;
+                            clearInterval(timer);
+                        } else {
+                            const displayValue = Math.floor(current);
+                            if (symbol === '$') {
+                                metric.textContent = '$' + displayValue.toLocaleString();
+                            } else {
+                                metric.textContent = displayValue;
+                            }
+                        }
+                    }, 30);
+                }
+            });
+        });
+
+        function updateReports() {
+            const period = document.getElementById('periodFilter').value;
+            const department = document.getElementById('departmentFilter').value;
+            
+            console.log(`Updating reports: ${period}, ${department}`);
+            
+            if (period === 'custom') {
+                alert('📅 Custom Date Range\n\nPlease select start and end dates for your custom report period.');
+            }
+        }
+
+        function generateReport() {
+            const period = document.getElementById('periodFilter').value;
+            const department = document.getElementById('departmentFilter').value;
+            
+            alert(`📊 Generating Report\n\nPeriod: ${period}\nDepartment: ${department}\n\nReport will include:\n• Revenue and orders summary\n• Item types distribution\n• Doctor performance ranking\n• Material usage analysis\n• Export options (PDF, Excel, CSV)`);
+        }
+
+        function exportReports() {
+            alert(`📈 Export Reports\n\nAvailable export formats:\n\n📊 Dashboard Summary (PDF)\n• Key metrics and charts\n• Visual analysis\n\n📋 Detailed Data (Excel)\n• Raw data and calculations\n• Sortable tables\n\n📄 Presentation (PowerPoint)\n• Chart visualizations\n• Executive summary\n\n📊 Data Export (CSV)\n• Raw data for analysis\n• Database compatible`);
+        }
+
+        function goBack() {
+            alert('🔙 Returning to main dashboard...');
+        }
+    </script>
+</body>
+</html>
